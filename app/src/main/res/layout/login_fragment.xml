@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="@dimen/lyt_margin_bottom"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/White">
+
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!--  Email Label -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="@dimen/login_header_height"
+            android:background="@color/DarkRed">
+
+            <ImageView
+
+                android:layout_width="@dimen/edittext_height"
+                android:layout_height="@dimen/img_back_height"
+                android:layout_gravity="center" />
+
+            <calibrage.payzanagent.controls.CommonTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/login"
+                android:textColor="@color/White"
+                android:textSize="@dimen/txt_FontSize" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/lyt_margin_left"
+            android:paddingRight="@dimen/lyt_margin_right">
+
+            <ImageView
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/btn_margin_bottom"
+                android:src="@mipmap/home_logo" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/inp_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:hintEnabled="false">
+
+                <calibrage.payzanagent.controls.CommonEditText
+                    android:id="@+id/txt_Email"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edt_height"
+                    android:layout_marginBottom="@dimen/edt_bottom_margin"
+                    android:background="@drawable/roundededittext"
+                    android:gravity="center_vertical"
+                    android:imeOptions="actionNext"
+                    android:hint="@string/mobile_or_email"
+                    android:inputType="textEmailAddress"
+                    android:paddingLeft="@dimen/edt_text_pading_left"
+                    android:textSize="@dimen/edt_FontSize" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/inp_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                app:hintEnabled="false"
+                app:passwordToggleEnabled="true">
+
+                <calibrage.payzanagent.controls.CommonEditText
+
+                    android:id="@+id/txt_password"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/edt_height"
+                    android:layout_marginBottom="@dimen/edt_bottom_margin"
+                    android:background="@drawable/roundededittext"
+                    android:gravity="center_vertical"
+                    android:hint="@string/password"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:paddingLeft="@dimen/edt_text_pading_left"
+                    android:textSize="@dimen/edt_FontSize" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <!-- Login button -->
+
+            <calibrage.payzanagent.controls.CommonButton
+                android:id="@+id/btnLogin"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/btn_height"
+                android:layout_marginTop="@dimen/btn_margin_top"
+                android:background="@drawable/roundbutton"
+                android:text="Login"
+                android:textAllCaps="false"
+                android:textColor="@color/White" />
+            <!-- Link to Registration Screen -->
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

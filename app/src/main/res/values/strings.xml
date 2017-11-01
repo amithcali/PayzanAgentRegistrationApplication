@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">PayzanAgent</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="register">Register</string>
+    <string name="spinner_title">category</string>
+    <string name="password">Password</string>
+    <string name="mobile_or_email">Mobile or Email</string>
+    <string name="login">Login</string>
+    <string name="login_sname">"Login"</string>
+    <string name="agentrequest_sname">"Agent Requests"</string>
+    <string name="bankdetail_sname">"Bank Details"</string>
+    <string name="main_sname">"Home"</string>
+    <string name="idproof_sname">"Id Proofs"</string>
+    <string name="register_sname">"New Registration"</string>
+    <string name="doc_sname">"Documents"</string>
+    <string name="maps_api_key">AIzaSyCZo7vSHO8ceTd5rRCbq6XO95kEMq-1fHw</string>
+    <string name="new_agent">New Agent</string>
+    <string name="agent_requests">Agent Requests</string>
+    <string name="agent_yet_to_verify">Agent Yet To Verify</string>
+    <string name="approved_agents">Approved Agents</string>
+    <string name="payzan_agent">Payzan Agent</string>
+</resources>

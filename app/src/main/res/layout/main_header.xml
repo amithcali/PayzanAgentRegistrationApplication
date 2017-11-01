@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_appbar"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_img_height"
+        android:background="@drawable/home_logo"
+        android:scaleType="center"
+        android:gravity="center"
+        android:src="@drawable/home_logo"
+       />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/accent"
+        app:layout_scrollFlags="enterAlways"
+        app:title="123456"
+        app:titleTextColor="@color/accent">
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:textColor="@color/white_new"-->
+        <!--android:id="@+id/titleTxt"-->
+        <!--android:gravity="center"-->
+        <!--android:visibility="gone"-->
+        <!--android:text="@string/app_name"/>-->
+
+
+    </android.support.v7.widget.Toolbar>
+
+
+</LinearLayout>

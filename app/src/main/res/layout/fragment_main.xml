@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/white"
+tools:context="calibrage.payzanagent.fragments.AggrementDocumentsFragment">
+
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginTop="@dimen/lyt_margin_top"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/lyt_margin_top"
+        android:layout_marginBottom="@dimen/lyt_margin_bottom">
+
+
+        <calibrage.payzanagent.controls.CommonButton
+            android:id="@+id/btn_newAgent"
+            android:layout_width="1dp"
+            android:layout_height="@dimen/txt_height"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/btn_margin_right"
+            android:background="@drawable/roundbutton"
+            android:text="@string/new_agent"
+            android:textAllCaps="false"
+            android:textColor="@color/White" />
+        <calibrage.payzanagent.controls.CommonButton
+            android:id="@+id/btn_agentRequests"
+            android:layout_width="1dp"
+            android:layout_height="@dimen/txt_height"
+            android:layout_weight="1"
+            android:background="@drawable/roundbutton"
+            android:text="@string/agent_requests"
+            android:textAllCaps="false"
+            android:textColor="@color/White" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/lyt_margin_top">
+
+
+        <calibrage.payzanagent.controls.CommonButton
+            android:id="@+id/btn_yetToVerify"
+            android:layout_width="1dp"
+            android:layout_height="@dimen/txt_height"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/btn_margin_right"
+            android:background="@drawable/roundbutton"
+            android:text="@string/agent_yet_to_verify"
+            android:textAllCaps="false"
+            android:textColor="@color/White" />
+        <calibrage.payzanagent.controls.CommonButton
+            android:id="@+id/btn_approvedAgents"
+            android:layout_width="1dp"
+            android:layout_height="@dimen/txt_height"
+            android:layout_weight="1"
+            android:background="@drawable/roundbutton"
+            android:text="@string/approved_agents"
+            android:textAllCaps="false"
+            android:textColor="@color/White" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
+</LinearLayout>

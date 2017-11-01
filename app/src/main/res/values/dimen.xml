@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <dimen name="edittext_text_input_layout_padding">4dp</dimen>
+
+    <!--common TextView sizes-->
+    <dimen name="txt_height">30dp</dimen>
+    <dimen name="txt_width">4dp</dimen>
+    <dimen name="txt_FontSize">12dp</dimen>
+    <dimen name="txt_margin">10dp</dimen>
+
+
+    <!--common Edittext Sizes-->
+    <dimen name="edt_height">35dp</dimen>
+    <dimen name="edt_widtht">4dp</dimen>
+    <dimen name="edt_FontSize">16sp</dimen>
+    <dimen name="edt_bottom_margin">16sp</dimen>
+    <dimen name="edt_text_pading_left">5dp</dimen>
+    <dimen name="edittext_height">40dp</dimen>
+    <dimen name="spinnertext_height">20dp</dimen>
+
+
+
+    <!--common button sizes-->
+    <dimen name="btn_height">40dp</dimen>
+    <dimen name="btn_width">4dp</dimen>
+    <dimen name="btn_FontSize">12dp</dimen>
+    <dimen name="btn_margin_top">10dp</dimen>
+    <dimen name="btn_margin_left">35dp</dimen>
+    <dimen name="btn_margin_right">35dp</dimen>
+
+    <dimen name="btn1_height">35dp</dimen>
+    <dimen name="btn1_font">12dp</dimen>
+
+    <!--common image sizes-->
+    <dimen name="img_height">80dp</dimen>
+    <dimen name="img_width">80dp</dimen>
+
+    <!--Header View Sizes-->
+    <dimen name="header_image_height">4dp</dimen>
+    <dimen name="header_image_width">4dp</dimen>
+
+    <!--Login page-->
+    <dimen name="login_header_height">30dp</dimen>
+    <dimen name="login_header_width">4dp</dimen>
+
+
+    <dimen name="img_back_height">20dp</dimen>
+    <dimen name="img_back__width">4dp</dimen>
+
+
+    <dimen name="img_wallet_height">40dp</dimen>
+    <dimen name="img_wallet_width">40dp</dimen>
+    <dimen name="img_wallet_margin">8dp</dimen>
+    <dimen name="img_wallet_padding">4dp</dimen>
+    <dimen name="toolbar_img_height">75dp</dimen>
+    <dimen name="logo_height">20dp</dimen>
+    <dimen name="logo_width">100dp</dimen>
+    <dimen name="logo_margin">20dp</dimen>
+    <!--Layout Sizes-->
+    <dimen name="lyt_margin_left">16dp</dimen>
+    <dimen name="lyt_margin_right">16dp</dimen>
+    <dimen name="lyt_margin_top">16dp</dimen>
+    <dimen name="lyt_margin_bottom">12dp</dimen>
+    <dimen name="lyt_margin">8dp</dimen>
+
+    <dimen name="btn_margin_bottom">10dp</dimen>
+
+    <dimen name="toolbar_height">34dp</dimen>
+
+    <!--extra dimensions -->
+    <dimen name="twoDp">2dp</dimen>
+    <dimen name="fourDp">4dp</dimen>
+    <dimen name="fiveDp">5dp</dimen>
+    <dimen name="eightDp">8dp</dimen>
+    <dimen name="tenDp">10dp</dimen>
+    <dimen name="leven">11dp</dimen>
+    <dimen name="tweleveDP">12dp</dimen>
+</resources>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    tools:context="calibrage.payzanagent.fragments.BankDetailFragment">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+            <calibrage.payzanagent.controls.CommonTextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="Bank Details"
+                android:textColor="@color/Black"
+                android:textSize="18dp" />
+            <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
+                android:id="@+id/il_AccountHoldername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <calibrage.payzanagent.controls.CommonEditText
+                    android:id="@+id/txt_accountholdername"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edt_height"
+                    android:layout_marginBottom="@dimen/edt_bottom_margin"
+                    android:hint="Account Holder Name"
+                    android:background="@drawable/roundededittext"
+                    android:gravity="center_vertical"
+                    android:imeOptions="actionNext"
+                    android:paddingLeft="@dimen/edt_text_pading_left"
+                    android:textSize="@dimen/edt_FontSize" />
+            </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
+            <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
+                android:id="@+id/il_AccountNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <calibrage.payzanagent.controls.CommonEditText
+                    android:id="@+id/txt_accountno"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edt_height"
+                    android:layout_marginBottom="@dimen/edt_bottom_margin"
+                    android:background="@drawable/roundededittext"
+                    android:gravity="center_vertical"
+                    android:hint="Account Number"
+                    android:imeOptions="actionNext"
+                    android:paddingLeft="@dimen/edt_text_pading_left"
+                    android:textSize="@dimen/edt_FontSize" />
+            </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
+            <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Bank">
+                <calibrage.payzanagent.controls.CommonTextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/spinnertext_height"
+                    android:text="Select Bank"
+                    android:textSize="@dimen/edt_FontSize"/>
+                <Spinner
+
+                    android:id="@+id/spinner_bank"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/edt_height"
+                    android:layout_marginBottom="@dimen/edt_bottom_margin"
+                    android:background="@drawable/roundededittext"
+                    android:prompt="@string/spinner_title"
+                    android:textAlignment="textStart" />
+                    <!--<Spinner
+                        android:id="@+id/spinner_bank"
+                        style="@style/Spinner"
+                        android:padding="5dp"
+                        android:layout_width="394dp" />-->
+            </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
+            <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Branch">
+                <calibrage.payzanagent.controls.CommonTextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/spinnertext_height"
+                    android:text="Select Branch"
+                    android:textSize="@dimen/edt_FontSize"/>
+                <Spinner
+
+                    android:id="@+id/spinner_branch"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/edt_height"
+                    android:background="@drawable/roundededittext"
+                    android:prompt="@string/spinner_title"
+                    android:layout_marginBottom="@dimen/edt_bottom_margin"
+                    android:textAlignment="textStart" />
+               <!-- <Spinner
+                    android:id="@+id/spinner_branch"
+                    style="@style/Spinner"
+                    android:padding="5dp" />-->
+            </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
+            <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
+                android:id="@+id/il_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <calibrage.payzanagent.controls.CommonEditText
+                    android:id="@+id/txt_swift_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edt_height"
+                    android:layout_marginBottom="@dimen/edt_bottom_margin"
+                    android:background="@drawable/roundededittext"
+                    android:gravity="center_vertical"
+                    android:hint="Shift Code"
+                    android:imeOptions="actionDone"
+                    android:paddingLeft="@dimen/edt_text_pading_left"
+                    android:textSize="@dimen/edt_FontSize" />
+            </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
+            <calibrage.payzanagent.controls.CommonButton
+                android:id="@+id/btn_continue"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/btn_height"
+                android:layout_marginBottom="@dimen/btn_margin_bottom"
+                android:layout_marginTop="@dimen/btn_margin_top"
+                android:background="@drawable/roundbutton"
+                android:text="Continue"
+                android:textAllCaps="false"
+                android:textColor="@color/White"/>
+        </LinearLayout>
+</LinearLayout>

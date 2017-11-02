@@ -21,4 +21,16 @@
     <string name="agent_yet_to_verify">Agent Yet To Verify</string>
     <string name="approved_agents">Approved Agents</string>
     <string name="payzan_agent">Payzan Agent</string>
+    <string name="agency_name">Agency Name</string>
+    <string name="id_no">Id No</string>
+    <string name="user_name">User Name</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="email_id">Email Id</string>
+    <string name="provinance_name">Provinance Name</string>
+    <string name="address">Address</string>
+    <string name="state">State</string>
+    <string name="pin_code">Pin Code</string>
+    <string name="location_on_map">Location on Map</string>
+    <string name="continue">Continue</string>
+    <string name="business_category">Business Category</string>
 </resources>

@@ -28,7 +28,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_main, container, false);
+        view = inflater.inflate(R.layout.fragment_main, container,false);
         view.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 return true;
@@ -64,6 +64,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
             case R.id.btn_approvedAgents:
                 showToast(getActivity(),"Yet to implement feature");
                 break;
+
         }
 
     }

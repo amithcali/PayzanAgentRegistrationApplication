@@ -42,7 +42,7 @@ tools:context="calibrage.payzanagent.fragments.AggrementDocumentsFragment">
             android:layout_height="@dimen/txt_height"
             android:layout_weight="1"
             android:background="@drawable/roundbutton"
-            android:text="@string/agent_requests"
+            android:text="@string/pic_agent"
             android:textAllCaps="false"
             android:textColor="@color/White" />
 
@@ -62,7 +62,7 @@ tools:context="calibrage.payzanagent.fragments.AggrementDocumentsFragment">
             android:layout_weight="1"
             android:layout_marginRight="@dimen/btn_margin_right"
             android:background="@drawable/roundbutton"
-            android:text="@string/agent_yet_to_verify"
+            android:text="@string/in_progress"
             android:textAllCaps="false"
             android:textColor="@color/White" />
         <calibrage.payzanagent.controls.CommonButton

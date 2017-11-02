@@ -88,7 +88,7 @@
                     <calibrage.payzanagent.controls.CommonTextView
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/spinnertext_height"
-                        android:text="Business Category"
+                        android:text="@string/business_category"
                         android:textSize="@dimen/edt_FontSize" />
 
                     <Spinner
@@ -115,7 +115,7 @@
                         android:layout_marginBottom="@dimen/edt_bottom_margin"
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
-                        android:hint="Agency Name"
+                        android:hint="@string/agency_name"
                         android:imeOptions="actionNext"
                         android:paddingLeft="@dimen/edt_text_pading_left"
                         android:textSize="@dimen/edt_FontSize" />
@@ -133,7 +133,7 @@
                         android:layout_marginBottom="@dimen/edt_bottom_margin"
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
-                        android:hint="Id No"
+                        android:hint="@string/id_no"
                         android:imeOptions="actionNext"
                         android:inputType="number"
                         android:paddingLeft="@dimen/edt_text_pading_left"
@@ -152,7 +152,7 @@
                         android:layout_marginBottom="@dimen/edt_bottom_margin"
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
-                        android:hint="User Name"
+                        android:hint="@string/user_name"
                         android:imeOptions="actionNext"
                         android:paddingLeft="@dimen/edt_text_pading_left"
                         android:textSize="@dimen/edt_FontSize" />
@@ -172,7 +172,7 @@
                         android:layout_marginBottom="@dimen/edt_bottom_margin"
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
-                        android:hint="Password"
+                        android:hint="@string/password"
                         android:imeOptions="actionNext"
                         android:inputType="textPassword"
                         android:paddingLeft="@dimen/edt_text_pading_left"
@@ -192,7 +192,7 @@
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
                         android:imeOptions="actionNext"
-                        android:hint="Mobile Number"
+                        android:hint="@string/mobile_number"
                         android:inputType="phone"
                         android:paddingLeft="@dimen/edt_text_pading_left"
                         android:textSize="@dimen/edt_FontSize" />
@@ -219,7 +219,7 @@
                         android:layout_marginBottom="@dimen/edt_bottom_margin"
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
-                        android:hint="Email Id"
+                        android:hint="@string/email_id"
                         android:imeOptions="actionNext"
                         android:paddingLeft="@dimen/edt_text_pading_left"
                         android:textSize="@dimen/edt_FontSize" />
@@ -238,7 +238,7 @@
                         android:layout_marginBottom="@dimen/edt_bottom_margin"
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
-                        android:hint="Provinance Name"
+                        android:hint="@string/provinance_name"
                         android:imeOptions="actionNext"
                         android:inputType="textEmailAddress"
                         android:paddingLeft="@dimen/edt_text_pading_left"
@@ -257,7 +257,7 @@
                         android:layout_marginBottom="@dimen/edt_bottom_margin"
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
-                        android:hint="Address"
+                        android:hint="@string/address"
                         android:imeOptions="actionNext"
                         android:paddingLeft="@dimen/edt_text_pading_left"
                         android:textSize="@dimen/edt_FontSize" />
@@ -275,7 +275,7 @@
                         android:layout_marginBottom="@dimen/edt_bottom_margin"
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
-                        android:hint="State"
+                        android:hint="@string/state"
                         android:imeOptions="actionNext"
                         android:paddingLeft="@dimen/edt_text_pading_left"
                         android:textSize="@dimen/edt_FontSize" />
@@ -295,7 +295,7 @@
                         android:layout_marginBottom="@dimen/edt_bottom_margin"
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
-                        android:hint="Pin Code"
+                        android:hint="@string/pin_code"
                         android:imeOptions="actionDone"
                         android:inputType="number"
                         android:paddingLeft="@dimen/edt_text_pading_left"
@@ -310,7 +310,7 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/edt_text_pading_left"
                     android:layout_marginBottom="@dimen/edt_bottom_margin"
-                    android:text="Location on Map"
+                    android:text="@string/location_on_map"
                     android:textSize="@dimen/edt_FontSize" />
 
                 <com.google.android.gms.maps.MapView
@@ -333,7 +333,7 @@
                     android:layout_marginBottom="@dimen/btn_margin_bottom"
                     android:layout_marginTop="@dimen/btn_margin_top"
                     android:background="@drawable/roundbutton"
-                    android:text="Continue"
+                    android:text="@string/continue_btn"
                     android:textAllCaps="false"
                     android:textColor="@color/White" />
 

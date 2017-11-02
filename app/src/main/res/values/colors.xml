@@ -17,6 +17,6 @@
     <color name="accent">#8d2029</color>
     <color name="new_accent">#8E2029</color>
     <color name="white_new">#FFFFFF</color>
-
-
+    <color name="light_gray">#BEBEBE</color>
+    <color name="action_color">#263242</color>
 </resources>

@@ -10,6 +10,8 @@
     <string name="login">Login</string>
     <string name="login_sname">"Login"</string>
     <string name="agentrequest_sname">"Agent Requests"</string>
+    <string name="inprogressrequest_sname">"InProgress Requests"</string>
+    <string name="approvedagents_sname">"Approved Agents"</string>
     <string name="bankdetail_sname">"Bank Details"</string>
     <string name="main_sname">"Home"</string>
     <string name="idproof_sname">"Id Proofs"</string>
@@ -35,7 +37,9 @@
     <string name="location_on_map">Location on Map</string>
     <string name="continue_btn">Continue</string>
     <string name="business_category">Business Category</string>
-    <string name="comment">comments</string>
+    <string name="comment">Comments</string>
     <string name="pick_btn">Pick</string>
+    <string name="add_btn">Add</string>
     <string name="hold_btn">Hold</string>
+    <string name="submit_btn">Submit</string>
 </resources>

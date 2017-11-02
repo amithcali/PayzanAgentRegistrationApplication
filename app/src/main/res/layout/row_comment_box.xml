@@ -13,6 +13,7 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="@string/comment"
+        android:textAllCaps="false"
         android:textColor="#000" />
 
     <EditText
@@ -28,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#d8d8d8"
-        android:text="Submit"
+        android:text="@string/submit_btn"
         android:textAllCaps="false"
         android:textColor="#000"
         android:textStyle="bold" />

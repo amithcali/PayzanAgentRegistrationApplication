@@ -36,4 +36,6 @@
     <string name="continue_btn">Continue</string>
     <string name="business_category">Business Category</string>
     <string name="comment">comments</string>
+    <string name="pick_btn">Pick</string>
+    <string name="hold_btn">Hold</string>
 </resources>

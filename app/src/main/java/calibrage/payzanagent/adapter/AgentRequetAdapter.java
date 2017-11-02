@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import calibrage.payzanagent.model.AgentRequestModel;
  * Created by Admin on 10/26/2017.
  */
 
-public class AgentRequetAdapter extends RecyclerView.Adapter<AgentRequetAdapter.MyHolder> {
+public class AgentRequetAdapter extends RecyclerView.Adapter<AgentRequetAdapter.MyHolder>{
 
     private Context context;
     private ArrayList<AgentRequestModel.ListResult> data;
@@ -66,13 +67,25 @@ public class AgentRequetAdapter extends RecyclerView.Adapter<AgentRequetAdapter.
             holder.tvEmail.setText(email);
         }
 
-        holder.tvBusinessCategory.setText(data.get(holder.getAdapterPosition()).getAddressLine1());
+
+      //  holder.tvBusinessCategory.setText(data.get(holder.getAdapterPosition()).getAddressLine1());
          holder.itemView.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
                requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition());
            }
+       }); holder.btnPick.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition());
+           }
+       }); holder.btnHold.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition());
+           }
        });
+
     }
 
     @Override
@@ -80,17 +93,42 @@ public class AgentRequetAdapter extends RecyclerView.Adapter<AgentRequetAdapter.
         return data.size();
     }
 
-    public class MyHolder extends RecyclerView.ViewHolder{
+
+
+    public class MyHolder extends RecyclerView.ViewHolder  {
         TextView tvAgentName,tvBusinessCategory,tvEmail,tvMobileNumber,tvAddress;
+        Button btnPick,btnHold;
         public MyHolder(View itemView) {
             super(itemView);
             tvAgentName=(TextView) itemView.findViewById(R.id.tracking_list_agentname);
-            tvBusinessCategory=(TextView)itemView.findViewById(R.id.tracking_list_businesscategory);
+        //    tvBusinessCategory=(TextView)itemView.findViewById(R.id.tracking_list_businesscategory);
             tvMobileNumber = (TextView)itemView.findViewById(R.id.tracking_list_mobilenumber);
             tvEmail = (TextView)itemView.findViewById(R.id.tracking_list_email);
             tvAddress=(TextView)itemView.findViewById(R.id.tracking_list_address);
+            btnPick = (Button)itemView.findViewById(R.id.btn_pick);
+            btnHold = (Button)itemView.findViewById(R.id.btn_hold);
+           /* btnPick.setOnClickListener(this);
+            btnHold.setOnClickListener(this);*/
         }
+
+       /* @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.btn_pick:
+                    comment();
+                    break;
+                case R.id.btn_hold:
+
+                    break;
+
+            }
+
+        }*/
     }
+
+    private void comment() {
+    }
+
     public void setOnAdapterListener(RequestClickListiner onAdapterListener) {
         this.requestClickListiner = onAdapterListener;
     }

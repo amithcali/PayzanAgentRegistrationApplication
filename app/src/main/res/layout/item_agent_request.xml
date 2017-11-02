@@ -2,8 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_vertical"
     android:padding="8dp">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="@color/white">
 <LinearLayout
     android:orientation="horizontal"
     android:layout_width="match_parent"
@@ -37,7 +43,7 @@
             style="@style/NWCListSubTitle"
             android:text="gcvgf"/>
     </LinearLayout>
-
+<!--
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,30 +56,52 @@
 
 
 
-    </LinearLayout>
+    </LinearLayout>-->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_margin="@dimen/fourDp">
-
-        <ImageView
+        <Button
+            android:id="@+id/btn_pick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/pick_btn"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:background="@color/Maroon"
+            />
+        <Button
+            android:id="@+id/btn_hold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hold_btn"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:layout_marginLeft="@dimen/btn_margin_left"
+            android:background="@color/cardview_dark_background"
+            android:layout_weight="0.5"
+            />
+       <!-- <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
             android:src="@drawable/right_arrow"
             />
-
+-->
 
 
     </LinearLayout>
 
 </LinearLayout>
 
-    <View
+   <!-- <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/Maroon"
         android:alpha="0.5"
         android:layout_alignParentBottom="true"
-        />
+        />-->
+    </android.support.v7.widget.CardView>
     </RelativeLayout>

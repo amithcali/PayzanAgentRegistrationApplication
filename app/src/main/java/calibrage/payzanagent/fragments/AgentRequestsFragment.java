@@ -1,6 +1,8 @@
 package calibrage.payzanagent.fragments;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,7 +18,10 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -64,40 +69,13 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         fragmentManager = getActivity().getSupportFragmentManager();
-        getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_NEW);
-        /*view.setFocusableInTouchMode(true);
-        view.requestFocus();
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
+        getRequest(CommonConstants.USERID+"/"+CommonConstants.AGENT_REQUEST_ID);
 
-                  //  closeTab();
-                    // onCloseFragment();
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });*/
         return view;
 
     }
 
-   /* private void closeTab() {
-        Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("mobileTag");
 
-
-        if (fragment != null)
-            getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-
-        HomeActivity.toolbar.setNavigationIcon(null);
-        HomeActivity.toolbar.setTitle("");
-        *//*please cal old fragment *//*
-
-
-
-    }*/
 
 
     private void getRequest(String providerType) {
@@ -150,13 +128,38 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
 
     @Override
     public void onAdapterClickListiner(int pos) {
-        Bundle bundle = new Bundle();
+        final Dialog adb = new Dialog(getActivity());
+        adb.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View layout = inflater.inflate(R.layout.row_comment_box, null);
+        adb.setContentView(layout);
+        adb.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        adb.show();
+        final EditText etComment = (EditText) layout.findViewById(R.id.etComment);
+        Button btnSubmit = (Button) layout.findViewById(R.id.btnSubmit);
+
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String stComment = etComment.getText().toString();
+                if (stComment.equalsIgnoreCase("")) {
+                    showToast(getActivity(), "Please write the reason for decline.");
+
+                } else {
+                    //acceptDecline("Declined", stComment);
+                    adb.dismiss();
+                    //btnCancelbooking.setVisibility(View.GONE);
+                }
+            }
+        });
+    /*    Bundle bundle = new Bundle();
         bundle.putParcelable("request", agentRequestModelBundle);
         bundle.putInt("position",pos);
         Fragment fragment = new RegistrationViewFragment();
         fragment.setArguments(bundle);
 //        ReplcaFragment(fragment);
         replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, RegistrationViewFragment.TAG);
-       // fragmentManager.beginTransaction().replace(R.id.content_frame, fragment,"AgentTag").commit();
+       // fragmentManager.beginTransaction().replace(R.id.content_frame, fragment,"AgentTag").commit();*/
     }
 }

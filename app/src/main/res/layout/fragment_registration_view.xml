@@ -333,7 +333,7 @@
                     android:layout_marginBottom="@dimen/btn_margin_bottom"
                     android:layout_marginTop="@dimen/btn_margin_top"
                     android:background="@drawable/roundbutton"
-                    android:text="@string/continue"
+                    android:text="@string/continue_btn"
                     android:textAllCaps="false"
                     android:textColor="@color/White" />
 

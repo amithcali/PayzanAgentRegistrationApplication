@@ -18,7 +18,9 @@
     <string name="maps_api_key">AIzaSyCZo7vSHO8ceTd5rRCbq6XO95kEMq-1fHw</string>
     <string name="new_agent">New Agent</string>
     <string name="agent_requests">Agent Requests</string>
+    <string name="pic_agent">Pick Agent</string>
     <string name="agent_yet_to_verify">Agent Yet To Verify</string>
+    <string name="in_progress">In Progress</string>
     <string name="approved_agents">Approved Agents</string>
     <string name="payzan_agent">Payzan Agent</string>
     <string name="agency_name">Agency Name</string>

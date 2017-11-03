@@ -35,7 +35,6 @@ public class HomeActivity extends AppCompatActivity {
             ReplcaFragment(new AgentRequestsFragment());
         }
 
-
     }
 
     private void setupToolbar() {

@@ -8,6 +8,7 @@ import calibrage.payzanagent.model.AgentRequestModel;
 import calibrage.payzanagent.model.Branch;
 import calibrage.payzanagent.model.BusinessCategoryModel;
 import calibrage.payzanagent.model.LoginResponseModel;
+import calibrage.payzanagent.model.UpdateAgentRequestResponceModel;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -31,10 +32,13 @@ public interface MyServices {
 
     @GET
     Observable<AgentRequestModel> getRequest(@Url String url);
+
     @GET
     Observable<BusinessCategoryModel> getBusinessRequest(@Url String url);
 
     @GET
     Observable<Branch> getBranchRequest(@Url String url);
 
+    @POST(ApiConstants.UPDATE_AGENT_REQUEST)
+    Observable<UpdateAgentRequestResponceModel> AgentUpdateRequest(@Body JsonObject data);
 }

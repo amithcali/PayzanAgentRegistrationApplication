@@ -3,10 +3,10 @@ package calibrage.payzanagent.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +25,8 @@ import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.HomeActivity;
 import calibrage.payzanagent.model.LoginModel;
 import calibrage.payzanagent.model.LoginResponseModel;
+import calibrage.payzanagent.model.UpdateAgentRequestModel;
+import calibrage.payzanagent.model.UpdateAgentRequestResponceModel;
 import calibrage.payzanagent.networkservice.MyServices;
 import calibrage.payzanagent.networkservice.ServiceFactory;
 import calibrage.payzanagent.utils.CommonConstants;
@@ -43,9 +45,9 @@ public class LoginFragment extends BaseFragment {
     private Subscription mRegisterSubscription;
     FragmentManager fragmentManager;
     View view;
-    public  static Toolbar toolbar;
+    public static Toolbar toolbar;
     private Context context;
-    private String mobileOrEmail,passCode;
+    private String mobileOrEmail, passCode;
 
     public LoginFragment() {
     }
@@ -91,6 +93,8 @@ public class LoginFragment extends BaseFragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                AgentUpdateRequest();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
            //    startActivity(new Intent(LoginActivity.this,AgentRequestsFragment.class));
@@ -102,6 +106,11 @@ public class LoginFragment extends BaseFragment {
 
                     // ReplcaFragment(new AgentRequestsFragment());
                 }
+
+
+
+
+
             }
         });
         return view;
@@ -118,10 +127,9 @@ public class LoginFragment extends BaseFragment {
         } else if (passCode.isEmpty()) {
             status = false;
             Toast.makeText(context, "password is required", Toast.LENGTH_SHORT).show();
-          }
+        }
         return status;
     }
-
 
 
     private void login() {
@@ -134,7 +142,7 @@ public class LoginFragment extends BaseFragment {
                 .subscribe(new Subscriber<LoginResponseModel>() {
                     @Override
                     public void onCompleted() {
-                       // Toast.makeText(getActivity(), "check", Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(getActivity(), "check", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -158,8 +166,8 @@ public class LoginFragment extends BaseFragment {
                         hideDialog();
                         Toast.makeText(getActivity(), "sucess", Toast.LENGTH_SHORT).show();
                         CommonConstants.USERID = loginResponseModel.getResult().getUser().getId();
-                    //    CommonConstants.WALLETID = String.valueOf(loginResponseModel.getData().getUserWallet().getWalletId());
-                       // ReplcaFragment(new AgentRequestsFragment());
+                        //    CommonConstants.WALLETID = String.valueOf(loginResponseModel.getData().getUserWallet().getWalletId());
+                        // ReplcaFragment(new AgentRequestsFragment());
                         replaceFragment(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);
                        /* toolbar.setNavigationIcon(null);
                         toolbar.setTitle("");*/
@@ -167,6 +175,68 @@ public class LoginFragment extends BaseFragment {
                     }
                 });
 
+    }
+
+    private void AgentUpdateRequest() {
+
+        JsonObject object = getLoginObject();
+        MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
+        mRegisterSubscription = service.AgentUpdateRequest(object)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<UpdateAgentRequestResponceModel>() {
+                    @Override
+                    public void onCompleted() {
+                        // Toast.makeText(getActivity(), "check", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ((HttpException) e).code();
+                            ((HttpException) e).message();
+                            ((HttpException) e).response().errorBody();
+                            try {
+                                ((HttpException) e).response().errorBody().string();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(UpdateAgentRequestResponceModel loginResponseModel) {
+
+                        UpdateAgentRequestResponceModel model= loginResponseModel;
+                        Log.d(TAG, "onNext: "+model.toString());
+                        Toast.makeText(getActivity(), "sucess :"+model.getIsSuccess(), Toast.LENGTH_SHORT).show();
+
+                       /* toolbar.setNavigationIcon(null);
+                        toolbar.setTitle("");*/
+                        //finish();
+                    }
+                });
+
+    }
+
+    private JsonObject getUpdateRequestModel() {
+        UpdateAgentRequestModel updateAgentRequestModel = new UpdateAgentRequestModel();
+
+        updateAgentRequestModel.setId(0);
+        updateAgentRequestModel.setStatusTypeId(44);
+        updateAgentRequestModel.setAssignToUserId("14d6fa21-a988-4550-be48-7e3fd1950402");
+        updateAgentRequestModel.setComments("mahesh");
+        updateAgentRequestModel.setIsActive(true);
+        updateAgentRequestModel.setCreatedBy("14d6fa21-a988-4550-be48-7e3fd1950402");
+        updateAgentRequestModel.setModifiedBy("14d6fa21-a988-4550-be48-7e3fd1950402");
+        updateAgentRequestModel.setCreated("2017-11-02T10:18:16.024Z");
+        updateAgentRequestModel.setModified("2017-11-02T10:18:16.024Z");
+        updateAgentRequestModel.setAgentRequestId(5);
+
+        return new Gson().toJsonTree(updateAgentRequestModel)
+                .getAsJsonObject();
     }
 
     private JsonObject getLoginObject() {

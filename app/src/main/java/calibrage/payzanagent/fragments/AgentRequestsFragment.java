@@ -37,6 +37,7 @@ import calibrage.payzanagent.networkservice.ApiConstants;
 import calibrage.payzanagent.networkservice.MyServices;
 import calibrage.payzanagent.networkservice.ServiceFactory;
 import calibrage.payzanagent.utils.CommonConstants;
+import calibrage.payzanagent.utils.SharedPrefsData;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
 import rx.Subscription;
@@ -69,6 +70,8 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         fragmentManager = getActivity().getSupportFragmentManager();
+        String val= SharedPrefsData.getInstance(context).getStringFromSharedPrefs("mahesh");
+        showToast(context, "Value :"+val);
         getRequest(CommonConstants.USERID+"/"+CommonConstants.AGENT_REQUEST_ID);
 
         return view;

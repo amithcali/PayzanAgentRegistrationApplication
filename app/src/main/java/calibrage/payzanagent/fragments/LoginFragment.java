@@ -30,6 +30,7 @@ import calibrage.payzanagent.model.UpdateAgentRequestResponceModel;
 import calibrage.payzanagent.networkservice.MyServices;
 import calibrage.payzanagent.networkservice.ServiceFactory;
 import calibrage.payzanagent.utils.CommonConstants;
+import calibrage.payzanagent.utils.SharedPrefsData;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
 import rx.Subscription;
@@ -101,8 +102,8 @@ public class LoginFragment extends BaseFragment {
              //   login();
               // ReplcaFragment(new AgentRequestsFragment());
                 if (isValidateUi()) {
-                   // login();
-                    replaceFragment(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);
+                    login();
+                 /*   replaceFragment(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);*/
 
                     // ReplcaFragment(new AgentRequestsFragment());
                 }
@@ -164,14 +165,22 @@ public class LoginFragment extends BaseFragment {
                     @Override
                     public void onNext(LoginResponseModel loginResponseModel) {
                         hideDialog();
-                        Toast.makeText(getActivity(), "sucess", Toast.LENGTH_SHORT).show();
-                        CommonConstants.USERID = loginResponseModel.getResult().getUser().getId();
-                        //    CommonConstants.WALLETID = String.valueOf(loginResponseModel.getData().getUserWallet().getWalletId());
-                        // ReplcaFragment(new AgentRequestsFragment());
-                        replaceFragment(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);
+                        if(loginResponseModel.getIsSuccess())
+                        {
+                            Toast.makeText(getActivity(), "sucess", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "onNext: Result :"+loginResponseModel.toString());
+                            CommonConstants.USERID = loginResponseModel.getResult().getUser().getId();
+                            SharedPrefsData.getInstance(context).updateStringValue(context,"mahesh","nani");
+                            //    CommonConstants.WALLETID = String.valueOf(loginResponseModel.getData().getUserWallet().getWalletId());
+                            // ReplcaFragment(new AgentRequestsFragment());
+                            replaceFragment(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);
                        /* toolbar.setNavigationIcon(null);
                         toolbar.setTitle("");*/
-                        //finish();
+                            //finish();
+                        }else {
+                            showToast(context,loginResponseModel.getEndUserMessage());
+                        }
+
                     }
                 });
 

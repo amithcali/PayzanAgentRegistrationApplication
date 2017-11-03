@@ -62,12 +62,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                 replaceFragment(getActivity(),MAIN_CONTAINER,new AgentRequestsFragment(),TAG,AgentRequestsFragment.TAG);
                 break;
             case R.id.btn_yetToVerify:
-
-               showToast(getActivity(),"Yet to implement feature");
-                //replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
+               //showToast(getActivity(),"Yet to implement feature");
+                replaceFragment(getActivity(),MAIN_CONTAINER,new InProgressFragment(),TAG,InProgressFragment.TAG);
                 break;
             case R.id.btn_approvedAgents:
-                showToast(getActivity(),"Yet to implement feature");
+              //  showToast(getActivity(),"Yet to implement feature");
+                replaceFragment(getActivity(),MAIN_CONTAINER,new ApprovedAgentsFragment(),TAG,ApprovedAgentsFragment.TAG);
                 break;
 
         }

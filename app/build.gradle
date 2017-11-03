@@ -23,7 +23,7 @@ android {
         dev {
             buildConfigField "String", "SERVER_URL", '" "'
             buildConfigField "String", "AZURE_URL", '"http://payzandev.azurewebsites.net/"'
-            buildConfigField "String", "LOCAL_URL", '"http://192.168.1.147/PayZanAPI/"'
+            buildConfigField "String", "LOCAL_URL", '"http://192.168.1.157/PayZanAPI/"'
         }
     }
 }

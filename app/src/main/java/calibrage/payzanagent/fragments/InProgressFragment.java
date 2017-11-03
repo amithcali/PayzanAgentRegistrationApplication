@@ -72,6 +72,7 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
     }
 
     private void getRequest(String providerType) {
+        showDialog(getActivity(), "Authenticating...");
         MyServices service = ServiceFactory.createRetrofitService(context, MyServices.class);
         operatorSubscription = service.getRequest(ApiConstants.AGENT_REQUESTS + providerType)
                 .subscribeOn(Schedulers.newThread())
@@ -84,6 +85,7 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -100,6 +102,7 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
 
                     @Override
                     public void onNext(AgentRequestModel agentRequestModel) {
+                        hideDialog();
                         // Log.d("response", agentRequestModel.getIsSuccess().toString());
                         listResults = (ArrayList<AgentRequestModel.ListResult>) agentRequestModel.getListResult();
                         InProgressRequetAdapter inProgressRequetAdapter = new InProgressRequetAdapter(context, listResults);

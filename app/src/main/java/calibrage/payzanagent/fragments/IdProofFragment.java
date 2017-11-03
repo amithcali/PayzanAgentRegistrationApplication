@@ -211,6 +211,7 @@ public class IdProofFragment extends BaseFragment {
     }
 
     private void getRequestFinacial(String financialidCategoryId) {
+        showDialog(getActivity(), "Authenticating...");
         MyServices service = ServiceFactory.createRetrofitService(context, MyServices.class);
         operatorSubscription = service.getBusinessRequest(ApiConstants.BUSINESS_CAT_REQUESTS + Integer.parseInt(financialidCategoryId))
                 .subscribeOn(Schedulers.newThread())
@@ -223,6 +224,7 @@ public class IdProofFragment extends BaseFragment {
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -239,6 +241,7 @@ public class IdProofFragment extends BaseFragment {
 
                     @Override
                     public void onNext(BusinessCategoryModel businessCategoryModel) {
+                        hideDialog();
                         Log.d("response", businessCategoryModel.getIsSuccess().toString());
                         financialListResults = (ArrayList<BusinessCategoryModel.ListResult>) businessCategoryModel.getListResult();
                         for (int i = 0; i <businessCategoryModel.getListResult().size() ; i++) {

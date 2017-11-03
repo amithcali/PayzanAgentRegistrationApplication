@@ -34,7 +34,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/iv_clear"
-            tools:visibility="visible" />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_clear"
@@ -44,7 +44,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="6dp"
             android:src="@mipmap/close_icon"
-            tools:visibility="visible" />
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

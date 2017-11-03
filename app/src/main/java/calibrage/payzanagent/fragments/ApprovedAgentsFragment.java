@@ -32,7 +32,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class ApprovedAgentsFragment extends Fragment {
+public class ApprovedAgentsFragment extends BaseFragment {
 
     public static final String TAG = ApprovedAgentsFragment.class.getSimpleName();
 
@@ -66,6 +66,7 @@ public class ApprovedAgentsFragment extends Fragment {
     }
 
     private void getRequest(String providerType) {
+        showDialog(getActivity(), "Authenticating...");
         MyServices service = ServiceFactory.createRetrofitService(context, MyServices.class);
         operatorSubscription = service.getRequest(ApiConstants.AGENT_REQUESTS + providerType)
                 .subscribeOn(Schedulers.newThread())
@@ -78,6 +79,7 @@ public class ApprovedAgentsFragment extends Fragment {
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -94,6 +96,7 @@ public class ApprovedAgentsFragment extends Fragment {
 
                     @Override
                     public void onNext(AgentRequestModel agentRequestModel) {
+                        hideDialog();
                         // Log.d("response", agentRequestModel.getIsSuccess().toString());
                         listResults = (ArrayList<AgentRequestModel.ListResult>) agentRequestModel.getListResult();
                         ApprovedAgentsAdapter approvedAgentsAdapter = new ApprovedAgentsAdapter(context, listResults);

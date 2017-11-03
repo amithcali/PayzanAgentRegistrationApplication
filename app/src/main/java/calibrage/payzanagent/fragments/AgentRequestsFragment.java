@@ -79,7 +79,7 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
 
 
     private void getRequest(String providerType) {
-
+        showDialog(getActivity(), "Authenticating...");
         MyServices service = ServiceFactory.createRetrofitService(context, MyServices.class);
         operatorSubscription = service.getRequest(ApiConstants.AGENT_REQUESTS + providerType)
                 .subscribeOn(Schedulers.newThread())
@@ -92,6 +92,7 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -108,6 +109,7 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
 
                     @Override
                     public void onNext(AgentRequestModel agentRequestModel) {
+                        hideDialog();
                        // Log.d("response", agentRequestModel.getIsSuccess().toString());
                         listResults = (ArrayList<AgentRequestModel.ListResult>) agentRequestModel.getListResult();
                         AgentRequetAdapter agentRequetAdapter = new AgentRequetAdapter(context, listResults);
@@ -150,6 +152,7 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
                 } else {
                     //acceptDecline("Declined", stComment);
                     adb.dismiss();
+                    showToast(getActivity(), "Updated Successfully.....!");
                     //btnCancelbooking.setVisibility(View.GONE);
                 }
             }

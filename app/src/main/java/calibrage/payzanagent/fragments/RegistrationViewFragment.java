@@ -449,6 +449,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     }
 
     private void getRequest(String providerType) {
+        showDialog(getActivity(), "Authenticating...");
         MyServices service = ServiceFactory.createRetrofitService(context, MyServices.class);
         operatorSubscription = service.getBusinessRequest(ApiConstants.BUSINESS_CAT_REQUESTS + Integer.parseInt(providerType))
                 .subscribeOn(Schedulers.newThread())
@@ -461,6 +462,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -477,6 +479,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
                     @Override
                     public void onNext(BusinessCategoryModel businessCategoryModel) {
+                        hideDialog();
                         Log.d("response", businessCategoryModel.getIsSuccess().toString());
                         businessListResults = (ArrayList<BusinessCategoryModel.ListResult>) businessCategoryModel.getListResult();
                         for (int i = 0; i < businessCategoryModel.getListResult().size(); i++) {

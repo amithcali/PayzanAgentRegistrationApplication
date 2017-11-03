@@ -53,6 +53,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_newAgent:

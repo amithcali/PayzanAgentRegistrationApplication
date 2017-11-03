@@ -193,6 +193,7 @@ public class BankDetailFragment extends BaseFragment {
     }
 
     private void getRequestBranch(String providerType) {
+        showDialog(getActivity(), "Authenticating...");
        String data= BuildConfig.LOCAL_URL+ApiConstants.BRANCH_REQUESTS+providerType ;
         Log.d(TAG, "getRequestBranch: URL:"+data);
 
@@ -208,6 +209,7 @@ public class BankDetailFragment extends BaseFragment {
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -224,6 +226,7 @@ public class BankDetailFragment extends BaseFragment {
 
                     @Override
                     public void onNext(Branch branch) {
+                        hideDialog();
                         Log.d("response", branch.getIsSuccess().toString());
                         branchListResults = (ArrayList<Branch.ListResult>) branch.getListResult();
                         for (int i = 0; i < branch.getListResult().size(); i++) {

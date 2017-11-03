@@ -41,4 +41,5 @@ public interface MyServices {
 
     @POST(ApiConstants.UPDATE_AGENT_REQUEST)
     Observable<UpdateAgentRequestResponceModel> AgentUpdateRequest(@Body JsonObject data);
+
 }

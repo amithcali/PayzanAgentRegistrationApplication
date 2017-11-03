@@ -30,6 +30,7 @@
                     android:layout_height="@dimen/edt_height"
                     android:layout_marginBottom="@dimen/edt_bottom_margin"
                     android:hint="Account Holder Name"
+                    android:maxLength="50"
                     android:background="@drawable/roundededittext"
                     android:gravity="center_vertical"
                     android:imeOptions="actionNext"
@@ -49,6 +50,7 @@
                     android:background="@drawable/roundededittext"
                     android:gravity="center_vertical"
                     android:hint="Account Number"
+                    android:maxLength="50"
                     android:imeOptions="actionNext"
                     android:paddingLeft="@dimen/edt_text_pading_left"
                     android:textSize="@dimen/edt_FontSize" />
@@ -113,6 +115,7 @@
                     android:background="@drawable/roundededittext"
                     android:gravity="center_vertical"
                     android:hint="Shift Code"
+                    android:maxLength="50"
                     android:imeOptions="actionDone"
                     android:paddingLeft="@dimen/edt_text_pading_left"
                     android:textSize="@dimen/edt_FontSize" />

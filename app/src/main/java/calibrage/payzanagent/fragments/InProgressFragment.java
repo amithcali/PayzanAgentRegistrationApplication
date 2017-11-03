@@ -66,7 +66,7 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         fragmentManager = getActivity().getSupportFragmentManager();
-        getRequest(CommonConstants.USERID+"/"+CommonConstants.AGENT_REQUEST_ID);
+        getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_IN_PROGRESS);
 
         return view;
     }
@@ -121,7 +121,7 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
 
 
     @Override
-    public void onAdapterClickListiner(int pos) {
+    public void onAdapterClickListiner(int pos,boolean b) {
              Bundle bundle = new Bundle();
         bundle.putParcelable("request", agentRequestModelBundle);
         bundle.putInt("position",pos);

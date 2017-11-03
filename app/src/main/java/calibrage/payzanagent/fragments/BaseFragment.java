@@ -70,9 +70,13 @@ public class BaseFragment extends Fragment {
             mProgressDialog = new ProgressDialog(activity);
             mProgressDialog.setIndeterminate(true);
             mProgressDialog.setMessage(message);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setCanceledOnTouchOutside(false);
+
         }
         if (mProgressDialog != null && !mProgressDialog.isShowing())
             mProgressDialog.show();
+
     }
 
     public void hideDialog() {

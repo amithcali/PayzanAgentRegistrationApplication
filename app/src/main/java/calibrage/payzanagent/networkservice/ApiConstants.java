@@ -17,6 +17,7 @@ public interface ApiConstants {
     String BUSINESS_CAT_REQUESTS = "api/TypeCdDmts/GetTypeCdDmtsByClassType/";
     String BRANCH_REQUESTS = "/api/Banks/GetBankInfo/";
     String ADD_AGENT = "/api/Agent/AddAgent";
-   String UPDATE_AGENT_REQUEST= "api/AgentRequestInfo/UpdateAgentRequestInfo";
+   String UPDATE_AGENT_REQUEST= "api/AgentRequestInfo/UpdateAgentRequestStatus";
+
     //  String LOGIN = "API
 }

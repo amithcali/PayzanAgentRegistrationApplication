@@ -68,17 +68,17 @@ public class InProgressRequetAdapter extends RecyclerView.Adapter<InProgressRequ
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition());
+                requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition(),true);
             }
         }); holder.btnPick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition());
+                requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition(),true);
             }
         }); holder.btnHold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition());
+                requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition(),true);
             }
         });
 

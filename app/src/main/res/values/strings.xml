@@ -42,4 +42,5 @@
     <string name="add_btn">Add</string>
     <string name="hold_btn">Hold</string>
     <string name="submit_btn">Submit</string>
+    <string name="agent_name">Agent Name</string>
 </resources>

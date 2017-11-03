@@ -27,7 +27,7 @@ public class CommonConstants {
 
 
 
-    public static String USERID ="071862aa-d6b6-448a-bf23-943d88739f9d";
+    public static String USERID =" ";
     public static String WALLETID ="";
     public static String WALLETMONEY ="0";
     public static String PACKAGE = "calibrage.payzanagent";

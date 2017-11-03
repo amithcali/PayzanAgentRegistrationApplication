@@ -20,9 +20,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +37,8 @@ import calibrage.payzanagent.adapter.AgentRequetAdapter;
 import calibrage.payzanagent.adapter.GenericAdapter;
 import calibrage.payzanagent.interfaces.RequestClickListiner;
 import calibrage.payzanagent.model.AgentRequestModel;
+import calibrage.payzanagent.model.UpdateAgentRequestModel;
+import calibrage.payzanagent.model.UpdateAgentRequestResponceModel;
 import calibrage.payzanagent.networkservice.ApiConstants;
 import calibrage.payzanagent.networkservice.MyServices;
 import calibrage.payzanagent.networkservice.ServiceFactory;
@@ -54,6 +60,10 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
     FragmentManager fragmentManager;
     private Context context;
     private Subscription operatorSubscription;
+    private Subscription mRegisterSubscription;
+    private String stComment;
+    private int position;
+    private boolean isPickorHold;
     private ArrayList<AgentRequestModel.ListResult> listResults;
     private AgentRequestModel agentRequestModelBundle;
     public  static Toolbar toolbar;
@@ -71,8 +81,9 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
         recyclerView.setLayoutManager(layoutManager);
         fragmentManager = getActivity().getSupportFragmentManager();
         String val= SharedPrefsData.getInstance(context).getStringFromSharedPrefs("mahesh");
-        showToast(context, "Value :"+val);
-        getRequest(CommonConstants.USERID+"/"+CommonConstants.AGENT_REQUEST_ID);
+       /* showToast(context, "Value :"+val);
+        Log.d(TAG, "onCreateView: "+val);*/
+        getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_NEW+","+CommonConstants.STATUSTYPE_ID_REJECTED+","+CommonConstants.STATUSTYPE_ID_HOLD);
 
         return view;
 
@@ -132,7 +143,9 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
 
 
     @Override
-    public void onAdapterClickListiner(int pos) {
+    public void onAdapterClickListiner(int pos,boolean isPickorHold) {
+        position = pos;
+        this.isPickorHold = isPickorHold;
         final Dialog adb = new Dialog(getActivity());
         adb.requestWindowFeature(Window.FEATURE_NO_TITLE);
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -148,15 +161,16 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String stComment = etComment.getText().toString();
+                stComment = etComment.getText().toString();
                 if (stComment.equalsIgnoreCase("")) {
-                    showToast(getActivity(), "Please write the reason for decline.");
+                    showToast(getActivity(), "Please write comments.");
 
                 } else {
-                    //acceptDecline("Declined", stComment);
+                    submitRequest();
                     adb.dismiss();
-                    showToast(getActivity(), "Updated Successfully.....!");
-                    //btnCancelbooking.setVisibility(View.GONE);
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+
                 }
             }
         });
@@ -168,5 +182,73 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
 //        ReplcaFragment(fragment);
         replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, RegistrationViewFragment.TAG);
        // fragmentManager.beginTransaction().replace(R.id.content_frame, fragment,"AgentTag").commit();*/
+    }
+
+    private void submitRequest() {
+        showDialog(getActivity(), "Authenticating...");
+        JsonObject object = getLoginObject();
+        MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
+        mRegisterSubscription = service.AgentUpdateRequest(object)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<UpdateAgentRequestResponceModel>() {
+                    @Override
+                    public void onCompleted() {
+                        // Toast.makeText(getActivity(), "check", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ((HttpException) e).code();
+                            ((HttpException) e).message();
+                            ((HttpException) e).response().errorBody();
+                            try {
+                                ((HttpException) e).response().errorBody().string();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(UpdateAgentRequestResponceModel updateAgentRequestResponceModel) {
+                        hideDialog();
+                        if(updateAgentRequestResponceModel.getIsSuccess())
+                        {
+                           /* Toast.makeText(getActivity(), "sucess", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "onNext: Result :"+updateAgentRequestResponceModel.toString());*/
+                            showToast(getActivity(), "Updated Successfully.....!");
+                            getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_NEW+","+CommonConstants.STATUSTYPE_ID_REJECTED+","+CommonConstants.STATUSTYPE_ID_HOLD);
+
+                        }else {
+                            Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+    }
+
+    private JsonObject getLoginObject() {
+        UpdateAgentRequestModel updateAgentRequestModel = new UpdateAgentRequestModel();
+        updateAgentRequestModel.setAgentRequestId(listResults.get(position).getId());
+        if(isPickorHold ){
+            updateAgentRequestModel.setStatusTypeId(Integer.valueOf(CommonConstants.STATUSTYPE_ID_IN_PROGRESS));
+        }else {
+            updateAgentRequestModel.setStatusTypeId(Integer.valueOf(CommonConstants.STATUSTYPE_ID_HOLD));
+        }
+
+        updateAgentRequestModel.setAssignToUserId(SharedPrefsData.getInstance(context).getStringFromSharedPrefs("userid"));
+        updateAgentRequestModel.setComments(stComment);
+        updateAgentRequestModel.setId(null);
+        updateAgentRequestModel.setIsActive(true);
+        updateAgentRequestModel.setCreatedBy(SharedPrefsData.getInstance(context).getStringFromSharedPrefs("userid"));
+        updateAgentRequestModel.setModifiedBy(SharedPrefsData.getInstance(context).getStringFromSharedPrefs("userid"));
+        updateAgentRequestModel.setCreated("2017-11-03T08:50:31.048");
+        updateAgentRequestModel.setModified("2017-11-03T08:50:31.048");
+        return new Gson().toJsonTree(updateAgentRequestModel)
+                .getAsJsonObject();
     }
 }

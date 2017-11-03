@@ -60,7 +60,7 @@ public class ApprovedAgentsFragment extends BaseFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         fragmentManager = getActivity().getSupportFragmentManager();
-        getRequest(CommonConstants.USERID+"/"+CommonConstants.AGENT_REQUEST_ID);
+        getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_APPROVED);
 
         return view ;
     }

@@ -69,20 +69,20 @@ public class AgentRequetAdapter extends RecyclerView.Adapter<AgentRequetAdapter.
 
 
       //  holder.tvBusinessCategory.setText(data.get(holder.getAdapterPosition()).getAddressLine1());
-         holder.itemView.setOnClickListener(new View.OnClickListener() {
+         /*holder.itemView.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
                requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition());
            }
-       }); holder.btnPick.setOnClickListener(new View.OnClickListener() {
+       });*/ holder.btnPick.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition());
+               requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition(),true);
            }
        }); holder.btnHold.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition());
+               requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition(),false);
            }
        });
 

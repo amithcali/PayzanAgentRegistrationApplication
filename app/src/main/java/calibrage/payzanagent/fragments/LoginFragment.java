@@ -95,7 +95,7 @@ public class LoginFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
 
-                AgentUpdateRequest();
+              //  AgentUpdateRequest();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
            //    startActivity(new Intent(LoginActivity.this,AgentRequestsFragment.class));
@@ -168,9 +168,9 @@ public class LoginFragment extends BaseFragment {
                         if(loginResponseModel.getIsSuccess())
                         {
                             Toast.makeText(getActivity(), "sucess", Toast.LENGTH_SHORT).show();
-                            Log.d(TAG, "onNext: Result :"+loginResponseModel.toString());
+                            //Log.d(TAG, "onNext: Result :"+loginResponseModel.toString());
                             CommonConstants.USERID = loginResponseModel.getResult().getUser().getId();
-                            SharedPrefsData.getInstance(context).updateStringValue(context,"mahesh","nani");
+                            SharedPrefsData.getInstance(context).updateStringValue(context,"userid",loginResponseModel.getResult().getUser().getId());
                             //    CommonConstants.WALLETID = String.valueOf(loginResponseModel.getData().getUserWallet().getWalletId());
                             // ReplcaFragment(new AgentRequestsFragment());
                             replaceFragment(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);
@@ -186,67 +186,8 @@ public class LoginFragment extends BaseFragment {
 
     }
 
-    private void AgentUpdateRequest() {
 
-        JsonObject object = getLoginObject();
-        MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
-        mRegisterSubscription = service.AgentUpdateRequest(object)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<UpdateAgentRequestResponceModel>() {
-                    @Override
-                    public void onCompleted() {
-                        // Toast.makeText(getActivity(), "check", Toast.LENGTH_SHORT).show();
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ((HttpException) e).code();
-                            ((HttpException) e).message();
-                            ((HttpException) e).response().errorBody();
-                            try {
-                                ((HttpException) e).response().errorBody().string();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                            e.printStackTrace();
-                        }
-                        Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNext(UpdateAgentRequestResponceModel loginResponseModel) {
-
-                        UpdateAgentRequestResponceModel model= loginResponseModel;
-                        Log.d(TAG, "onNext: "+model.toString());
-                        Toast.makeText(getActivity(), "sucess :"+model.getIsSuccess(), Toast.LENGTH_SHORT).show();
-
-                       /* toolbar.setNavigationIcon(null);
-                        toolbar.setTitle("");*/
-                        //finish();
-                    }
-                });
-
-    }
-
-    private JsonObject getUpdateRequestModel() {
-        UpdateAgentRequestModel updateAgentRequestModel = new UpdateAgentRequestModel();
-
-        updateAgentRequestModel.setId(0);
-        updateAgentRequestModel.setStatusTypeId(44);
-        updateAgentRequestModel.setAssignToUserId("14d6fa21-a988-4550-be48-7e3fd1950402");
-        updateAgentRequestModel.setComments("mahesh");
-        updateAgentRequestModel.setIsActive(true);
-        updateAgentRequestModel.setCreatedBy("14d6fa21-a988-4550-be48-7e3fd1950402");
-        updateAgentRequestModel.setModifiedBy("14d6fa21-a988-4550-be48-7e3fd1950402");
-        updateAgentRequestModel.setCreated("2017-11-02T10:18:16.024Z");
-        updateAgentRequestModel.setModified("2017-11-02T10:18:16.024Z");
-        updateAgentRequestModel.setAgentRequestId(5);
-
-        return new Gson().toJsonTree(updateAgentRequestModel)
-                .getAsJsonObject();
-    }
 
     private JsonObject getLoginObject() {
         LoginModel loginModel = new LoginModel();

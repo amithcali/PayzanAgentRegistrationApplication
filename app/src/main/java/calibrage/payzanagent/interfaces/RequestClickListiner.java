@@ -5,5 +5,5 @@ package calibrage.payzanagent.interfaces;
  */
 
 public interface RequestClickListiner {
-    void onAdapterClickListiner(int pos);
+    void onAdapterClickListiner(int pos,boolean isPickorHold);
 }

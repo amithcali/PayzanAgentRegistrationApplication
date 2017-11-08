@@ -74,8 +74,9 @@ android:orientation="vertical">
     android:layout_height="wrap_content"
     android:layout_marginTop="100dp"
     android:gravity="center"
+
     android:text="No Records found. Please try another keyword"
-    android:visibility="visible" />
+    android:visibility="gone" />
 
 
 </LinearLayout>

@@ -23,6 +23,7 @@ public class CommonConstants {
     public static String STATUSTYPE_ID_APPROVED = "46";
     public static String STATUSTYPE_ID_REJECTED = "47";
     public static String STATUSTYPE_ID_HOLD = "48";
+    public static String STATES_ID = "null";
 
 
 

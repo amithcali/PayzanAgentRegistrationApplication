@@ -20,6 +20,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.HomeActivity;
@@ -48,7 +50,7 @@ public class LoginFragment extends BaseFragment {
     View view;
     public static Toolbar toolbar;
     private Context context;
-    private String mobileOrEmail, passCode;
+    private String mobileOrEmail, passCode,dateandtime;
 
     public LoginFragment() {
     }
@@ -103,6 +105,7 @@ public class LoginFragment extends BaseFragment {
               // ReplcaFragment(new AgentRequestsFragment());
                 if (isValidateUi()) {
                     login();
+                    dateAndtime();
                  /*   replaceFragment(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);*/
 
                     // ReplcaFragment(new AgentRequestsFragment());
@@ -115,6 +118,22 @@ public class LoginFragment extends BaseFragment {
             }
         });
         return view;
+    }
+
+    private void dateAndtime() {
+        Calendar c = Calendar.getInstance();
+        System.out.println("Current time => "+c.getTime());
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        String formattedDate = df.format(c.getTime());
+        dateandtime = formattedDate;
+        SharedPrefsData.getInstance(context).updateStringValue(context,"datetime",dateandtime);
+        /*// formattedDate have current date/time
+        Toast.makeText(getActivity(), formattedDate, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "dateAndtime: "+formattedDate);
+       // Now we display formattedDate value in TextView*/
+
+
     }
 
     private boolean isValidateUi() {

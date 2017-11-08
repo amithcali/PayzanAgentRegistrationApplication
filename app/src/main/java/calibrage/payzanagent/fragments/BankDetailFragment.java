@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -38,6 +39,7 @@ import calibrage.payzanagent.networkservice.ApiConstants;
 import calibrage.payzanagent.networkservice.MyServices;
 import calibrage.payzanagent.networkservice.ServiceFactory;
 import calibrage.payzanagent.utils.CommonConstants;
+import calibrage.payzanagent.utils.SharedPrefsData;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
 import rx.Subscription;
@@ -67,7 +69,7 @@ public class BankDetailFragment extends BaseFragment {
     private ArrayList<BusinessCategoryModel.ListResult> bankListResults = new ArrayList<>();
     public  static Toolbar toolbar;
     private AddAgent addAgent;
-    private String straccountname,straccountno,strshiftcode;
+    private String straccountname,straccountno,strshiftcode,currentDatetime;
     private AgentBankInfo agentBankInfo;
 
 
@@ -85,10 +87,12 @@ public class BankDetailFragment extends BaseFragment {
                 return true;
             }
         });
-
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         context = this.getActivity();
         HomeActivity.toolbar.setTitle(getResources().getString(R.string.bankdetail_sname));
         HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
+        currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
         agentBankInfo = new AgentBankInfo();
         initCustomSpinner_bank();
         getRequestBank(CommonConstants.BANK_CATEGORY_ID);
@@ -107,6 +111,8 @@ public class BankDetailFragment extends BaseFragment {
                 if (isValidateUi()) {
                     //    login();
                     agentBankDetails();
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("bankinfo", addAgent);
                     Fragment fragment = new IdProofFragment();
@@ -126,42 +132,16 @@ public class BankDetailFragment extends BaseFragment {
         if (bundle != null) {
             addAgent = bundle.getParcelable("personalinfo");
         }
-       /* view.setFocusableInTouchMode(true);
-        view.requestFocus();
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    closeTab();
 
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });*/
         return view;
     }
 
-  /*  private void closeTab() {
-//        Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("BankTag");
-//        if (fragment != null)
-//            getActivity().getSupportFragmentManager().beginTransaction().remove(new BankDetailFragment()).commit();
-
-        getActivity().getSupportFragmentManager().beginTransaction().remove(new BankDetailFragment()).commit();
-        HomeActivity.toolbar.setNavigationIcon(null);
-        HomeActivity.toolbar.setTitle("123");
-
-        fragmentManager.beginTransaction()
-                .add(R.id.content_frame, new RegistrationViewFragment(),"RequestTag")
-                .commit();
-    }*/
 
     private void agentBankDetails() {
         agentBankInfo.setModifiedBy(CommonConstants.USERID);
-        agentBankInfo.setModified("2017-10-30T17:15:42.569Z");
+        agentBankInfo.setModified(currentDatetime);
         agentBankInfo.setCreatedBy(CommonConstants.USERID);
-        agentBankInfo.setCreated("2017-10-30T17:15:42.569Z");
+        agentBankInfo.setCreated(currentDatetime);
         agentBankInfo.setIsActive(true);
         agentBankInfo.setAccountHolderName(straccountname);
         agentBankInfo.setAccountNumber(straccountno);
@@ -271,6 +251,7 @@ public class BankDetailFragment extends BaseFragment {
                     public void onNext(BusinessCategoryModel businessCategoryModel) {
                         Log.d("response", businessCategoryModel.getIsSuccess().toString());
                         bankListResults = (ArrayList<BusinessCategoryModel.ListResult>) businessCategoryModel.getListResult();
+                     //   bankArrayList.add(0,"--Select Bank--");
                         for (int i = 0; i < businessCategoryModel.getListResult().size(); i++) {
                             bankArrayList.add(businessCategoryModel.getListResult().get(i).getDescription());
 

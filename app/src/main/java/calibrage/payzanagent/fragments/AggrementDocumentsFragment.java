@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -96,6 +97,8 @@ public class AggrementDocumentsFragment extends BaseFragment {
                 return true;
             }
         });
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         btnContinue = (Button)view.findViewById(R.id.btn_add_documents);
         textView = (TextView)view.findViewById(R.id.txtPath);
         btnFinish = (Button)view.findViewById(R.id.btn_finish);
@@ -117,6 +120,8 @@ public class AggrementDocumentsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 addAgentRequest();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
             }
         });
         Bundle bundle = getArguments();
@@ -131,6 +136,7 @@ public class AggrementDocumentsFragment extends BaseFragment {
 
     private void addAgentRequest() {
         JsonObject object = getLoginObject();
+      //  Log.d(TAG, "addAgentRequest: "+object.toString());
         MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
         mRegisterSubscription = service.addAgent(object)
                 .subscribeOn(Schedulers.newThread())
@@ -149,7 +155,7 @@ public class AggrementDocumentsFragment extends BaseFragment {
                             ((HttpException) e).response().errorBody();
                             try {
                                 ((HttpException) e).response().errorBody().string();
-                                CommonUtil.displayDialogWindow("user added sucessfully",alertDialog,context);
+                                CommonUtil.displayDialogWindow("Record Added Sucessfully",alertDialog,context);
                             } catch (IOException e1) {
                                 e1.printStackTrace();
                             }
@@ -161,7 +167,7 @@ public class AggrementDocumentsFragment extends BaseFragment {
                     @Override
                     public void onNext(AddAgentResponseModel addAgentResponseModel) {
                         Toast.makeText(getActivity(), "sucess", Toast.LENGTH_SHORT).show();
-                        CommonUtil.displayDialogWindow("user added sucessfully",alertDialog,context);
+                        CommonUtil.displayDialogWindow("Record Added Sucessfully",alertDialog,context);
                         //finish();
                     }
                 });

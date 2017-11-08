@@ -23,6 +23,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -61,8 +62,9 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
     private Context context;
     private Subscription operatorSubscription;
     private Subscription mRegisterSubscription;
-    private String stComment;
+    private String stComment,currentDatetime;
     private int position;
+    TextView noRecords;
     private boolean isPickorHold;
     private ArrayList<AgentRequestModel.ListResult> listResults;
     private AgentRequestModel agentRequestModelBundle;
@@ -72,11 +74,15 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         view = inflater.inflate(R.layout.fragment_agent_request, container, false);
         context = this.getActivity();
         HomeActivity.toolbar.setTitle(getResources().getString(R.string.agentrequest_sname));
         HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
+        currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
         recyclerView = (RecyclerView) view.findViewById(R.id.recylerview_card);
+        noRecords = (TextView)view.findViewById(R.id.no_records);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         fragmentManager = getActivity().getSupportFragmentManager();
@@ -125,7 +131,15 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
                     public void onNext(AgentRequestModel agentRequestModel) {
                         hideDialog();
                        // Log.d("response", agentRequestModel.getIsSuccess().toString());
+
                         listResults = (ArrayList<AgentRequestModel.ListResult>) agentRequestModel.getListResult();
+                        if (listResults.isEmpty()){
+                            noRecords.setVisibility(View.VISIBLE);
+
+                        }
+                        else {
+                            noRecords.setVisibility(View.GONE);
+                        }
                         AgentRequetAdapter agentRequetAdapter = new AgentRequetAdapter(context, listResults);
                         recyclerView.setAdapter(agentRequetAdapter);
                         agentRequetAdapter.setOnAdapterListener(AgentRequestsFragment.this);
@@ -152,6 +166,7 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
         View layout = inflater.inflate(R.layout.row_comment_box, null);
         adb.setContentView(layout);
         adb.getWindow().setLayout(500, 200);
+      //  adb.getWindow().setLayout(R.dimen.comments_box_width, R.dimen.comments_box_height);
         adb.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         adb.show();
         final EditText etComment = (EditText) layout.findViewById(R.id.etComment);
@@ -161,6 +176,8 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                 stComment = etComment.getText().toString();
                 if (stComment.equalsIgnoreCase("")) {
                     showToast(getActivity(), "Please write comments.");
@@ -168,8 +185,7 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
                 } else {
                     submitRequest();
                     adb.dismiss();
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+
 
                 }
             }
@@ -246,8 +262,8 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
         updateAgentRequestModel.setIsActive(true);
         updateAgentRequestModel.setCreatedBy(SharedPrefsData.getInstance(context).getStringFromSharedPrefs("userid"));
         updateAgentRequestModel.setModifiedBy(SharedPrefsData.getInstance(context).getStringFromSharedPrefs("userid"));
-        updateAgentRequestModel.setCreated("2017-11-03T08:50:31.048");
-        updateAgentRequestModel.setModified("2017-11-03T08:50:31.048");
+        updateAgentRequestModel.setCreated(currentDatetime);
+        updateAgentRequestModel.setModified(currentDatetime);
         return new Gson().toJsonTree(updateAgentRequestModel)
                 .getAsJsonObject();
     }

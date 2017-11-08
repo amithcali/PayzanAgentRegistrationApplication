@@ -37,6 +37,10 @@
     <dimen name="img_height">80dp</dimen>
     <dimen name="img_width">80dp</dimen>
 
+    <!-- comments box-->
+    <dimen name="comments_box_height">120dp</dimen>
+    <dimen name="comments_box_width">250dp</dimen>
+
     <!--Header View Sizes-->
     <dimen name="header_image_height">4dp</dimen>
     <dimen name="header_image_width">4dp</dimen>

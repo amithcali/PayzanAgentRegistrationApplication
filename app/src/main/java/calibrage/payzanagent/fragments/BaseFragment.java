@@ -13,6 +13,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import calibrage.payzanagent.R;
 
 
@@ -94,4 +98,15 @@ public class BaseFragment extends Fragment {
         inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
     }
 
+   /* // format date time string
+    public static String formatDateTimeBlog(String dateTime) {
+        try {
+            String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+            dateTime = new SimpleDateFormat(dateFormat, Locale.US)
+                    .format(new SimpleDateFormat(Constant.DATE_TIME, Locale.US).parse(dateTime));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dateTime;
+    }*/
 }

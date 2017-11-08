@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -40,6 +42,7 @@ public class ApprovedAgentsFragment extends BaseFragment {
     private RecyclerView recyclerView;
     FragmentManager fragmentManager;
     private Context context;
+    TextView noRecords;
     private Subscription operatorSubscription;
     private ArrayList<AgentRequestModel.ListResult> listResults;
     private AgentRequestModel agentRequestModelBundle;
@@ -52,11 +55,14 @@ public class ApprovedAgentsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
        view = inflater.inflate(R.layout.fragment_approved_agents, container, false) ;
         context = this.getActivity();
         HomeActivity.toolbar.setTitle(getResources().getString(R.string.approvedagents_sname));
         HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
         recyclerView = (RecyclerView) view.findViewById(R.id.recylerview_card_approved);
+        noRecords = (TextView)view.findViewById(R.id.no_records);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         fragmentManager = getActivity().getSupportFragmentManager();
@@ -99,6 +105,13 @@ public class ApprovedAgentsFragment extends BaseFragment {
                         hideDialog();
                         // Log.d("response", agentRequestModel.getIsSuccess().toString());
                         listResults = (ArrayList<AgentRequestModel.ListResult>) agentRequestModel.getListResult();
+                        if (listResults.isEmpty()){
+                            noRecords.setVisibility(View.VISIBLE);
+
+                        }
+                        else {
+                            noRecords.setVisibility(View.GONE);
+                        }
                         ApprovedAgentsAdapter approvedAgentsAdapter = new ApprovedAgentsAdapter(context, listResults);
                         recyclerView.setAdapter(approvedAgentsAdapter);
                         //approvedAgentsAdapter.setOnAdapterListener(ApprovedAgentsFragment.this);

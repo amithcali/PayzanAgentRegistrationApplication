@@ -272,6 +272,21 @@
                         android:textSize="@dimen/edt_FontSize" />
                 </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
 
+                <calibrage.payzanagent.controls.CommonTextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/spinnertext_height"
+                    android:text="@string/state"
+                    android:textSize="@dimen/edt_FontSize" />
+
+                <Spinner
+                    android:id="@+id/spinner_state"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/edt_height"
+                    android:background="@drawable/roundededittext"
+                    android:layout_marginBottom="@dimen/edt_bottom_margin"
+                    android:prompt="@string/spinner_title"
+                    android:textAlignment="textStart" />
+<!--
                 <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
                     android:id="@+id/il_state"
                     android:layout_width="match_parent"
@@ -290,7 +305,7 @@
                         android:paddingLeft="@dimen/edt_text_pading_left"
                         android:textSize="@dimen/edt_FontSize" />
 
-                </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
+                </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>-->
 
                 <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
                     android:id="@+id/il_pincode"

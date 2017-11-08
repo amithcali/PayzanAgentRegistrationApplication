@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.zxing.common.StringUtils;
+
 import java.util.ArrayList;
 
 import calibrage.payzanagent.R;
@@ -21,6 +23,7 @@ import calibrage.payzanagent.model.AgentRequestModel;
 public class AgentRequetAdapter extends RecyclerView.Adapter<AgentRequetAdapter.MyHolder>{
 
     private Context context;
+    private  String middlename,name;
     private ArrayList<AgentRequestModel.ListResult> data;
     private RequestClickListiner requestClickListiner;
 
@@ -43,7 +46,18 @@ public class AgentRequetAdapter extends RecyclerView.Adapter<AgentRequetAdapter.
 
     @Override
     public void onBindViewHolder(final AgentRequetAdapter.MyHolder holder, final int position) {
-    String name = data.get(holder.getAdapterPosition()).getTitleType()+" "+data.get(holder.getAdapterPosition()).getFirstName()+" "+data.get(holder.getAdapterPosition()).getMiddleName()+" "+data.get(holder.getAdapterPosition()).getLastName();
+    middlename = String.valueOf(data.get(holder.getAdapterPosition()).getMiddleName());
+
+        if (middlename.equalsIgnoreCase("null"))
+        {
+            middlename = " ";
+            name = data.get(holder.getAdapterPosition()).getTitleType()+" "+data.get(holder.getAdapterPosition()).getFirstName()+" "+data.get(holder.getAdapterPosition()).getLastName();
+
+        }
+        else {
+            name = data.get(holder.getAdapterPosition()).getTitleType()+" "+data.get(holder.getAdapterPosition()).getFirstName()+" "+middlename+" "+data.get(holder.getAdapterPosition()).getLastName();
+        }
+    //String name = data.get(holder.getAdapterPosition()).getTitleType()+" "+data.get(holder.getAdapterPosition()).getFirstName()+" "+" "+data.get(holder.getAdapterPosition()).getLastName();
     String address = data.get(holder.getAdapterPosition()).getAddressLine1()+","+data.get(holder.getAdapterPosition()).getAddressLine2()+","+data.get(holder.getAdapterPosition()).getVillageName()+","+data.get(holder.getAdapterPosition()).getMandalName()+","+data.get(holder.getAdapterPosition()).getDistrictName()+","+data.get(holder.getAdapterPosition()).getProvinceName()+","+data.get(holder.getAdapterPosition()).getCountryName();
     String mobileNumber = data.get(holder.getAdapterPosition()).getMobileNumber();
     String email =   data.get(holder.getAdapterPosition()).getEmail();

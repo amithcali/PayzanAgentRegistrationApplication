@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -55,12 +56,14 @@ import calibrage.payzanagent.model.AddAgent;
 import calibrage.payzanagent.model.AgentPersonalInfo;
 import calibrage.payzanagent.model.AgentRequestModel;
 import calibrage.payzanagent.model.BusinessCategoryModel;
+import calibrage.payzanagent.model.StatesModel;
 import calibrage.payzanagent.networkservice.ApiConstants;
 import calibrage.payzanagent.networkservice.MyServices;
 import calibrage.payzanagent.networkservice.ServiceFactory;
 import calibrage.payzanagent.service.GPSTracker;
 import calibrage.payzanagent.utils.CommonConstants;
 import calibrage.payzanagent.utils.CommonUtil;
+import calibrage.payzanagent.utils.SharedPrefsData;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
 import rx.Subscription;
@@ -77,14 +80,18 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     private Button btnContinue;
     View view;
     FragmentManager fragmentManager;
-    EditText edtAgentName, edtAgencyName, edtIdNo, edtUserName, edtPassWord, edtMobile, edtEmail, edtProvince, edtAddress, edtState, edtPincode;
+    EditText edtAgentName, edtAgencyName, edtIdNo, edtUserName, edtPassWord, edtMobile, edtEmail, edtProvince, edtAddress,  edtPincode;
+    //edtState,
     private AgentRequestModel agentRequestModel;
+    private StatesModel statesModel;
     private Context context;
-    Spinner spinnerCustom;
+    Spinner spinnerCustom,spinnerState;
     private Subscription operatorSubscription;
     public static Toolbar toolbar;
     private ArrayList<AgentRequestModel.ListResult> listResults;
     ArrayList<String> businessArrayList = new ArrayList<String>();
+    private ArrayList<StatesModel.ListResult> listResultArrayList;
+    ArrayList<String> statesArrayList = new ArrayList<String>();
     MapView mMapView;
     private GoogleMap googleMap;
     private CommonTextView latlog;
@@ -94,9 +101,10 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     String provider;
     public AddAgent addAgent;
     Location lastLocation;
-    private String stragentname,stragencyname,strid,strusername,strpass,strmobile,stremail,strprovince,straddress,strpin;
+    private String stragentname,stragencyname,strid,strusername,strpass,strmobile,stremail,strprovince,straddress,strpin,currentDatetime;
     private AgentPersonalInfo agentPersonalInfo;
     private ArrayList<BusinessCategoryModel.ListResult> businessListResults =new ArrayList<>();
+    private ArrayList<StatesModel.ListResult> stateListResults =new ArrayList<>();
 
 
 
@@ -122,11 +130,15 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         provider = locationManager.getBestProvider(new Criteria(), false);
         checkLocationPermission(context);
         initCustomSpinner();
+        initStateSpinner();
         getRequest(CommonConstants.BUSINESS_CATEGORY_ID);
+        getRequestState(CommonConstants.STATES_ID);
         listResults = new ArrayList();
+        listResultArrayList = new ArrayList();
         addAgent = new AddAgent();
         agentPersonalInfo = new AgentPersonalInfo();
-
+        currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
+       // Log.d(TAG, "dateanddtime"+currentDatetime);
         btnContinue = (Button) view.findViewById(R.id.btn_continue);
         edtAgentName = (EditText) view.findViewById(R.id.edt_Agentname);
         edtAgencyName = (EditText) view.findViewById(R.id.edt_Agencyname);
@@ -137,7 +149,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         edtEmail = (EditText) view.findViewById(R.id.edt_email);
         edtProvince = (EditText) view.findViewById(R.id.edt_provinceName);
         edtAddress = (EditText) view.findViewById(R.id.edt_address);
-        edtState = (EditText) view.findViewById(R.id.edt_state);
+       // edtState = (EditText) view.findViewById(R.id.edt_state);
         edtPincode = (EditText) view.findViewById(R.id.edt_pincode);
         latlog = (CommonTextView) view.findViewById(R.id.latlog);
         latlog.setOnClickListener(new View.OnClickListener() {
@@ -178,6 +190,8 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
             public void onClick(View v) {
                 if (isValidateUi()) {
                    addAgentPersonalInfo();
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("personalinfo", addAgent);
                     Fragment fragment = new BankDetailFragment();
@@ -214,39 +228,81 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
             edtEmail.setText(agentRequestModel.getListResult().get(pos).getEmail());
             edtProvince.setText(agentRequestModel.getListResult().get(pos).getProvinceName());
             edtAddress.setText(agentRequestModel.getListResult().get(pos).getAddressLine1() + "," + agentRequestModel.getListResult().get(pos).getAddressLine2());
-            edtState.setText(agentRequestModel.getListResult().get(pos).getDistrictName());
+            //edtState.setText(agentRequestModel.getListResult().get(pos).getDistrictName());
 
 
         }
-       /* view.setFocusableInTouchMode(true);
-        view.requestFocus();
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    closeTab();
 
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });*/
         return view;
     }
 
-  /*  private void closeTab() {
-        Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("RequestTag");
-        if (fragment != null)
-            getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+    private void getRequestState(String providerType) {
 
-        HomeActivity.toolbar.setNavigationIcon(null);
-        HomeActivity.toolbar.setTitle("");
+        showDialog(getActivity(), "Authenticating...");
+        MyServices service = ServiceFactory.createRetrofitService(context, MyServices.class);
+        operatorSubscription = service.getStates(ApiConstants.STATE_REQUESTS + providerType)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<StatesModel>() {
+                    @Override
+                    public void onCompleted() {
+                        //  Toast.makeText(context, "check", Toast.LENGTH_SHORT).show();
+                    }
 
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, new AgentRequestsFragment(),"AgentTag")
-                .commit();
-    }*/
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                        if (e instanceof HttpException) {
+                            ((HttpException) e).code();
+                            ((HttpException) e).message();
+                            ((HttpException) e).response().errorBody();
+                            try {
+                                ((HttpException) e).response().errorBody().string();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(context, "fail", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(StatesModel statesModel) {
+                        hideDialog();
+                    //    Log.d("response", statesModel.getIsSuccess().toString());
+                        stateListResults = (ArrayList<StatesModel.ListResult>) statesModel.getListResult();
+                        for (int i = 0; i < statesModel.getListResult().size(); i++) {
+                            statesArrayList.add(statesModel.getListResult().get(i).getName());
+                        }
+                        RegistrationViewFragment.CustomSpinnerAdapter customSpinnerAdapter = new RegistrationViewFragment.CustomSpinnerAdapter(getActivity(), statesArrayList);
+                        statesArrayList.add(0,"--Select State--");
+                        spinnerState.setAdapter(customSpinnerAdapter);
+                    }
+
+                });
+
+
+    }
+
+    private void initStateSpinner() {
+        spinnerState = (Spinner) view.findViewById(R.id.spinner_state);
+        // Spinner Drop down elements
+
+
+        spinnerState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String item = parent.getItemAtPosition(position).toString();
+                // Toast.makeText(parent.getContext(), "Android Custom Spinner Example Output..." + item, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
 
 
     private void addAgentPersonalInfo() {
@@ -260,7 +316,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         agentPersonalInfo.setEmail(stremail);
         agentPersonalInfo.setAddress1(straddress);
         agentPersonalInfo.setAddress2(straddress);
-        agentPersonalInfo.setAgentRequestId(38);
+        agentPersonalInfo.setAgentRequestId(77);
         agentPersonalInfo.setLandmark(straddress);
         agentPersonalInfo.setIsActive(true);
         agentPersonalInfo.setAspNetUserId("test");
@@ -273,13 +329,14 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         agentPersonalInfo.setLastName(" ");
         agentPersonalInfo.setDOB("2017-10-30T17:15:42.569Z");
         agentPersonalInfo.setIsActive(true);
-        agentPersonalInfo.setCreated("2017-10-30T17:15:42.569Z");
+        agentPersonalInfo.setCreated(currentDatetime);
         agentPersonalInfo.setCreatedBy(CommonConstants.USERID);
-        agentPersonalInfo.setModified("2017-10-30T17:15:42.569");
+        agentPersonalInfo.setModified(currentDatetime);
         agentPersonalInfo.setModifiedBy(CommonConstants.USERID);
         agentPersonalInfo.setFirstName(stragentname);
 
         addAgent.setAgentPersonalInfo(agentPersonalInfo);
+        Log.d(TAG, "addAgentPersonalInfo: "+addAgent.toString());
 
     }
 

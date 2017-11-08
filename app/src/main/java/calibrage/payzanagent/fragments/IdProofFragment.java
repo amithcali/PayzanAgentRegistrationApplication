@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -42,6 +43,7 @@ import calibrage.payzanagent.networkservice.ApiConstants;
 import calibrage.payzanagent.networkservice.MyServices;
 import calibrage.payzanagent.networkservice.ServiceFactory;
 import calibrage.payzanagent.utils.CommonConstants;
+import calibrage.payzanagent.utils.SharedPrefsData;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
 import rx.Subscription;
@@ -57,7 +59,7 @@ public class IdProofFragment extends BaseFragment {
     FragmentManager fragmentManager;
     public  static Toolbar toolbar;
     private Context context;
-    String personalIdNumber,financialIdNumber;
+    String personalIdNumber,financialIdNumber,currentDatetime;
     EditText numberpersonal,numberfinancial;
     Spinner spinnerCustom_personalId,spinnerCustom_finacialId;
     private Subscription operatorSubscription;
@@ -86,12 +88,15 @@ public class IdProofFragment extends BaseFragment {
                 return true;
             }
         });
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         btnContinue = (Button)view.findViewById(R.id.btn_continue);
         numberpersonal = (EditText)view.findViewById(R.id.txt_number);
         numberfinancial = (EditText)view.findViewById(R.id.txt_number_financial);
         context = this.getActivity();
         HomeActivity.toolbar.setTitle(getResources().getString(R.string.agentrequest_sname));
         HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
+        currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
         agentIdProofArrayList = new ArrayList<>();
         listResults =new  ArrayList();
         agentIdProof = new AgentIdProof();
@@ -107,6 +112,8 @@ public class IdProofFragment extends BaseFragment {
             public void onClick(View v) {
                 if (isValidateUi()) {
                    addIdProofDetails();
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("idproof", addAgent);
                     Fragment fragment = new AggrementDocumentsFragment();
@@ -161,22 +168,22 @@ public class IdProofFragment extends BaseFragment {
 
     private void addIdProofDetails() {
 
-       agentIdProof.setModified("2017-10-30T17:15:42.569Z");
+       agentIdProof.setModified(currentDatetime);
         agentIdProof.setModifiedBy(CommonConstants.USERID);
         agentIdProof.setIsActive(true);
         agentIdProof.setId(0);
         agentIdProof.setAgentId(null);
-        agentIdProof.setCreated("2017-10-30T17:15:42.569Z");
+        agentIdProof.setCreated(currentDatetime);
         agentIdProof.setCreatedBy(CommonConstants.USERID);
         agentIdProof.setIsActive(true);
         agentIdProof.setIdProofTypeId(businessListResults.get(spinnerCustom_personalId.getSelectedItemPosition()).getId());
         agentIdProof.setIdProofNumber(personalIdNumber);
-        agentFinancialProof.setModified("2017-10-30T17:15:42.569Z");
+        agentFinancialProof.setModified(currentDatetime);
         agentFinancialProof.setModifiedBy(CommonConstants.USERID);
         agentFinancialProof.setIsActive(true);
         agentFinancialProof.setId(0);
         agentFinancialProof.setAgentId(null);
-        agentFinancialProof.setCreated("2017-10-30T17:15:42.569Z");
+        agentFinancialProof.setCreated(currentDatetime);
         agentFinancialProof.setCreatedBy(CommonConstants.USERID);
         agentFinancialProof.setIdProofTypeId(financialListResults.get(spinnerCustom_finacialId.getSelectedItemPosition()-1).getId());
         agentFinancialProof.setIdProofNumber(financialIdNumber);

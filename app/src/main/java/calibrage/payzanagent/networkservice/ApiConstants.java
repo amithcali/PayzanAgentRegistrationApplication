@@ -15,6 +15,7 @@ public interface ApiConstants {
     String MOBILE_SERVICES = "api/ServiceProvider/GetServicesByServiceProviderId/";
     String AGENT_REQUESTS = "api/AgentRequestInfo/GetAgentRequestInfo/";
     String BUSINESS_CAT_REQUESTS = "api/TypeCdDmts/GetTypeCdDmtsByClassType/";
+    String STATE_REQUESTS = "api/States/GetStateInfo/";
     String BRANCH_REQUESTS = "/api/Banks/GetBankInfo/";
     String ADD_AGENT = "/api/Agent/AddAgent";
    String UPDATE_AGENT_REQUEST= "api/AgentRequestInfo/UpdateAgentRequestStatus";

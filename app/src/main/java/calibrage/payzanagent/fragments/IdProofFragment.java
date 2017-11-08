@@ -206,13 +206,17 @@ public class IdProofFragment extends BaseFragment {
             Toast.makeText(context, "Select personal id type", Toast.LENGTH_SHORT).show();
         }else if (personalIdNumber.isEmpty()) {
             status = false;
-            Toast.makeText(context, "Account Number is required", Toast.LENGTH_SHORT).show();
+            numberpersonal.setError("Id number is required");
+            numberpersonal.requestFocusFromTouch();
+           // Toast.makeText(context, "Id number is required", Toast.LENGTH_SHORT).show();
         }else if (spinnerCustom_finacialId.getSelectedItemPosition() == 0) {
             status = false;
             Toast.makeText(context, "Select financial id type", Toast.LENGTH_SHORT).show();
         }else if (financialIdNumber.isEmpty()) {
             status = false;
-            Toast.makeText(context, "Pincode is required", Toast.LENGTH_SHORT).show();
+            numberfinancial.setError("Id number is required");
+            numberfinancial.requestFocusFromTouch();
+          //  Toast.makeText(context, "Id number is required", Toast.LENGTH_SHORT).show();
         }
         return status;
     }

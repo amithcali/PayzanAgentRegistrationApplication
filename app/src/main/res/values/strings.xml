@@ -20,7 +20,7 @@
     <string name="maps_api_key">AIzaSyCZo7vSHO8ceTd5rRCbq6XO95kEMq-1fHw</string>
     <string name="new_agent">New Agent</string>
     <string name="agent_requests">Agent Requests</string>
-    <string name="pic_agent">Pick Agent</string>
+    <string name="pic_agent">Pick/Hold Agent</string>
     <string name="agent_yet_to_verify">Agent Yet To Verify</string>
     <string name="in_progress">In Progress</string>
     <string name="approved_agents">Approved Agents</string>
@@ -31,12 +31,16 @@
     <string name="mobile_number">Mobile Number</string>
     <string name="email_id">Email Id</string>
     <string name="provinance_name">Provinance Name</string>
+    <string name="district_str">District Name</string>
+    <string name="mandal_str">Mandal Name</string>
+    <string name="village_str">village Name</string>
     <string name="address">Address</string>
     <string name="state">State</string>
     <string name="pin_code">Pin Code</string>
     <string name="location_on_map">Location on Map</string>
     <string name="continue_btn">Continue</string>
     <string name="business_category">Business Category</string>
+    <string name="title_type">Title Type</string>
     <string name="comment">Comments</string>
     <string name="pick_btn">Pick</string>
     <string name="add_btn">Add</string>

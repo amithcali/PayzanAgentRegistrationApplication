@@ -63,6 +63,7 @@ import calibrage.payzanagent.networkservice.ServiceFactory;
 import calibrage.payzanagent.service.GPSTracker;
 import calibrage.payzanagent.utils.CommonConstants;
 import calibrage.payzanagent.utils.CommonUtil;
+import calibrage.payzanagent.utils.NCBTextInputLayout;
 import calibrage.payzanagent.utils.SharedPrefsData;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
@@ -85,13 +86,15 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     private AgentRequestModel agentRequestModel;
     private StatesModel statesModel;
     private Context context;
-    Spinner spinnerCustom,spinnerState;
+    Spinner spinnerCustom,spinnerState,spinnerTitleType;
     private Subscription operatorSubscription;
     public static Toolbar toolbar;
     private ArrayList<AgentRequestModel.ListResult> listResults;
     ArrayList<String> businessArrayList = new ArrayList<String>();
     private ArrayList<StatesModel.ListResult> listResultArrayList;
     ArrayList<String> statesArrayList = new ArrayList<String>();
+    private ArrayList<AgentRequestModel.ListResult> titleResultArrayList;
+    ArrayList<String> titleArrayList = new ArrayList<String>();
     MapView mMapView;
     private GoogleMap googleMap;
     private CommonTextView latlog;
@@ -100,10 +103,12 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     LocationManager locationManager;
     String provider;
     public AddAgent addAgent;
+    private NCBTextInputLayout agentNameTXT;
     Location lastLocation;
     private String stragentname,stragencyname,strid,strusername,strpass,strmobile,stremail,strprovince,straddress,strpin,currentDatetime;
     private AgentPersonalInfo agentPersonalInfo;
     private ArrayList<BusinessCategoryModel.ListResult> businessListResults =new ArrayList<>();
+    private ArrayList<BusinessCategoryModel.ListResult> titleListResults =new ArrayList<>();
     private ArrayList<StatesModel.ListResult> stateListResults =new ArrayList<>();
 
 
@@ -131,10 +136,13 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         checkLocationPermission(context);
         initCustomSpinner();
         initStateSpinner();
+        initTitleSpinner();
         getRequest(CommonConstants.BUSINESS_CATEGORY_ID);
+        getRequestTitle(CommonConstants.TITLE_ID);
         getRequestState(CommonConstants.STATES_ID);
         listResults = new ArrayList();
         listResultArrayList = new ArrayList();
+        titleResultArrayList = new ArrayList();
         addAgent = new AddAgent();
         agentPersonalInfo = new AgentPersonalInfo();
         currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
@@ -147,8 +155,8 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         edtPassWord = (EditText) view.findViewById(R.id.edt_password);
         edtMobile = (EditText) view.findViewById(R.id.edt_mobileno);
         edtEmail = (EditText) view.findViewById(R.id.edt_email);
-        edtProvince = (EditText) view.findViewById(R.id.edt_provinceName);
-        edtAddress = (EditText) view.findViewById(R.id.edt_address);
+        //edtProvince = (EditText) view.findViewById(R.id.edt_provinceName);
+      //  edtAddress = (EditText) view.findViewById(R.id.edt_address);
        // edtState = (EditText) view.findViewById(R.id.edt_state);
         edtPincode = (EditText) view.findViewById(R.id.edt_pincode);
         latlog = (CommonTextView) view.findViewById(R.id.latlog);
@@ -215,9 +223,10 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
             agentRequestModel = bundle.getParcelable("request");
             int pos = bundle.getInt("position");
             String name;
+            //agentRequestModel.getListResult().get(pos).getTitleType() + " " +
             if (agentRequestModel.getListResult().get(pos).getMiddleName() != null) {
 
-                name = agentRequestModel.getListResult().get(pos).getTitleType() + " " + agentRequestModel.getListResult().get(pos).getFirstName() + agentRequestModel.getListResult().get(pos).getMiddleName() + " " + agentRequestModel.getListResult().get(pos).getLastName();
+                name = agentRequestModel.getListResult().get(pos).getFirstName() + agentRequestModel.getListResult().get(pos).getMiddleName() + " " + agentRequestModel.getListResult().get(pos).getLastName();
             } else {
                 name = agentRequestModel.getListResult().get(pos).getTitleType() + " " + agentRequestModel.getListResult().get(pos).getFirstName() + agentRequestModel.getListResult().get(pos).getLastName();
             }
@@ -234,6 +243,71 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         }
 
         return view;
+    }
+
+    private void getRequestTitle(String providerType) {
+        showDialog(getActivity(), "Authenticating...");
+        MyServices service = ServiceFactory.createRetrofitService(context, MyServices.class);
+        operatorSubscription = service.getBusinessRequest(ApiConstants.BUSINESS_CAT_REQUESTS + Integer.parseInt(providerType))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<BusinessCategoryModel>() {
+                    @Override
+                    public void onCompleted() {
+                        //  Toast.makeText(context, "check", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                        if (e instanceof HttpException) {
+                            ((HttpException) e).code();
+                            ((HttpException) e).message();
+                            ((HttpException) e).response().errorBody();
+                            try {
+                                ((HttpException) e).response().errorBody().string();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(context, "fail", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(BusinessCategoryModel businessCategoryModel) {
+                        hideDialog();
+                        Log.d("response", businessCategoryModel.getIsSuccess().toString());
+                        titleListResults = (ArrayList<BusinessCategoryModel.ListResult>) businessCategoryModel.getListResult();
+                        for (int i = 0; i < businessCategoryModel.getListResult().size(); i++) {
+                            titleArrayList.add(businessCategoryModel.getListResult().get(i).getDescription());
+                        }
+                        RegistrationViewFragment.CustomSpinnerAdapter customSpinnerAdapter = new RegistrationViewFragment.CustomSpinnerAdapter(getActivity(), titleArrayList);
+                        titleArrayList.add(0,"--Select Title--");
+                        spinnerTitleType.setAdapter(customSpinnerAdapter);
+                    }
+
+                });
+    }
+
+    private void initTitleSpinner() {
+        spinnerTitleType = (Spinner) view.findViewById(R.id.spinner_title_type);
+        // Spinner Drop down elements
+
+
+        spinnerTitleType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String item = parent.getItemAtPosition(position).toString();
+                // Toast.makeText(parent.getContext(), "Android Custom Spinner Example Output..." + item, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void getRequestState(String providerType) {
@@ -352,41 +426,64 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         strprovince=edtProvince.getText().toString();
         straddress=edtAddress.getText().toString();
         strpin=edtPincode.getText().toString();
-
-
-        if (stragentname.isEmpty()) {
+/*  if (spinnerCustom.getSelectedItemPosition() == 0) {
             status = false;
-            Toast.makeText(context, "AgentName is required", Toast.LENGTH_SHORT).show();
+             Toast.makeText(context, "select title", Toast.LENGTH_SHORT).show();
+        } else                       */
+
+       if (stragentname.isEmpty()) {
+            status = false;
+            edtAgentName.setError("AgentName is required");
+            edtAgentName.requestFocusFromTouch();
+            //   Toast.makeText(context, "AgentName is required", Toast.LENGTH_SHORT).show();
         } else if (spinnerCustom.getSelectedItemPosition() == 0) {
             status = false;
             Toast.makeText(context, "select business category", Toast.LENGTH_SHORT).show();
         }else if (stragencyname.isEmpty()) {
             status = false;
-            Toast.makeText(context, "AgencyName is required", Toast.LENGTH_SHORT).show();
+            edtAgencyName.setError("AgencyName is required");
+            edtAgencyName.requestFocusFromTouch();
+            //Toast.makeText(context, "AgencyName is required", Toast.LENGTH_SHORT).show();
         }else if (strid.isEmpty()) {
             status = false;
-            Toast.makeText(context, "Id is required", Toast.LENGTH_SHORT).show();
+            edtIdNo.setError("Id is required");
+            edtIdNo.requestFocusFromTouch();
+           // Toast.makeText(context, "Id is required", Toast.LENGTH_SHORT).show();
         }else if (strusername.isEmpty()) {
             status = false;
-            Toast.makeText(context, "UserName is required", Toast.LENGTH_SHORT).show();
+            edtUserName.setError("UserName is required");
+            edtUserName.requestFocusFromTouch();
+           //Toast.makeText(context, "UserName is required", Toast.LENGTH_SHORT).show();
         }else if (strpass.isEmpty()) {
             status = false;
-            Toast.makeText(context, "Password is required", Toast.LENGTH_SHORT).show();
+            edtPassWord.setError("Password is required");
+            edtPassWord.requestFocusFromTouch();
+           // Toast.makeText(context, "Password is required", Toast.LENGTH_SHORT).show();
         }else if (strmobile.isEmpty()) {
             status = false;
-            Toast.makeText(context, "MobileNumber is required", Toast.LENGTH_SHORT).show();
+            edtMobile.setError("MobileNumber is required");
+            edtMobile.requestFocusFromTouch();
+            //Toast.makeText(context, "MobileNumber is required", Toast.LENGTH_SHORT).show();
         }else if (stremail.isEmpty()) {
             status = false;
-            Toast.makeText(context, "Email is required", Toast.LENGTH_SHORT).show();
+            edtEmail.setError("Email is required");
+            edtEmail.requestFocusFromTouch();
+            //Toast.makeText(context, "Email is required", Toast.LENGTH_SHORT).show();
         }else if (strprovince.isEmpty()) {
             status = false;
-            Toast.makeText(context, "Province is required", Toast.LENGTH_SHORT).show();
+            edtProvince.setError("Province is required");
+            edtProvince.requestFocusFromTouch();
+            //Toast.makeText(context, "Province is required", Toast.LENGTH_SHORT).show();
         }else if (straddress.isEmpty()) {
             status = false;
-            Toast.makeText(context, "Address is required", Toast.LENGTH_SHORT).show();
+            edtAddress.setError("Address is required");
+            edtAddress.requestFocusFromTouch();
+          //  Toast.makeText(context, "Address is required", Toast.LENGTH_SHORT).show();
         }else if (strpin.isEmpty()) {
             status = false;
-            Toast.makeText(context, "Pincode is required", Toast.LENGTH_SHORT).show();
+            edtPincode.setError("Pincode is required");
+            edtPincode.requestFocusFromTouch();
+           // Toast.makeText(context, "Pincode is required", Toast.LENGTH_SHORT).show();
         }
         return status;
     }

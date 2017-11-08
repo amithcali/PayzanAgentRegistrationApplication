@@ -161,13 +161,19 @@ public class BankDetailFragment extends BaseFragment {
 
         if (straccountname.isEmpty()) {
             status = false;
-            Toast.makeText(context, "AccountHolder Name is required", Toast.LENGTH_SHORT).show();
+            accountName.setError("AccountHolder Name is required");
+            accountName.requestFocusFromTouch();
+            //Toast.makeText(context, "AccountHolder Name is required", Toast.LENGTH_SHORT).show();
         }else if (straccountno.isEmpty()) {
             status = false;
-            Toast.makeText(context, "Account Number is required", Toast.LENGTH_SHORT).show();
+            accountNo.setError("Account Number is required");
+            accountNo.requestFocusFromTouch();
+          //  Toast.makeText(context, "Account Number is required", Toast.LENGTH_SHORT).show();
         }else if (strshiftcode.isEmpty()) {
             status = false;
-            Toast.makeText(context, "Shiftcode is required", Toast.LENGTH_SHORT).show();
+            shiftCode.setError("Shiftcode is required");
+            shiftCode.requestFocusFromTouch();
+           // Toast.makeText(context, "Shiftcode is required", Toast.LENGTH_SHORT).show();
         }
         return status;
     }
@@ -274,7 +280,11 @@ public class BankDetailFragment extends BaseFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 String item = parent.getItemAtPosition(position).toString();
-                shiftCode.setText(branchListResults.get(position).getSwiftCode());
+                if(!branchListResults.isEmpty())
+                {
+                    shiftCode.setText(branchListResults.get(position).getSwiftCode());
+                }
+
              //    Toast.makeText(parent.getContext(), "Android Custom Spinner Example Output..." + item+parent.getSelectedItemId(), Toast.LENGTH_LONG).show();
             }
 

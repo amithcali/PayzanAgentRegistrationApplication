@@ -76,7 +76,7 @@
             android:layout_marginBottom="@dimen/btn_margin_bottom"
             android:layout_marginTop="@dimen/btn_margin_top"
             android:background="@drawable/roundbutton"
-            android:text="Finish"
+            android:text="Submit"
             android:textAllCaps="false"
             android:textColor="@color/White" />
         </LinearLayout>

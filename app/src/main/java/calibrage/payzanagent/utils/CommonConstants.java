@@ -14,6 +14,7 @@ public class CommonConstants {
     public  static String SERVICE_PROVIDER_ID_PREPAID = "7";
     public static String AGENT_REQUEST_ID = null;
     public static String BUSINESS_CATEGORY_ID = "3";
+    public static String TITLE_ID = "4";
     public static String PERSONALID_CATEGORY_ID = "7";
     public static String FINANCIALID_CATEGORY_ID = "8";
     public static String BANK_CATEGORY_ID = "1";

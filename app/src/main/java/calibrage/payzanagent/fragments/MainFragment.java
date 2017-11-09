@@ -63,6 +63,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         switch (view.getId()){
             case R.id.btn_newAgent:
                 replaceFragment(getActivity(), MAIN_CONTAINER, new RegistrationViewFragment(), TAG, RegistrationViewFragment.TAG);
+
                 break;
             case R.id.btn_agentRequests:
                 replaceFragment(getActivity(),MAIN_CONTAINER,new AgentRequestsFragment(),TAG,AgentRequestsFragment.TAG);

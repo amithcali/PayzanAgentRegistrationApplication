@@ -35,8 +35,12 @@
     <string name="mandal_str">Mandal Name</string>
     <string name="village_str">village Name</string>
     <string name="address">Address</string>
+    <string name="address_1">Address 1</string>
+    <string name="address_2">Address 2</string>
+    <string name="land_mark">Land Mark</string>
     <string name="state">State</string>
     <string name="pin_code">Pin Code</string>
+    <string name="postal_code">Postal Code</string>
     <string name="location_on_map">Location on Map</string>
     <string name="continue_btn">Continue</string>
     <string name="business_category">Business Category</string>

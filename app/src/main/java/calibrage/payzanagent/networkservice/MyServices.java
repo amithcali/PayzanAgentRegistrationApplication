@@ -7,9 +7,13 @@ import calibrage.payzanagent.model.AddAgentResponseModel;
 import calibrage.payzanagent.model.AgentRequestModel;
 import calibrage.payzanagent.model.Branch;
 import calibrage.payzanagent.model.BusinessCategoryModel;
+import calibrage.payzanagent.model.DistrictModel;
 import calibrage.payzanagent.model.LoginResponseModel;
+import calibrage.payzanagent.model.MandalModel;
+import calibrage.payzanagent.model.ProvinceModel;
 import calibrage.payzanagent.model.StatesModel;
 import calibrage.payzanagent.model.UpdateAgentRequestResponceModel;
+import calibrage.payzanagent.model.VillageModel;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -37,6 +41,18 @@ public interface MyServices {
     @GET
     Observable<BusinessCategoryModel> getBusinessRequest(@Url String url);
 
+    @GET
+    Observable<ProvinceModel> getProvinceRequest(@Url String url);
+
+    @GET
+    Observable<MandalModel> getMandalRequest(@Url String url);
+
+
+    @GET
+    Observable<VillageModel> getVillageRequest(@Url String url);
+
+    @GET
+    Observable<DistrictModel> getDistrictRequest(@Url String url);
 
     @GET
     Observable<StatesModel> getStates(@Url String url);

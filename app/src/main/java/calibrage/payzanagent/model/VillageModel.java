@@ -11,6 +11,7 @@ import java.util.List;
 
 public class VillageModel {
 
+
     @SerializedName("ListResult")
     @Expose
     private List<ListResult> listResult = null;
@@ -79,27 +80,6 @@ public class VillageModel {
     }
     public class ListResult {
 
-        @SerializedName("CountryName")
-        @Expose
-        private String countryName;
-        @SerializedName("CountryId")
-        @Expose
-        private Integer countryId;
-        @SerializedName("StateName")
-        @Expose
-        private String stateName;
-        @SerializedName("StateId")
-        @Expose
-        private Integer stateId;
-        @SerializedName("DistrictName")
-        @Expose
-        private String districtName;
-        @SerializedName("DistrictId")
-        @Expose
-        private Integer districtId;
-        @SerializedName("MandalName")
-        @Expose
-        private String mandalName;
         @SerializedName("Code")
         @Expose
         private String code;
@@ -130,62 +110,6 @@ public class VillageModel {
         @SerializedName("Modified")
         @Expose
         private String modified;
-
-        public String getCountryName() {
-            return countryName;
-        }
-
-        public void setCountryName(String countryName) {
-            this.countryName = countryName;
-        }
-
-        public Integer getCountryId() {
-            return countryId;
-        }
-
-        public void setCountryId(Integer countryId) {
-            this.countryId = countryId;
-        }
-
-        public String getStateName() {
-            return stateName;
-        }
-
-        public void setStateName(String stateName) {
-            this.stateName = stateName;
-        }
-
-        public Integer getStateId() {
-            return stateId;
-        }
-
-        public void setStateId(Integer stateId) {
-            this.stateId = stateId;
-        }
-
-        public String getDistrictName() {
-            return districtName;
-        }
-
-        public void setDistrictName(String districtName) {
-            this.districtName = districtName;
-        }
-
-        public Integer getDistrictId() {
-            return districtId;
-        }
-
-        public void setDistrictId(Integer districtId) {
-            this.districtId = districtId;
-        }
-
-        public String getMandalName() {
-            return mandalName;
-        }
-
-        public void setMandalName(String mandalName) {
-            this.mandalName = mandalName;
-        }
 
         public String getCode() {
             return code;

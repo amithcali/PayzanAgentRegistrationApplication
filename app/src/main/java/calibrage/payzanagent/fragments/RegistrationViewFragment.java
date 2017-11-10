@@ -282,10 +282,10 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 String item = parent.getItemAtPosition(position).toString();
-                villageId = (int) parent.getSelectedItemId();
+                //villageId = (int) parent.getSelectedItemId();
                 if(!villageListResults.isEmpty())
                 {
-                    edtPincode.setText(villageListResults.get(position).getPostCode());
+                    edtPincode.setText(String.valueOf(villageListResults.get(position).getPostCode()));
                 }
                 // getRequestBranch(String.valueOf(bankId));
                 //    Toast.makeText(parent.getContext(), "bankkkkkkk" +bankId, Toast.LENGTH_LONG).show();
@@ -305,10 +305,15 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 String item = parent.getItemAtPosition(position).toString();
-                mandalId = (int) parent.getSelectedItemId();
-                getRequestVillage(String.valueOf(mandalId));
-                //    Toast.makeText(parent.getContext(), "bankkkkkkk" +bankId, Toast.LENGTH_LONG).show();
+              //  mandalId = (int) parent.getSelectedItemId();
 
+                //    Toast.makeText(parent.getContext(), "bankkkkkkk" +bankId, Toast.LENGTH_LONG).show();
+                if(!mandalListResults.isEmpty()){
+                    mandalId =  mandalListResults.get((int) parent.getSelectedItemId()).getId();
+                    getRequestVillage(String.valueOf(mandalId));
+                }else {
+                    Toast.makeText(parent.getContext(), "Input Not Valid", Toast.LENGTH_LONG).show();
+                }
 
             }
 
@@ -370,9 +375,15 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 String item = parent.getItemAtPosition(position).toString();
-                districtId = (int) parent.getSelectedItemId();
-                getRequestMandal(String.valueOf(districtId));
+              //  districtId = (int) parent.getSelectedItemId();
+
                 //    Toast.makeText(parent.getContext(), "bankkkkkkk" +bankId, Toast.LENGTH_LONG).show();
+                if(!districtListResults.isEmpty()){
+                    districtId =  districtListResults.get((int) parent.getSelectedItemId()).getId();
+                    getRequestMandal(String.valueOf(districtId));
+                }else {
+                    Toast.makeText(parent.getContext(), "Input Not Valid", Toast.LENGTH_LONG).show();
+                }
 
 
             }
@@ -462,7 +473,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                         provinceListResults = (ArrayList<ProvinceModel.ListResult>) provinceModel.getListResult();
                         //   bankArrayList.add(0,"--Select Bank--");
                         for (int i = 0; i < provinceModel.getListResult().size(); i++) {
-                            provinceArrayList.add(provinceModel.getListResult().get(i).getProvinceName());
+                            provinceArrayList.add(provinceModel.getListResult().get(i).getName());
 
                         }
 
@@ -482,8 +493,13 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 String item = parent.getItemAtPosition(position).toString();
-                provinceId = (int) parent.getSelectedItemId();
-                getRequestDistrict(String.valueOf(provinceId));
+               if(!provinceListResults.isEmpty()){
+                   provinceId =  provinceListResults.get((int) parent.getSelectedItemId()).getId();
+                   getRequestDistrict(String.valueOf(provinceId));
+               }else {
+                   Toast.makeText(parent.getContext(), "Input Not Valid", Toast.LENGTH_LONG).show();
+               }
+
                 //    Toast.makeText(parent.getContext(), "bankkkkkkk" +bankId, Toast.LENGTH_LONG).show();
 
 

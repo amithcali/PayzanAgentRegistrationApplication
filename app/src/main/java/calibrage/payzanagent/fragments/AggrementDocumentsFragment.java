@@ -78,7 +78,7 @@ public class AggrementDocumentsFragment extends BaseFragment {
     TextView textView;
     private AddAgent  addAgent;
     FragmentManager fragmentManager;
-    //private LinearLayout lnrImages;
+    private LinearLayout lnrImages;
     String encodedString;
     private Subscription mRegisterSubscription;
     private AlertDialog alertDialog;
@@ -100,10 +100,10 @@ public class AggrementDocumentsFragment extends BaseFragment {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         btnContinue = (Button)view.findViewById(R.id.btn_add_documents);
-        textView = (TextView)view.findViewById(R.id.txtPath);
+      //  textView = (TextView)view.findViewById(R.id.txtPath);
         btnFinish = (Button)view.findViewById(R.id.btn_finish);
         imageView = (ImageView)view.findViewById(R.id.view_image);
-       // lnrImages = (LinearLayout) view.findViewById(R.id.lnrImages);
+        lnrImages = (LinearLayout) view.findViewById(R.id.lnrImages);
         context=this.getActivity();
         fragmentManager = getActivity().getSupportFragmentManager();
         HomeActivity.toolbar.setTitle(getResources().getString(R.string.register_sname));
@@ -180,7 +180,7 @@ public class AggrementDocumentsFragment extends BaseFragment {
     }
 
     private void startDialog() {
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Select File","Cancel" };
+        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Add Documents.....");
@@ -196,19 +196,20 @@ public class AggrementDocumentsFragment extends BaseFragment {
                 }
                 else if (options[item].equals("Choose from Gallery"))
                 {
-                    Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                  /*  Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, 2);*/
+                    Intent intent = new Intent(getActivity(), CustomPhotoGalleryActivity.class);
                     startActivityForResult(intent, 2);
-
-                } else if (options[item].equals("Select File"))
+                }/* else if (options[item].equals("Select File"))
                 {
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                     intent.setType("application/pdf");
                     startActivityForResult(intent,3);
 
-                    /*Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    *//*Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
-*/
-                }
+*//*
+                }*/
                 else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
@@ -299,8 +300,23 @@ public class AggrementDocumentsFragment extends BaseFragment {
                     e.printStackTrace();
                 }
             } else if (requestCode == 2) {
+                imagesPathList = new ArrayList<String>();
+                String[] imagesPath = data.getStringExtra("data").split("\\|");
+                try {
+                    lnrImages.removeAllViews();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+                for (int i = 0; i < imagesPath.length; i++) {
+                    imagesPathList.add(imagesPath[i]);
+                    yourbitmap = BitmapFactory.decodeFile(imagesPath[i]);
+                    ImageView imageView = new ImageView(getActivity());
+                    imageView.setImageBitmap(yourbitmap);
+                    imageView.setAdjustViewBounds(true);
+                    lnrImages.addView(imageView);
+                }
 
-                Uri selectedImage = data.getData();
+             /*   Uri selectedImage = data.getData();
                 String[] filePath = { MediaStore.Images.Media.DATA };
                 Cursor c = getActivity().getContentResolver().query(selectedImage,filePath, null, null, null);
                 c.moveToFirst();
@@ -309,8 +325,8 @@ public class AggrementDocumentsFragment extends BaseFragment {
                 c.close();
                 Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
                // Log.d("path of image from gallery", picturePath+"");
-                imageView.setImageBitmap(thumbnail);
-            }else if (requestCode == 3){
+                imageView.setImageBitmap(thumbnail);*/
+            }/*else if (requestCode == 3){
                 // Get the Uri of the selected file
                 Uri uri = data.getData();
                 String uriString = uri.toString();
@@ -332,15 +348,16 @@ public class AggrementDocumentsFragment extends BaseFragment {
                 } else if (uriString.startsWith("file://")) {
                     displayName = myFile.getName();
                 }
-            }
+            }*/
 
         }
             }
         }
 
 
+/*
 
-    /*  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+      public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == PICK_IMAGE_MULTIPLE ) {
@@ -363,7 +380,8 @@ public class AggrementDocumentsFragment extends BaseFragment {
         }
 
 
-    }*/
+    }
+*/
 
 
 

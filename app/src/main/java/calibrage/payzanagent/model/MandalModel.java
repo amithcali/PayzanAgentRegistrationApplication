@@ -11,6 +11,7 @@ import java.util.List;
 
 public class MandalModel {
 
+
     @SerializedName("ListResult")
     @Expose
     private List<ListResult> listResult = null;
@@ -77,24 +78,8 @@ public class MandalModel {
     public void setException(Object exception) {
         this.exception = exception;
     }
-
     public class ListResult {
 
-        @SerializedName("CountryName")
-        @Expose
-        private String countryName;
-        @SerializedName("CountryId")
-        @Expose
-        private Integer countryId;
-        @SerializedName("StateName")
-        @Expose
-        private String stateName;
-        @SerializedName("StateId")
-        @Expose
-        private Integer stateId;
-        @SerializedName("DistrictName")
-        @Expose
-        private String districtName;
         @SerializedName("Code")
         @Expose
         private String code;
@@ -125,46 +110,6 @@ public class MandalModel {
         @SerializedName("Modified")
         @Expose
         private String modified;
-
-        public String getCountryName() {
-            return countryName;
-        }
-
-        public void setCountryName(String countryName) {
-            this.countryName = countryName;
-        }
-
-        public Integer getCountryId() {
-            return countryId;
-        }
-
-        public void setCountryId(Integer countryId) {
-            this.countryId = countryId;
-        }
-
-        public String getStateName() {
-            return stateName;
-        }
-
-        public void setStateName(String stateName) {
-            this.stateName = stateName;
-        }
-
-        public Integer getStateId() {
-            return stateId;
-        }
-
-        public void setStateId(Integer stateId) {
-            this.stateId = stateId;
-        }
-
-        public String getDistrictName() {
-            return districtName;
-        }
-
-        public void setDistrictName(String districtName) {
-            this.districtName = districtName;
-        }
 
         public String getCode() {
             return code;
@@ -247,5 +192,4 @@ public class MandalModel {
         }
 
     }
-
 }

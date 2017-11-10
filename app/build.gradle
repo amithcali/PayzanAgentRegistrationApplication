@@ -22,8 +22,8 @@ android {
     productFlavors {
         dev {
             buildConfigField "String", "SERVER_URL", '" "'
-            buildConfigField "String", "AZURE_URL", '"http://payzandev.azurewebsites.net/"'
-            buildConfigField "String", "LOCAL_URL", '"http://payzandev1.azurewebsites.net/"'
+            buildConfigField "String", "AZURE_URL", '"http://payzandev1.azurewebsites.net/"'
+            buildConfigField "String", "LOCAL_URL", '"http://192.168.1.171/PayZanAPI/"'
         }
     }
 }

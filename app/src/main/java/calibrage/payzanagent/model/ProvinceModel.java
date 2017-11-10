@@ -10,7 +10,6 @@ import java.util.List;
  */
 
 public class ProvinceModel {
-
     @SerializedName("ListResult")
     @Expose
     private List<ListResult> listResult = null;
@@ -80,30 +79,18 @@ public class ProvinceModel {
 
     public class ListResult {
 
-        @SerializedName("ProvinceName")
-        @Expose
-        private String provinceName;
-        @SerializedName("ProvinceId")
-        @Expose
-        private Integer provinceId;
         @SerializedName("CountryName")
         @Expose
         private String countryName;
-        @SerializedName("CountryId")
-        @Expose
-        private Integer countryId;
-        @SerializedName("StateName")
-        @Expose
-        private String stateName;
-        @SerializedName("Code")
-        @Expose
-        private String code;
         @SerializedName("Name")
         @Expose
         private String name;
-        @SerializedName("StateId")
+        @SerializedName("Code")
         @Expose
-        private Integer stateId;
+        private String code;
+        @SerializedName("CountryId")
+        @Expose
+        private Integer countryId;
         @SerializedName("Id")
         @Expose
         private Integer id;
@@ -112,10 +99,10 @@ public class ProvinceModel {
         private Boolean isActive;
         @SerializedName("CreatedBy")
         @Expose
-        private Object createdBy;
+        private String createdBy;
         @SerializedName("ModifiedBy")
         @Expose
-        private Object modifiedBy;
+        private String modifiedBy;
         @SerializedName("Created")
         @Expose
         private String created;
@@ -123,52 +110,12 @@ public class ProvinceModel {
         @Expose
         private String modified;
 
-        public String getProvinceName() {
-            return provinceName;
-        }
-
-        public void setProvinceName(String provinceName) {
-            this.provinceName = provinceName;
-        }
-
-        public Integer getProvinceId() {
-            return provinceId;
-        }
-
-        public void setProvinceId(Integer provinceId) {
-            this.provinceId = provinceId;
-        }
-
         public String getCountryName() {
             return countryName;
         }
 
         public void setCountryName(String countryName) {
             this.countryName = countryName;
-        }
-
-        public Integer getCountryId() {
-            return countryId;
-        }
-
-        public void setCountryId(Integer countryId) {
-            this.countryId = countryId;
-        }
-
-        public String getStateName() {
-            return stateName;
-        }
-
-        public void setStateName(String stateName) {
-            this.stateName = stateName;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(String code) {
-            this.code = code;
         }
 
         public String getName() {
@@ -179,12 +126,20 @@ public class ProvinceModel {
             this.name = name;
         }
 
-        public Integer getStateId() {
-            return stateId;
+        public String getCode() {
+            return code;
         }
 
-        public void setStateId(Integer stateId) {
-            this.stateId = stateId;
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public Integer getCountryId() {
+            return countryId;
+        }
+
+        public void setCountryId(Integer countryId) {
+            this.countryId = countryId;
         }
 
         public Integer getId() {
@@ -203,19 +158,19 @@ public class ProvinceModel {
             this.isActive = isActive;
         }
 
-        public Object getCreatedBy() {
+        public String getCreatedBy() {
             return createdBy;
         }
 
-        public void setCreatedBy(Object createdBy) {
+        public void setCreatedBy(String createdBy) {
             this.createdBy = createdBy;
         }
 
-        public Object getModifiedBy() {
+        public String getModifiedBy() {
             return modifiedBy;
         }
 
-        public void setModifiedBy(Object modifiedBy) {
+        public void setModifiedBy(String modifiedBy) {
             this.modifiedBy = modifiedBy;
         }
 
@@ -236,4 +191,5 @@ public class ProvinceModel {
         }
 
     }
+
 }

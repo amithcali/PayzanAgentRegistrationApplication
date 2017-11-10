@@ -10,6 +10,7 @@ import java.util.List;
  */
 
 public class DistrictModel {
+
     @SerializedName("ListResult")
     @Expose
     private List<ListResult> listResult = null;
@@ -78,6 +79,12 @@ public class DistrictModel {
     }
     public class ListResult {
 
+        @SerializedName("ProvinceName")
+        @Expose
+        private String provinceName;
+        @SerializedName("ProvinceId")
+        @Expose
+        private Integer provinceId;
         @SerializedName("CountryName")
         @Expose
         private String countryName;
@@ -104,16 +111,32 @@ public class DistrictModel {
         private Boolean isActive;
         @SerializedName("CreatedBy")
         @Expose
-        private String createdBy;
+        private Object createdBy;
         @SerializedName("ModifiedBy")
         @Expose
-        private String modifiedBy;
+        private Object modifiedBy;
         @SerializedName("Created")
         @Expose
         private String created;
         @SerializedName("Modified")
         @Expose
         private String modified;
+
+        public String getProvinceName() {
+            return provinceName;
+        }
+
+        public void setProvinceName(String provinceName) {
+            this.provinceName = provinceName;
+        }
+
+        public Integer getProvinceId() {
+            return provinceId;
+        }
+
+        public void setProvinceId(Integer provinceId) {
+            this.provinceId = provinceId;
+        }
 
         public String getCountryName() {
             return countryName;
@@ -179,19 +202,19 @@ public class DistrictModel {
             this.isActive = isActive;
         }
 
-        public String getCreatedBy() {
+        public Object getCreatedBy() {
             return createdBy;
         }
 
-        public void setCreatedBy(String createdBy) {
+        public void setCreatedBy(Object createdBy) {
             this.createdBy = createdBy;
         }
 
-        public String getModifiedBy() {
+        public Object getModifiedBy() {
             return modifiedBy;
         }
 
-        public void setModifiedBy(String modifiedBy) {
+        public void setModifiedBy(Object modifiedBy) {
             this.modifiedBy = modifiedBy;
         }
 

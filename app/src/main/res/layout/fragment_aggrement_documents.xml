@@ -40,6 +40,11 @@
             android:textAllCaps="false"
             android:textColor="@color/White" />
 
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:id="@+id/imagesRecylerView"></android.support.v7.widget.RecyclerView>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

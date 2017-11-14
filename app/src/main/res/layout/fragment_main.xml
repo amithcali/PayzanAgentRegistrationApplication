@@ -76,8 +76,29 @@ tools:context="calibrage.payzanagent.fragments.AggrementDocumentsFragment">
             android:textColor="@color/White" />
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="100dp">
 
 
+    <calibrage.payzanagent.controls.CommonButton
+        android:id="@+id/btn_settings"
+        android:layout_marginBottom="@dimen/lyt_margin_bottom"
+        android:layout_width="250dp"
+        android:layout_height="@dimen/btn_height"
+        android:layout_marginTop="@dimen/lyt_margin_top"
+        android:background="@drawable/roundbutton"
+        android:text="Settings"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:textColor="@color/White"
+        android:textSize="@dimen/btn_FontSize" />
+
+    </LinearLayout>
 
 </LinearLayout>
+
+
 </LinearLayout>

@@ -5,6 +5,7 @@
     <dimen name="lyt_margin_top">16dp</dimen>
     <dimen name="lyt_margin_bottom">25dp</dimen>
     <dimen name="lyt_margin">8dp</dimen>
+    <dimen name="btn_settings_margin_top">32dp</dimen>
 
     <!--common TextView sizes-->
     <dimen name="txt_height">60dp</dimen>
@@ -25,6 +26,7 @@
 
     <!--common button sizes-->
     <dimen name="btn_height">60dp</dimen>
+    <dimen name="btn_settings_width">30dp</dimen>
     <dimen name="btn_width">4dp</dimen>
     <dimen name="btn_FontSize">18dp</dimen>
     <dimen name="btn_margin_top">20dp</dimen>

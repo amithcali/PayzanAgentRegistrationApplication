@@ -12,6 +12,7 @@
     <string name="agentrequest_sname">"Agent Requests"</string>
     <string name="inprogressrequest_sname">"InProgress Requests"</string>
     <string name="approvedagents_sname">"Approved Agents"</string>
+    <string name="userprofile_sname">"Profile"</string>
     <string name="bankdetail_sname">"Bank Details"</string>
     <string name="main_sname">"Home"</string>
     <string name="idproof_sname">"Id Proofs"</string>

@@ -230,13 +230,8 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                     Fragment fragment = new BankDetailFragment();
                     fragment.setArguments(bundle);
                     replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, BankDetailFragment.TAG);
-//                    ReplcaFragment(fragment);
-                    //    login();
-                    //ReplcaFragment(new BankDetailFragment());
 
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.content_frame,  fragment,"BankTag")
-                            .commit();
+
                 }
 
                 // startActivity(new Intent(RegistrationView.this, BankDetailsActivity.class));

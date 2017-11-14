@@ -692,8 +692,8 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
 
     private void addAgentPersonalInfo() {
-        addAgent.setEmail(stremail);
-        addAgent.setMobileNumber(strmobile);
+//        addAgent.setEmail();
+//        addAgent.setMobileNumber();
         addAgent.setPassword(strpass);
         addAgent.setUserName(strusername);
         agentPersonalInfo.setFirstName(stragentname);
@@ -702,6 +702,8 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         agentPersonalInfo.setEmail(stremail);
         agentPersonalInfo.setAddress1(straddress1);
         agentPersonalInfo.setAddress2(straddress2);
+        agentPersonalInfo.setEmail(stremail);
+        agentPersonalInfo.setPhone(strmobile);
         if (isNewAgent){
             agentPersonalInfo.setAgentRequestId(null);
             Log.d(TAG, "addAgentPersonalInfo: "+"  printing nulllll");

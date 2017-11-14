@@ -9,18 +9,15 @@ import com.google.gson.annotations.SerializedName;
 
 public class AgentPersonalInfo {
 
+    @SerializedName("AspNetUserId")
+    @Expose
+    private String aspNetUserId;
     @SerializedName("AgentBusinessCategoryId")
     @Expose
     private Integer agentBusinessCategoryId;
     @SerializedName("AgentRequestId")
     @Expose
     private Integer agentRequestId;
-    @SerializedName("Id")
-    @Expose
-    private Integer id;
-    @SerializedName("AspNetUserId")
-    @Expose
-    private String aspNetUserId;
     @SerializedName("TitleTypeId")
     @Expose
     private Integer titleTypeId;
@@ -60,21 +57,32 @@ public class AgentPersonalInfo {
     @SerializedName("ParentAspNetUserId")
     @Expose
     private String parentAspNetUserId;
+    @SerializedName("Id")
+    @Expose
+    private Integer id;
     @SerializedName("IsActive")
     @Expose
     private Boolean isActive;
     @SerializedName("CreatedBy")
     @Expose
     private String createdBy;
-    @SerializedName("Created")
-    @Expose
-    private String created;
     @SerializedName("ModifiedBy")
     @Expose
     private String modifiedBy;
+    @SerializedName("Created")
+    @Expose
+    private String created;
     @SerializedName("Modified")
     @Expose
     private String modified;
+
+    public String getAspNetUserId() {
+        return aspNetUserId;
+    }
+
+    public void setAspNetUserId(String aspNetUserId) {
+        this.aspNetUserId = aspNetUserId;
+    }
 
     public Integer getAgentBusinessCategoryId() {
         return agentBusinessCategoryId;
@@ -90,22 +98,6 @@ public class AgentPersonalInfo {
 
     public void setAgentRequestId(Integer agentRequestId) {
         this.agentRequestId = agentRequestId;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getAspNetUserId() {
-        return aspNetUserId;
-    }
-
-    public void setAspNetUserId(String aspNetUserId) {
-        this.aspNetUserId = aspNetUserId;
     }
 
     public Integer getTitleTypeId() {
@@ -212,6 +204,14 @@ public class AgentPersonalInfo {
         this.parentAspNetUserId = parentAspNetUserId;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Boolean getIsActive() {
         return isActive;
     }
@@ -228,20 +228,20 @@ public class AgentPersonalInfo {
         this.createdBy = createdBy;
     }
 
-    public String getCreated() {
-        return created;
-    }
-
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
     public String getModifiedBy() {
         return modifiedBy;
     }
 
     public void setModifiedBy(String modifiedBy) {
         this.modifiedBy = modifiedBy;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
     }
 
     public String getModified() {

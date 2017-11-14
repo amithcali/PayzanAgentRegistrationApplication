@@ -26,6 +26,8 @@ public class CommonConstants {
     public static String STATUSTYPE_ID_HOLD = "48";
     public static String STATES_ID = "null";
     public static String PROVINCE_NAME = "null";
+    public static String FILE_TYPE_ID_DOCUMENTS = "22";
+    public static String FILE_TYPE_ID_IMAGES = "23";
 
 
 

@@ -23,7 +23,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     public static final String TAG = MainFragment.class.getSimpleName();
     View view;
     private Context context;
-    Button btnNewAgent,btnAgentRequest,btnToverify,btnApprovedAgents;
+    Button btnNewAgent,btnAgentRequest,btnToverify,btnApprovedAgents,btnSettings;
     public MainFragment() {
         // Required empty public constructor
     }
@@ -43,12 +43,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
         btnNewAgent = (Button)view.findViewById(R.id.btn_newAgent);
         btnAgentRequest=  (Button)view.findViewById(R.id.btn_agentRequests);
+        btnSettings  = (Button)view.findViewById(R.id.btn_settings);
         btnToverify = (Button)view.findViewById(R.id.btn_yetToVerify);
         btnApprovedAgents = (Button)view.findViewById(R.id.btn_approvedAgents);
         btnNewAgent.setOnClickListener(this);
         btnAgentRequest.setOnClickListener(this);
         btnToverify.setOnClickListener(this);
         btnApprovedAgents.setOnClickListener(this);
+        btnSettings.setOnClickListener(this);
         return view;
     }
 
@@ -75,6 +77,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
             case R.id.btn_approvedAgents:
               //  showToast(getActivity(),"Yet to implement feature");
                 replaceFragment(getActivity(),MAIN_CONTAINER,new ApprovedAgentsFragment(),TAG,ApprovedAgentsFragment.TAG);
+                break;
+            case R.id.btn_settings:
+                //  showToast(getActivity(),"Yet to implement feature");
+                replaceFragment(getActivity(),MAIN_CONTAINER,new UserProfileHomeFragment(),TAG,UserProfileHomeFragment.TAG);
                 break;
 
         }

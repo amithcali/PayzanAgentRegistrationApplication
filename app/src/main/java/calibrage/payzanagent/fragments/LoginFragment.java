@@ -96,20 +96,20 @@ public class LoginFragment extends BaseFragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
+            //  replaceFragment(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);
               //  AgentUpdateRequest();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
            //    startActivity(new Intent(LoginActivity.this,AgentRequestsFragment.class));
              //   login();
               // ReplcaFragment(new AgentRequestsFragment());
-                /*if (isValidateUi()) {
+                if (isValidateUi()) {
                     login();
                     dateAndtime();
                    // replaceFragment(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);
 
                     // ReplcaFragment(new AgentRequestsFragment());
-                }*/
+                }
 
 
 

@@ -112,7 +112,7 @@ public class AggrementDocumentsFragment extends BaseFragment {
         btnFinish = (Button)view.findViewById(R.id.btn_finish);
         imageView = (ImageView)view.findViewById(R.id.view_image);
         lnrImages = (LinearLayout) view.findViewById(R.id.lnrImages);
-        imagesRecylerView = (RecyclerView) view.findViewById(R.id.imagesRecylerView);
+      //  imagesRecylerView = (RecyclerView) view.findViewById(R.id.imagesRecylerView);
         context=this.getActivity();
         fragmentManager = getActivity().getSupportFragmentManager();
         HomeActivity.toolbar.setTitle(getResources().getString(R.string.register_sname));

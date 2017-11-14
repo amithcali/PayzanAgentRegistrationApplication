@@ -45,6 +45,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.CustomPhotoGalleryActivity;
@@ -157,7 +158,9 @@ public class AggrementDocumentsFragment extends BaseFragment {
 
 
     private void addAgentRequest() {
+        showDialog(getActivity(), "Authenticating...");
         JsonObject object = getLoginObject();
+
         //  Log.d(TAG, "addAgentRequest: "+object.toString());
         MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
         mRegisterSubscription = service.addAgent(object)
@@ -175,19 +178,21 @@ public class AggrementDocumentsFragment extends BaseFragment {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
                             ((HttpException) e).response().errorBody();
-                            try {
-                                ((HttpException) e).response().errorBody().string();
-                                CommonUtil.displayDialogWindow("Record Added Sucessfully", alertDialog, context);
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                            }
-                            e.printStackTrace();
+//                            try {
+////                                ((HttpException) e).response().errorBody().string();
+////                                CommonUtil.displayDialogWindow("Record Added Sucessfully", alertDialog, context);
+//                            } catch (IOException e1) {
+//                                e1.printStackTrace();
+//                            }
+ //                           e.printStackTrace();
                         }
                         Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                        hideDialog();
                     }
 
                     @Override
                     public void onNext(AddAgentResponseModel addAgentResponseModel) {
+                        hideDialog();
                         Toast.makeText(getActivity(), "sucess", Toast.LENGTH_SHORT).show();
                         CommonUtil.displayDialogWindow("Record Added Sucessfully", alertDialog, context);
                         //finish();
@@ -202,19 +207,24 @@ public class AggrementDocumentsFragment extends BaseFragment {
     }
 
     private void addDoc() {
+        List<AgentDoc> agentDocList =new ArrayList<>();
         for (int i = 0; i < imagesArrayList.size(); i++) {
             AgentDoc agentDoc = new AgentDoc();
             agentDoc.setAgentId("");
             agentDoc.setCreated(currentDatetime);
             agentDoc.setCreatedBy(CommonConstants.USERID);
-            agentDoc.setFileBytes(Base64.encodeToString(getImageByteArray(imagesArrayList.get(i)), 0));
+            agentDoc.setFileBytes(getImageByteArray(imagesArrayList.get(i)));
             agentDoc.setFileExtension(".jpg");
             agentDoc.setFileName("agentappdoc");
             agentDoc.setFileTypeId(Integer.parseInt(CommonConstants.FILE_TYPE_ID_IMAGES));
             agentDoc.setModified(currentDatetime);
             agentDoc.setModifiedBy(CommonConstants.USERID);
-            addAgent.getAgentDocs().add(agentDoc);
+            agentDoc.setIsActive(true);
+            agentDoc.setFileLocation("");
+           //addAgent.setAgentDocs(agentDoc);
+            agentDocList.add(agentDoc);
         }
+        addAgent.setAgentDocs(agentDocList);
 
 
     }

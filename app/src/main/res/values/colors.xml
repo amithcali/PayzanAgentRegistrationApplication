@@ -20,4 +20,8 @@
     <color name="light_gray">#BEBEBE</color>
     <color name="action_color">#263242</color>
     <color name="red">#FFC93437</color>
+    <color name="new_blue">#FFA678EF</color>
+    <color name="new_green">#FB4EDF6D</color>
+    <color name="new_yellow">#FFECBE09</color>
+    <color name="btnPressedColor">#F34130</color>
 </resources>

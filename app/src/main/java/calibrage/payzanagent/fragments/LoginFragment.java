@@ -81,6 +81,7 @@ public class LoginFragment extends BaseFragment {
         }
         context = this.getActivity();
         HomeActivity.toolbar.setTitle(getResources().getString(R.string.login_sname));
+
         HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
        /* HomeActivity.toolbar.setNavigationIcon(R.drawable.ic_stat_arrow_back);
        HomeActivity.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -190,6 +191,7 @@ public class LoginFragment extends BaseFragment {
                             //Log.d(TAG, "onNext: Result :"+loginResponseModel.toString());
                             CommonConstants.USERID = loginResponseModel.getResult().getUser().getId();
                             SharedPrefsData.getInstance(context).updateStringValue(context,"userid",loginResponseModel.getResult().getUser().getId());
+                            SharedPrefsData.getInstance(context).updateStringValue(context,"username",loginResponseModel.getResult().getUser().getUserName());
                             //    CommonConstants.WALLETID = String.valueOf(loginResponseModel.getData().getUserWallet().getWalletId());
                             // ReplcaFragment(new AgentRequestsFragment());
                             replaceFragment(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);

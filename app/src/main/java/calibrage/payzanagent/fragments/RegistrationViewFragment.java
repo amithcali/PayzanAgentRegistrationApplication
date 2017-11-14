@@ -586,11 +586,12 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                         hideDialog();
                         Log.d("response", businessCategoryModel.getIsSuccess().toString());
                         titleListResults = (ArrayList<BusinessCategoryModel.ListResult>) businessCategoryModel.getListResult();
+                        titleArrayList.add("--Select Title--");
                         for (int i = 0; i < businessCategoryModel.getListResult().size(); i++) {
                             titleArrayList.add(businessCategoryModel.getListResult().get(i).getDescription());
                         }
                         RegistrationViewFragment.CustomSpinnerAdapter customSpinnerAdapter = new RegistrationViewFragment.CustomSpinnerAdapter(getActivity(), titleArrayList);
-                        titleArrayList.add(0,"--Select Title--");
+
                         spinnerTitleType.setAdapter(customSpinnerAdapter);
                     }
 

@@ -11,7 +11,7 @@ public class AgentDoc {
 
     @SerializedName("FileBytes")
     @Expose
-    private String fileBytes;
+    private byte[] fileBytes;
     @SerializedName("AgentId")
     @Expose
     private String agentId;
@@ -46,11 +46,11 @@ public class AgentDoc {
     @Expose
     private String modified;
 
-    public String getFileBytes() {
+    public byte[] getFileBytes() {
         return fileBytes;
     }
 
-    public void setFileBytes(String fileBytes) {
+    public void setFileBytes(byte[] fileBytes) {
         this.fileBytes = fileBytes;
     }
 

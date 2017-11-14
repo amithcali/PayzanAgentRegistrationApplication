@@ -18,6 +18,7 @@ public class CommonConstants {
     public static String PERSONALID_CATEGORY_ID = "7";
     public static String FINANCIALID_CATEGORY_ID = "8";
     public static String BANK_CATEGORY_ID = "1";
+    public static String BANK_ID = null;
     public static String STATUSTYPE_ID_NEW = "43";
     public static String STATUSTYPE_ID_IN_PROGRESS = "44";
     public static String STATUSTYPE_ID_SUBMIT_FOR_REVIEW = "45";

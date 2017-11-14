@@ -47,6 +47,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static android.content.ContentValues.TAG;
+import static android.os.Parcelable.CONTENTS_FILE_DESCRIPTOR;
 
 
 public class BankDetailFragment extends BaseFragment {
@@ -228,7 +229,7 @@ public class BankDetailFragment extends BaseFragment {
 
     private void getRequestBank(String providerType) {
         MyServices service = ServiceFactory.createRetrofitService(context, MyServices.class);
-        operatorSubscription = service.getBusinessRequest(ApiConstants.BUSINESS_CAT_REQUESTS + Integer.parseInt(providerType))
+        operatorSubscription = service.getBusinessRequest(ApiConstants.BUSINESS_CAT_REQUESTS+providerType )
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<BusinessCategoryModel>() {
@@ -304,9 +305,13 @@ public class BankDetailFragment extends BaseFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                String item = parent.getItemAtPosition(position).toString();
+//                String item = parent.getItemAtPosition(position).toString();
                 bankId = (int) parent.getSelectedItemId();
-                getRequestBranch(String.valueOf(bankId));
+                int i = 12;
+                Log.d(TAG, "onItemSelected: "+bankId);
+                //bankId =  bankListResults.get((int) parent.getSelectedItemId()).get;
+             //   getRequestBranch(String.valueOf(bankId));
+                getRequestBranch(String.valueOf(i));
                //    Toast.makeText(parent.getContext(), "bankkkkkkk" +bankId, Toast.LENGTH_LONG).show();
 
 

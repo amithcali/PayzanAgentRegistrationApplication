@@ -8,7 +8,158 @@ android:layout_height="match_parent"
 android:background="@color/white"
 tools:context="calibrage.payzanagent.fragments.AggrementDocumentsFragment">
 
+    <LinearLayout
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        android:id="@+id/lyt_agenttransaction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:weightSum="2">
+
+            <android.support.v7.widget.CardView
+                app:cardBackgroundColor="@color/btnPressedColor"
+                android:layout_width="180dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:layout_margin="3dp"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="226"
+                        android:textSize="30dp"
+                        android:layout_gravity="center_horizontal"/>
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Today Transactions"
+                        />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                app:cardBackgroundColor="@color/new_blue"
+                android:layout_width="180dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:layout_margin="3dp"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="6dp"
+                >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="11012"
+                        android:textSize="30dp"
+                        android:layout_gravity="center_horizontal"/>
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Money Collected"
+                        />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:weightSum="2">
+
+            <android.support.v7.widget.CardView
+                app:cardBackgroundColor="@color/new_yellow"
+                android:layout_width="180dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:layout_margin="3dp"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="6dp">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="524"
+                        android:textSize="30dp"
+                        android:layout_gravity="center_horizontal"/>
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Today Commision"
+                        />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                app:cardBackgroundColor="#FB4EDF6D"
+                android:layout_width="180dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:layout_margin="3dp"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="6dp"
+                >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1929"
+                        android:textSize="30dp"
+                        android:layout_gravity="center_horizontal"/>
+                    <TextView
+                        android:textColor="@color/white"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Commision"
+                        />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -76,7 +227,7 @@ tools:context="calibrage.payzanagent.fragments.AggrementDocumentsFragment">
             android:textColor="@color/White" />
 
     </LinearLayout>
-    <LinearLayout
+ <!--   <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -97,8 +248,9 @@ tools:context="calibrage.payzanagent.fragments.AggrementDocumentsFragment">
         android:textSize="@dimen/btn_FontSize" />
 
     </LinearLayout>
-
+-->
 </LinearLayout>
 
 
+</LinearLayout>
 </LinearLayout>

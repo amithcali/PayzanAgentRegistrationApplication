@@ -22,8 +22,9 @@
         android:layout_height="@dimen/toolbar_height"
         android:background="@color/accent"
         app:layout_scrollFlags="enterAlways"
-        app:title="123456"
-        app:titleTextColor="@color/accent">
+        app:titleTextAppearance="@style/ToolbarTitleAppearance"
+        app:subtitleTextAppearance="@style/ToolbarSubtitleAppearance"
+        app:title="123456">
 
         <!--<TextView-->
         <!--android:layout_width="wrap_content"-->
@@ -35,8 +36,29 @@
         <!--android:visibility="gone"-->
         <!--android:text="@string/app_name"/>-->
 
+        <!--<ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_tick_mark"/>-->
 
     </android.support.v7.widget.Toolbar>
+
+ <!--   <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_tick_mark"/>
+    </RelativeLayout>-->
 
 
 </LinearLayout>

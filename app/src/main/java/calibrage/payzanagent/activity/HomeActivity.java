@@ -1,6 +1,7 @@
 package calibrage.payzanagent.activity;
 
 import android.app.Dialog;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,16 +9,24 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.fragments.AgentRequestsFragment;
+import calibrage.payzanagent.fragments.BaseFragment;
 import calibrage.payzanagent.fragments.LoginFragment;
+import calibrage.payzanagent.utils.SharedPrefsData;
 
-public class HomeActivity extends AppCompatActivity {
+import static calibrage.payzanagent.fragments.BaseFragment.MAIN_CONTAINER;
+
+public class HomeActivity extends BaseActivity {
     Fragment fragment;
     FragmentManager fragmentManager;
     private int isLogin = 1;
@@ -42,12 +51,37 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(ContextCompat.getColor(HomeActivity.this,R.color.new_accent));
         toolbar.setTitle("f");
+   //     toolbar.setLogo(R.drawable.ic_tick_mark);
+    //    toolbar.setNavigationIcon(R.drawable.right_arrow);
+
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.logout_menu, menu);
+        return true;
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+         //   Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
+            SharedPrefsData.getInstance(this).ClearData(this);
+            getSupportFragmentManager().beginTransaction()
+                    .add(BaseFragment.MAIN_CONTAINER, new LoginFragment ()).commit();
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
     public void ReplcaFragment(android.support.v4.app.Fragment fragment) {
-
-
         fragmentManager.beginTransaction().add(R.id.content_frame, fragment).commit();
         //fragmentManager.beginTransaction().replace(R.id.home_container, frag).addToBackStack(null).commit();
     }

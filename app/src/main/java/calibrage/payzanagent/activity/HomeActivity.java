@@ -69,6 +69,8 @@ public class HomeActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_logout) {
+            toolbar.setTitle("Login");
+            toolbar.setSubtitle(" ");
          //   Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
             SharedPrefsData.getInstance(this).ClearData(this);
             getSupportFragmentManager().beginTransaction()

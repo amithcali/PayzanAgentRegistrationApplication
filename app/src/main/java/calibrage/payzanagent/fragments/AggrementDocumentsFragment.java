@@ -17,6 +17,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -34,6 +36,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -44,6 +47,7 @@ import java.util.ArrayList;
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.CustomPhotoGalleryActivity;
 import calibrage.payzanagent.activity.HomeActivity;
+import calibrage.payzanagent.adapter.ImageAdapter;
 import calibrage.payzanagent.model.AddAgent;
 import calibrage.payzanagent.model.AddAgentResponseModel;
 import calibrage.payzanagent.model.LoginResponseModel;
@@ -82,7 +86,11 @@ public class AggrementDocumentsFragment extends BaseFragment {
     String encodedString;
     private Subscription mRegisterSubscription;
     private AlertDialog alertDialog;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     ImageView imageView;
+    private RecyclerView imagesRecylerView;
+    private ArrayList<Bitmap> imagesArrayList = new ArrayList<>();
+    public static final String IMAGE_UNSPECIFIED = "image/*";
     public AggrementDocumentsFragment() {
         // Required empty public constructor
     }
@@ -104,10 +112,14 @@ public class AggrementDocumentsFragment extends BaseFragment {
         btnFinish = (Button)view.findViewById(R.id.btn_finish);
         imageView = (ImageView)view.findViewById(R.id.view_image);
         lnrImages = (LinearLayout) view.findViewById(R.id.lnrImages);
+        imagesRecylerView = (RecyclerView) view.findViewById(R.id.imagesRecylerView);
         context=this.getActivity();
         fragmentManager = getActivity().getSupportFragmentManager();
         HomeActivity.toolbar.setTitle(getResources().getString(R.string.register_sname));
         HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
+
+
+
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,10 +201,11 @@ public class AggrementDocumentsFragment extends BaseFragment {
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Take Photo"))
                 {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                    startActivityForResult(intent, 1);
+//                    Intent intent = new Intent(Intent.ACTION_PICK, null);
+//                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_UNSPECIFIED);
+//                    startActivityForResult(intent, 1);
+
+                    dispatchTakePictureIntent();
                 }
                 else if (options[item].equals("Choose from Gallery"))
                 {
@@ -256,49 +269,75 @@ public class AggrementDocumentsFragment extends BaseFragment {
         myAlertDialog.show();*/
     }
 
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(context.getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if (requestCode == 1) {
-                File f = new File(Environment.getExternalStorageDirectory().toString());
-                for (File temp : f.listFiles()) {
-                    if (temp.getName().equals("temp.jpg")) {
-                        f = temp;
-                        break;
-                    }
-                }
-                try {
-                    Bitmap bitmap;
-                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
 
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-                            bitmapOptions);
+             //   Bundle extras = data.getExtras();
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+               // imageView.setImageBitmap(imageBitmap);
+                imagesArrayList.add(imageBitmap);
+                ImageAdapter  imageAdapter = new ImageAdapter(context,imagesArrayList);
+                imagesRecylerView.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false));
+                imagesRecylerView.setAdapter(imageAdapter);
 
-                    imageView.setImageBitmap(bitmap);
+             //   imageAdapter.notifyDataSetChanged();
 
-                    String path = android.os.Environment
-                            .getExternalStorageDirectory()
-                            + File.separator
-                            + "Phoenix" + File.separator + "default";
-                    f.delete();
-                    OutputStream outFile = null;
-                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
-                    try {
-                        outFile = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
-                        outFile.flush();
-                        outFile.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                if (extras != null) {
+//                    Bitmap photo = extras.getParcelable("data");
+//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                    photo.compress(Bitmap.CompressFormat.JPEG, 75, stream);//
+//                }
+//                Log.d("image",""+imagesArrayList.size());
+               // Log.d("image",""+imagesArrayList.get(0));
+//                File f = new File(Environment.getExternalStorageDirectory().toString());
+//                for (File temp : f.listFiles()) {
+//                    if (temp.getName().equals("temp.jpg")) {
+//                        f = temp;
+//                        break;
+//                    }
+//                }
+//                try {
+//                    Bitmap bitmap;
+//                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+//
+//                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
+//                            bitmapOptions);
+//
+//                    imageView.setImageBitmap(bitmap);
+//
+//                    String path = android.os.Environment
+//                            .getExternalStorageDirectory()
+//                            + File.separator
+//                            + "Phoenix" + File.separator + "default";
+//                    f.delete();
+//                    OutputStream outFile = null;
+//                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
+//                    try {
+//                        outFile = new FileOutputStream(file);
+//                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
+//                        outFile.flush();
+//                        outFile.close();
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
             } else if (requestCode == 2) {
                 imagesPathList = new ArrayList<String>();
                 String[] imagesPath = data.getStringExtra("data").split("\\|");

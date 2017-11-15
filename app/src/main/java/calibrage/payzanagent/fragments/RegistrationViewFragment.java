@@ -586,7 +586,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                         hideDialog();
                         Log.d("response", businessCategoryModel.getIsSuccess().toString());
                         titleListResults = (ArrayList<BusinessCategoryModel.ListResult>) businessCategoryModel.getListResult();
-                        titleArrayList.add("--Select Title--");
+                        titleArrayList.add(0,"--Select Title--");
                         for (int i = 0; i < businessCategoryModel.getListResult().size(); i++) {
                             titleArrayList.add(businessCategoryModel.getListResult().get(i).getDescription());
                         }
@@ -710,7 +710,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         agentPersonalInfo.setLandmark(strlandmark);
         agentPersonalInfo.setIsActive(true);
         agentPersonalInfo.setAspNetUserId("test");
-        agentPersonalInfo.setTitleTypeId(titleListResults.get(spinnerTitleType.getSelectedItemPosition()).getId());
+        agentPersonalInfo.setTitleTypeId(titleListResults.get(spinnerTitleType.getSelectedItemPosition()-1).getId());
         agentPersonalInfo.setGenderTypeId(20);
         agentPersonalInfo.setVillageId(villageListResults.get(spinnerVillage.getSelectedItemPosition()).getId());
         agentPersonalInfo.setParentAspNetUserId(null);

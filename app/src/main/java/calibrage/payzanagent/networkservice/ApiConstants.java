@@ -15,13 +15,15 @@ public interface ApiConstants {
     String MOBILE_SERVICES = "api/ServiceProvider/GetServicesByServiceProviderId/";
     String AGENT_REQUESTS = "api/AgentRequestInfo/GetAgentRequestInfo/";
     String BUSINESS_CAT_REQUESTS = "api/TypeCdDmts/GetTypeCdDmtsByClassType/";
+    String HOME_REQUEST = "api/AgentRequestInfo/GetAgentRequestCountsByUserId/";
     String BANK_REQUESTS = "api/Banks/GetAll/";
     String PROVINCE_REQUESTS = "api/Province/GetProvinces/";
     String DISTRICT_REQUESTS = "api/Province/GetDistrictsByProvinceId/";
     String MANDAL_REQUESTS = "api/Mandals/GetMandalByDistrict/";
     String VILLAGE_REQUESTS = "api/Villages/GetVillageByMandal/";
     String STATE_REQUESTS = "api/States/GetStateInfo/";
-    String BRANCH_REQUESTS = "/api/Banks/GetBankInfo/";
+    /*String BRANCH_REQUESTS = "/api/Banks/GetBankInfo/";*/
+    String BRANCH_REQUESTS = "api/Banks/GetBanksByBankTypeId/";
     String ADD_AGENT = "/api/Agent/AddAgent";
    String UPDATE_AGENT_REQUEST= "api/AgentRequestInfo/UpdateAgentRequestStatus";
 

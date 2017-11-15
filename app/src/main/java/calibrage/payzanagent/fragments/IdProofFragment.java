@@ -176,7 +176,7 @@ public class IdProofFragment extends BaseFragment {
         agentIdProof.setCreated(currentDatetime);
         agentIdProof.setCreatedBy(CommonConstants.USERID);
         agentIdProof.setIsActive(true);
-        agentIdProof.setIdProofTypeId(businessListResults.get(spinnerCustom_personalId.getSelectedItemPosition()).getId());
+        agentIdProof.setIdProofTypeId(businessListResults.get(spinnerCustom_personalId.getSelectedItemPosition()-1).getId());
         agentIdProof.setIdProofNumber(personalIdNumber);
         agentFinancialProof.setModified(currentDatetime);
         agentFinancialProof.setModifiedBy(CommonConstants.USERID);
@@ -299,13 +299,14 @@ public class IdProofFragment extends BaseFragment {
                     public void onNext(BusinessCategoryModel businessCategoryModel) {
                         Log.d("response", businessCategoryModel.getIsSuccess().toString());
                         businessListResults = (ArrayList<BusinessCategoryModel.ListResult>) businessCategoryModel.getListResult();
+                        businessArrayList.add(0,"--Select Personal Id Proof--");
                         for (int i = 0; i <businessCategoryModel.getListResult().size() ; i++) {
                             businessArrayList.add(businessCategoryModel.getListResult().get(i).getDescription());
 
                         }
 
                         IdProofFragment.CustomSpinnerAdapterFinancial customSpinnerAdapterFinancial =new IdProofFragment.CustomSpinnerAdapterFinancial(getActivity(), businessArrayList);
-                        businessArrayList.add(0,"--Select Personal Id Proof--");
+
                         spinnerCustom_personalId.setAdapter(customSpinnerAdapterFinancial);
                     }
 

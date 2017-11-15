@@ -307,11 +307,11 @@ public class BankDetailFragment extends BaseFragment {
 
 //                String item = parent.getItemAtPosition(position).toString();
                 bankId = (int) parent.getSelectedItemId();
-                int i = 12;
+               // int i = 12;
                 Log.d(TAG, "onItemSelected: "+bankId);
-                //bankId =  bankListResults.get((int) parent.getSelectedItemId()).get;
-             //   getRequestBranch(String.valueOf(bankId));
-                getRequestBranch(String.valueOf(i));
+                bankId =  bankListResults.get((int) parent.getSelectedItemId()).getId();
+                getRequestBranch(String.valueOf(bankId));
+               // getRequestBranch(String.valueOf(i));
                //    Toast.makeText(parent.getContext(), "bankkkkkkk" +bankId, Toast.LENGTH_LONG).show();
 
 

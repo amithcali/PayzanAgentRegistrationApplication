@@ -8,6 +8,7 @@ import calibrage.payzanagent.model.AgentRequestModel;
 import calibrage.payzanagent.model.Branch;
 import calibrage.payzanagent.model.BusinessCategoryModel;
 import calibrage.payzanagent.model.DistrictModel;
+import calibrage.payzanagent.model.HomeModel;
 import calibrage.payzanagent.model.LoginResponseModel;
 import calibrage.payzanagent.model.MandalModel;
 import calibrage.payzanagent.model.ProvinceModel;
@@ -40,6 +41,9 @@ public interface MyServices {
 
     @GET
     Observable<BusinessCategoryModel> getBusinessRequest(@Url String url);
+
+    @GET
+    Observable<HomeModel> getHomeRequest(@Url String url);
 
     @GET
     Observable<ProvinceModel> getProvinceRequest(@Url String url);

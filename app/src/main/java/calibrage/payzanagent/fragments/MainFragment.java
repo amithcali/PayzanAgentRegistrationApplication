@@ -45,8 +45,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     String userid;
     TextView txtCount1,txtCount2,txtCount3,txtCount4,txtStatusType1,txtStatusType2,txtStatusType3,txtStatusType4;
     Button btnNewAgent,btnAgentRequest,btnToverify,btnApprovedAgents;
-    ArrayList<String> homeArrayList = new ArrayList<String>();
-    private ArrayList<HomeModel.Result> homeListResults = new ArrayList<>();
+   /* ArrayList<String> homeArrayList = new ArrayList<String>();
+    private ArrayList<HomeModel.Result> homeListResults = new ArrayList<>();*/
     //,btnSettings
     public MainFragment() {
         // Required empty public constructor
@@ -126,12 +126,16 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                     public void onNext(HomeModel homeModel) {
                         hideDialog();
                         Log.d("response", homeModel.getIsSuccess().toString());
-                        homeListResults = (ArrayList<HomeModel.Result>) homeModel.getResult();
+                        txtCount1.setText(""+homeModel.getResult().get(5).getCount());
+                        txtCount2.setText(""+homeModel.getResult().get(4).getCount());
+                        txtCount3.setText(""+homeModel.getResult().get(3).getCount());
+                        txtCount4.setText(""+homeModel.getResult().get(2).getCount());
+                       /* homeListResults = (ArrayList<HomeModel.Result>) homeModel.getResult();
                         for (int i = 0; i < homeModel.getResult().size(); i++) {
                             homeArrayList.add(homeModel.getResult().get(i).getStatusType());
                             txtCount1.setText(homeModel.getResult().get(i).getStatusType());
                         }
-                     // txtCount1.setText(homeModel.getResult().get);
+                     // txtCount1.setText(homeModel.getResult().get);*/
                     }
 
                 });

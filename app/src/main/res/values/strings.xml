@@ -20,7 +20,6 @@
     <string name="doc_sname">"Documents"</string>
     <string name="maps_api_key">AIzaSyCZo7vSHO8ceTd5rRCbq6XO95kEMq-1fHw</string>
     <string name="new_agent">New Agent</string>
-    <string name="agent_requests">Agent Requests</string>
     <string name="pic_agent">Pick/Hold Agent</string>
     <string name="agent_yet_to_verify">Agent Yet To Verify</string>
     <string name="in_progress">In Progress</string>
@@ -53,4 +52,8 @@
     <string name="submit_btn">Submit</string>
     <string name="agent_name">Agent Name</string>
     <string name="logout_menu">Logout</string>
+    <string name="agent_requests">Agent Requests</string>
+    <string name="yet_to_go">Yet to go</string>
+    <string name="un_verified">Un verified</string>
+    <string name="verified">Verified</string>
 </resources>

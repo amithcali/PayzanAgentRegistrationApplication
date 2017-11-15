@@ -35,8 +35,26 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="colorPrimary">@color/white</item>
+        <item name="actionMenuTextColor">@color/white</item>
         <item name="colorPrimaryDark">@color/white</item>
         <item name="colorAccent">@color/accent</item>
+        <item name="actionButtonStyle">@style/AppTheme.Widget.ActionButton</item>
+    </style>
+    <style name="AppTheme.Widget.ActionButton" parent="@style/Widget.AppCompat.ActionButton">
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+<!--<item name="actionMenuTextColor">@color/white</item>
+<item name="android:actionMenuTextColor">@color/white</item>-->
+    <style name="profileThem" parent="Theme.AppCompat.Light.NoActionBar">
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">@color/accent</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/accent</item>
+    <item name="android:actionMenuTextColor">@color/white</item>
+
     </style>
 
     <style name="Spinner">

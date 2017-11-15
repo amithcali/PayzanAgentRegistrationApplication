@@ -61,6 +61,7 @@ public class HomeActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.logout_menu, menu);
+        //getMenuInflater().inflate(R.menu.logout_menu, menu);
         return true;
 
 
@@ -92,7 +93,9 @@ public class HomeActivity extends BaseActivity {
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStackImmediate();
-            HomeActivity.toolbar.setTitle(getResources().getString(R.string.main_sname));
+          //  HomeActivity.toolbar.setTitle(getResources().getString(R.string.main_sname));
+            HomeActivity.toolbar.setTitle(" ");
+            HomeActivity.toolbar.setSubtitle(" ");
             HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white_new));
         } else {
             Intent intent = new Intent(Intent.ACTION_MAIN);

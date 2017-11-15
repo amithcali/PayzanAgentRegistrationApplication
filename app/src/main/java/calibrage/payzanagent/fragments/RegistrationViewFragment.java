@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -43,6 +44,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.HomeActivity;
@@ -741,14 +743,17 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         straddress2=edtAddress2.getText().toString();
         strlandmark = edtLandMark.getText().toString();
         strpin=edtPincode.getText().toString();
+        Pattern emailPattern = Patterns.EMAIL_ADDRESS;
         /* stragencyname = edtAgencyName.getText().toString();
         strid=edtIdNo.getText().toString();*/
 /*  if (spinnerCustom.getSelectedItemPosition() == 0) {
             status = false;
              Toast.makeText(context, "select title", Toast.LENGTH_SHORT).show();
         } else                       */
-
-       if (stragentname.isEmpty()) {
+        if (spinnerTitleType.getSelectedItemPosition() == 0) {
+            status = false;
+            Toast.makeText(context, "select Title Type", Toast.LENGTH_SHORT).show();
+        }else if (stragentname.isEmpty() || edtAgentName.getText().length()<3) {
             status = false;
             edtAgentName.setError("AgentName is required");
             edtAgentName.requestFocusFromTouch();
@@ -756,37 +761,37 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         } else if (spinnerCustom.getSelectedItemPosition() == 0) {
             status = false;
             Toast.makeText(context, "select business category", Toast.LENGTH_SHORT).show();
-        }else if (strusername.isEmpty()) {
+        }else if (strusername.isEmpty()|| edtUserName.getText().length()<4) {
             status = false;
             edtUserName.setError("UserName is required");
             edtUserName.requestFocusFromTouch();
            //Toast.makeText(context, "UserName is required", Toast.LENGTH_SHORT).show();
-        }else if (strpass.isEmpty()) {
+        }else if (strpass.isEmpty()||edtPassWord.getText().length()<4) {
             status = false;
             edtPassWord.setError("Password is required");
             edtPassWord.requestFocusFromTouch();
            // Toast.makeText(context, "Password is required", Toast.LENGTH_SHORT).show();
-        }else if (strmobile.isEmpty()) {
+        }else if (strmobile.isEmpty()||edtMobile.getText().length()<10) {
             status = false;
             edtMobile.setError("MobileNumber is required");
             edtMobile.requestFocusFromTouch();
             //Toast.makeText(context, "MobileNumber is required", Toast.LENGTH_SHORT).show();
-        }else if (stremail.isEmpty()) {
+        }else if (stremail.isEmpty()||!emailPattern.matcher(stremail).matches()) {
             status = false;
-            edtEmail.setError("Email is required");
+            edtEmail.setError("Valid Email is required");
             edtEmail.requestFocusFromTouch();
             //Toast.makeText(context, "Email is required", Toast.LENGTH_SHORT).show();
-        }else if (straddress1.isEmpty()) {
+        }else if (straddress1.isEmpty()||edtAddress1.getText().length()<3) {
             status = false;
             edtAddress1.setError("Address is required");
             edtAddress1.requestFocusFromTouch();
             //Toast.makeText(context, "Province is required", Toast.LENGTH_SHORT).show();
-        }else if (straddress2.isEmpty()) {
+        }else if (straddress2.isEmpty()||edtAddress2.getText().length()<3) {
             status = false;
             edtAddress2.setError("Address is required");
             edtAddress2.requestFocusFromTouch();
           //  Toast.makeText(context, "Address is required", Toast.LENGTH_SHORT).show();
-        }else if (strlandmark.isEmpty()) {
+        }else if (strlandmark.isEmpty()||edtLandMark.getText().length()<3) {
            status = false;
            edtLandMark.setError("Landmark is required");
            edtLandMark.requestFocusFromTouch();

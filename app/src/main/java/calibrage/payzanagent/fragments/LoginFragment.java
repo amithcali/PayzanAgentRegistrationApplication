@@ -7,7 +7,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +26,7 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.regex.Pattern;
 
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.HomeActivity;
@@ -64,6 +69,7 @@ public class LoginFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         view = inflater.inflate(R.layout.login_fragment, container, false);
         view.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
@@ -79,6 +85,7 @@ public class LoginFragment extends BaseFragment {
                 }
             });
         }
+
         context = this.getActivity();
         HomeActivity.toolbar.setTitle(getResources().getString(R.string.login_sname));
 
@@ -121,6 +128,12 @@ public class LoginFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_logout);
+        item.setVisible(false);
+    }
+
     private void dateAndtime() {
         Calendar c = Calendar.getInstance();
         System.out.println("Current time => "+c.getTime());
@@ -142,10 +155,11 @@ public class LoginFragment extends BaseFragment {
         boolean status = true;
         mobileOrEmail = txt_Email.getText().toString().trim();
         passCode = txt_password.getText().toString();
-        if (mobileOrEmail.isEmpty()) {
+
+        if (mobileOrEmail.isEmpty()||txt_Email.getText().length()<10) {
             status = false;
-            Toast.makeText(context, "Mobile/Email is required", Toast.LENGTH_SHORT).show();
-        } else if (passCode.isEmpty()) {
+            Toast.makeText(context, "Mobile is required", Toast.LENGTH_SHORT).show();
+        } else if (passCode.isEmpty()||txt_password.getText().length()<4) {
             status = false;
             Toast.makeText(context, "password is required", Toast.LENGTH_SHORT).show();
         }

@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +58,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         view = inflater.inflate(R.layout.fragment_main, container,false);
         view.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
@@ -91,6 +94,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         btnApprovedAgents.setOnClickListener(this);
        // btnSettings.setOnClickListener(this);
         return view;
+    }
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_logout);
+        item.setVisible(true);
     }
 
     private void getRequestCount(String providerType) {

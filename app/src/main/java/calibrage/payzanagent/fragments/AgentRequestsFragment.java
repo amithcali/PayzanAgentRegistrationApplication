@@ -74,6 +74,7 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         view = inflater.inflate(R.layout.fragment_agent_request, container, false);

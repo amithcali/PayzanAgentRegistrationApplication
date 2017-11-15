@@ -94,7 +94,7 @@
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
                         android:hint="@string/agent_name"
-                        android:maxLength="50"
+                        android:maxLength="40"
                         android:imeOptions="actionNext"
                         android:paddingLeft="@dimen/edt_text_pading_left"
                         android:textSize="@dimen/edt_FontSize" />
@@ -182,7 +182,7 @@
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
                         android:hint="@string/user_name"
-                        android:maxLength="50"
+                        android:maxLength="40"
                         android:imeOptions="actionNext"
                         android:paddingLeft="@dimen/edt_text_pading_left"
                         android:textSize="@dimen/edt_FontSize" />
@@ -203,7 +203,7 @@
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
                         android:hint="@string/password"
-                        android:maxLength="50"
+                        android:maxLength="30"
                         android:imeOptions="actionNext"
                         android:inputType="textPassword"
                         android:paddingLeft="@dimen/edt_text_pading_left"
@@ -224,7 +224,7 @@
                         android:gravity="center_vertical"
                         android:imeOptions="actionNext"
                         android:hint="@string/mobile_number"
-                        android:maxLength="10"
+                        android:maxLength="13"
                         android:inputType="phone"
                         android:paddingLeft="@dimen/edt_text_pading_left"
                         android:textSize="@dimen/edt_FontSize" />
@@ -249,7 +249,7 @@
                         android:layout_height="@dimen/edt_height"
                         android:id="@+id/edt_email"
                         android:layout_marginBottom="@dimen/edt_bottom_margin"
-                        android:maxLength="50"
+                        android:maxLength="40"
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
                         android:hint="@string/email_id"
@@ -272,7 +272,7 @@
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
                         android:hint="@string/address_1"
-                        android:maxLength="50"
+                        android:maxLength="40"
                         android:imeOptions="actionNext"
                         android:paddingLeft="@dimen/edt_text_pading_left"
                         android:textSize="@dimen/edt_FontSize" />
@@ -292,7 +292,7 @@
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
                         android:hint="@string/address_2"
-                        android:maxLength="50"
+                        android:maxLength="40"
                         android:imeOptions="actionNext"
                         android:paddingLeft="@dimen/edt_text_pading_left"
                         android:textSize="@dimen/edt_FontSize" />
@@ -312,7 +312,7 @@
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"
                         android:hint="@string/land_mark"
-                        android:maxLength="50"
+                        android:maxLength="40"
                         android:imeOptions="actionNext"
                         android:paddingLeft="@dimen/edt_text_pading_left"
                         android:textSize="@dimen/edt_FontSize" />

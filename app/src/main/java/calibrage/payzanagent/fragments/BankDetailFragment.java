@@ -160,7 +160,7 @@ public class BankDetailFragment extends BaseFragment {
 
 
 
-        if (straccountname.isEmpty()) {
+        if (straccountname.isEmpty()||accountName.getText().length()<4) {
             status = false;
             accountName.setError("AccountHolder Name is required");
             accountName.requestFocusFromTouch();

@@ -66,7 +66,7 @@
                 android:background="@drawable/roundededittext"
                 android:gravity="center_vertical"
                 android:hint="Number"
-                android:maxLength="50"
+                android:maxLength="40"
                 android:imeOptions="actionNext"
                 android:paddingLeft="@dimen/edt_text_pading_left"
                 android:textSize="@dimen/edt_FontSize" />
@@ -113,7 +113,7 @@
                 android:background="@drawable/roundededittext"
                 android:gravity="center_vertical"
                 android:hint="Number"
-                android:maxLength="50"
+                android:maxLength="40"
                 android:imeOptions="actionDone"
                 android:paddingLeft="@dimen/edt_text_pading_left"
                 android:textSize="@dimen/edt_FontSize" />

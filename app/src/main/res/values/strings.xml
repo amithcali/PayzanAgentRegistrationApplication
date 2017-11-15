@@ -6,7 +6,7 @@
     <string name="register">Register</string>
     <string name="spinner_title">category</string>
     <string name="password">Password</string>
-    <string name="mobile_or_email">Mobile or Email</string>
+    <string name="mobile_or_email">Mobile</string>
     <string name="login">Login</string>
     <string name="login_sname">"Login"</string>
     <string name="agentrequest_sname">"Agent Requests"</string>

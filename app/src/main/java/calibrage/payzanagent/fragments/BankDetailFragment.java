@@ -109,7 +109,7 @@ public class BankDetailFragment extends BaseFragment {
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isValidateUi()) {
+                //if (isValidateUi()) {
                     //    login();
                     agentBankDetails();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -124,7 +124,7 @@ public class BankDetailFragment extends BaseFragment {
                             .commit();*/
                     replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, IdProofFragment.TAG);
 
-                }
+               // }
 
                 //startActivity(new Intent(BankDetailsActivity.this,IdProofActivity.class));
             }
@@ -138,15 +138,28 @@ public class BankDetailFragment extends BaseFragment {
     }
 
 
+//    private void agentBankDetails() {
+//        agentBankInfo.setModifiedBy(CommonConstants.USERID);
+//        agentBankInfo.setModified(currentDatetime);
+//        agentBankInfo.setCreatedBy(CommonConstants.USERID);
+//        agentBankInfo.setCreated(currentDatetime);
+//        agentBankInfo.setIsActive(true);
+//        agentBankInfo.setAccountHolderName(straccountname);
+//        agentBankInfo.setAccountNumber(straccountno);
+//        agentBankInfo.setBankId(""+branchListResults.get(spinnerCustom_brach.getSelectedItemPosition()).getId());
+//        agentBankInfo.setAgentId(null);
+//        agentBankInfo.setId(0);
+//        addAgent.setAgentBankInfo(agentBankInfo);
+//    }
     private void agentBankDetails() {
         agentBankInfo.setModifiedBy(CommonConstants.USERID);
         agentBankInfo.setModified(currentDatetime);
         agentBankInfo.setCreatedBy(CommonConstants.USERID);
         agentBankInfo.setCreated(currentDatetime);
         agentBankInfo.setIsActive(true);
-        agentBankInfo.setAccountHolderName(straccountname);
-        agentBankInfo.setAccountNumber(straccountno);
-        agentBankInfo.setBankId(""+bankListResults.get(spinnerCustom_bank.getSelectedItemPosition()).getId());
+        agentBankInfo.setAccountHolderName("amithsai");
+        agentBankInfo.setAccountNumber("1263545474");
+        agentBankInfo.setBankId(""+15);
         agentBankInfo.setAgentId(null);
         agentBankInfo.setId(0);
         addAgent.setAgentBankInfo(agentBankInfo);

@@ -20,12 +20,7 @@ public class AddAgent implements Parcelable {
     @SerializedName("Password")
     @Expose
     private String password;
-    @SerializedName("MobileNumber")
-    @Expose
-    private String mobileNumber;
-    @SerializedName("Email")
-    @Expose
-    private String email;
+
     @SerializedName("AgentPersonalInfo")
     @Expose
     private AgentPersonalInfo agentPersonalInfo;
@@ -55,21 +50,7 @@ public class AddAgent implements Parcelable {
         this.password = password;
     }
 
-    public String getMobileNumber() {
-        return mobileNumber;
-    }
 
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public AgentPersonalInfo getAgentPersonalInfo() {
         return agentPersonalInfo;

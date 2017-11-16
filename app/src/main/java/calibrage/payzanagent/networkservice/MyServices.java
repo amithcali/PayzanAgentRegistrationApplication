@@ -13,6 +13,7 @@ import calibrage.payzanagent.model.LoginResponseModel;
 import calibrage.payzanagent.model.MandalModel;
 import calibrage.payzanagent.model.ProvinceModel;
 import calibrage.payzanagent.model.StatesModel;
+import calibrage.payzanagent.model.StatusCountModel;
 import calibrage.payzanagent.model.UpdateAgentRequestResponceModel;
 import calibrage.payzanagent.model.VillageModel;
 import retrofit2.http.Body;
@@ -66,5 +67,8 @@ public interface MyServices {
 
     @POST(ApiConstants.UPDATE_AGENT_REQUEST)
     Observable<UpdateAgentRequestResponceModel> AgentUpdateRequest(@Body JsonObject data);
+
+    @GET
+    Observable<StatusCountModel> UpdateStatusCount(@Url String url);
 
 }

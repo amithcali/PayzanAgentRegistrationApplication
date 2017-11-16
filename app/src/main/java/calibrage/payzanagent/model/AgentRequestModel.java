@@ -12,7 +12,7 @@ import java.util.List;
  * Created by Admin on 10/26/2017.
  */
 
-public class AgentRequestModel implements Parcelable{
+public class AgentRequestModel implements Parcelable {
     @SerializedName("ListResult")
     @Expose
     private List<ListResult> listResult = null;
@@ -91,6 +91,7 @@ public class AgentRequestModel implements Parcelable{
     }
 
     public class ListResult {
+
         @SerializedName("AgentRequestCategoryName")
         @Expose
         private String agentRequestCategoryName;
@@ -99,7 +100,7 @@ public class AgentRequestModel implements Parcelable{
         private String titleType;
         @SerializedName("CountryName")
         @Expose
-        private Object countryName;
+        private String countryName;
         @SerializedName("ProvinceName")
         @Expose
         private String provinceName;
@@ -112,6 +113,30 @@ public class AgentRequestModel implements Parcelable{
         @SerializedName("VillageName")
         @Expose
         private String villageName;
+        @SerializedName("StatusTypeId")
+        @Expose
+        private Integer statusTypeId;
+        @SerializedName("StatusType")
+        @Expose
+        private String statusType;
+        @SerializedName("AssignToUserId")
+        @Expose
+        private String assignToUserId;
+        @SerializedName("AssignToUserName")
+        @Expose
+        private Object assignToUserName;
+        @SerializedName("IsActive")
+        @Expose
+        private Boolean isActive;
+        @SerializedName("CreatedBy")
+        @Expose
+        private String createdBy;
+        @SerializedName("ModifiedBy")
+        @Expose
+        private String modifiedBy;
+        @SerializedName("Modified")
+        @Expose
+        private String modified;
         @SerializedName("Id")
         @Expose
         private Integer id;
@@ -126,7 +151,7 @@ public class AgentRequestModel implements Parcelable{
         private String firstName;
         @SerializedName("MiddleName")
         @Expose
-        private Object middleName;
+        private String middleName;
         @SerializedName("LastName")
         @Expose
         private String lastName;
@@ -171,11 +196,11 @@ public class AgentRequestModel implements Parcelable{
             this.titleType = titleType;
         }
 
-        public Object getCountryName() {
+        public String getCountryName() {
             return countryName;
         }
 
-        public void setCountryName(Object countryName) {
+        public void setCountryName(String countryName) {
             this.countryName = countryName;
         }
 
@@ -211,6 +236,70 @@ public class AgentRequestModel implements Parcelable{
             this.villageName = villageName;
         }
 
+        public Integer getStatusTypeId() {
+            return statusTypeId;
+        }
+
+        public void setStatusTypeId(Integer statusTypeId) {
+            this.statusTypeId = statusTypeId;
+        }
+
+        public String getStatusType() {
+            return statusType;
+        }
+
+        public void setStatusType(String statusType) {
+            this.statusType = statusType;
+        }
+
+        public String getAssignToUserId() {
+            return assignToUserId;
+        }
+
+        public void setAssignToUserId(String assignToUserId) {
+            this.assignToUserId = assignToUserId;
+        }
+
+        public Object getAssignToUserName() {
+            return assignToUserName;
+        }
+
+        public void setAssignToUserName(Object assignToUserName) {
+            this.assignToUserName = assignToUserName;
+        }
+
+        public Boolean getIsActive() {
+            return isActive;
+        }
+
+        public void setIsActive(Boolean isActive) {
+            this.isActive = isActive;
+        }
+
+        public String getCreatedBy() {
+            return createdBy;
+        }
+
+        public void setCreatedBy(String createdBy) {
+            this.createdBy = createdBy;
+        }
+
+        public String getModifiedBy() {
+            return modifiedBy;
+        }
+
+        public void setModifiedBy(String modifiedBy) {
+            this.modifiedBy = modifiedBy;
+        }
+
+        public String getModified() {
+            return modified;
+        }
+
+        public void setModified(String modified) {
+            this.modified = modified;
+        }
+
         public Integer getId() {
             return id;
         }
@@ -243,11 +332,11 @@ public class AgentRequestModel implements Parcelable{
             this.firstName = firstName;
         }
 
-        public Object getMiddleName() {
+        public String getMiddleName() {
             return middleName;
         }
 
-        public void setMiddleName(Object middleName) {
+        public void setMiddleName(String middleName) {
             this.middleName = middleName;
         }
 
@@ -322,6 +411,5 @@ public class AgentRequestModel implements Parcelable{
         public void setCreated(String created) {
             this.created = created;
         }
-
     }
 }

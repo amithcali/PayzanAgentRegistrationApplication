@@ -35,18 +35,39 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import calibrage.payzanagent.Calib.ext.GsonObjectRequest;
+import calibrage.payzanagent.Calib.ext.RequestManager;
+import calibrage.payzanagent.Calib.ui.IScreen;
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.CustomPhotoGalleryActivity;
 import calibrage.payzanagent.activity.HomeActivity;
@@ -55,11 +76,14 @@ import calibrage.payzanagent.model.AddAgent;
 import calibrage.payzanagent.model.AddAgentResponseModel;
 import calibrage.payzanagent.model.AgentDoc;
 import calibrage.payzanagent.model.LoginResponseModel;
+import calibrage.payzanagent.networkservice.ApiConstants;
 import calibrage.payzanagent.networkservice.MyServices;
 import calibrage.payzanagent.networkservice.ServiceFactory;
 import calibrage.payzanagent.utils.CommonConstants;
 import calibrage.payzanagent.utils.CommonUtil;
+import calibrage.payzanagent.utils.Event;
 import calibrage.payzanagent.utils.SharedPrefsData;
+import calibrage.payzanagent.utils.VolleyErrorListener;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
 import rx.Subscription;
@@ -70,7 +94,7 @@ import static android.app.Activity.RESULT_OK;
 import static android.provider.MediaStore.ACTION_IMAGE_CAPTURE;
 
 
-public class AggrementDocumentsFragment extends BaseFragment {
+public class AggrementDocumentsFragment extends BaseFragment implements IScreen {
 
     public static final String TAG = AggrementDocumentsFragment.class.getSimpleName();
 
@@ -130,7 +154,8 @@ public class AggrementDocumentsFragment extends BaseFragment {
         HomeActivity.toolbar.setTitle(getResources().getString(R.string.register_sname));
         HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
         currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
-
+        RequestManager.initializeWith(context, new RequestManager.Config("data/data/predento/pics",
+                5242880, 4));
 
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +168,12 @@ public class AggrementDocumentsFragment extends BaseFragment {
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addAgentRequest();
+                // showDialog(getActivity(), "Authenticating...");
+                // addAgentRequest();
+
+                getData(Event.AddAgent);
+
+                //  bookNowServices("http://192.168.1.160/PayZanAPI/api/Agent/AddAgent",getLoginObject());
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
             }
@@ -157,77 +187,118 @@ public class AggrementDocumentsFragment extends BaseFragment {
     }
 
 
-    private void addAgentRequest() {
-        showDialog(getActivity(), "Authenticating...");
-        JsonObject object = getLoginObject();
+//    private void addAgentRequest() {
+//        JsonObject object = getLoginObject();
+//
+//          Log.d(TAG, "addAgentRequest: "+object.toString());
+//        MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
+//        mRegisterSubscription = service.addAgent(object)
+//
+//                .subscribeOn(Schedulers.newThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<AddAgentResponseModel>() {
+//                    @Override
+//                    public void onCompleted() {
+//                        // Toast.makeText(getActivity(), "check", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        if (e instanceof HttpException) {
+//                            ((HttpException) e).code();
+//                            ((HttpException) e).message();
+//                            ((HttpException) e).response().errorBody();
+////                            try {
+//////                                ((HttpException) e).response().errorBody().string();
+//////                                CommonUtil.displayDialogWindow("Record Added Sucessfully", alertDialog, context);
+////                            } catch (IOException e1) {
+////                                e1.printStackTrace();
+////                            }
+// //                           e.printStackTrace();
+//                        }
+//                        Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+//                        hideDialog();
+//                    }
+//
+//                    @Override
+//                    public void onNext(AddAgentResponseModel addAgentResponseModel) {
+//                        hideDialog();
+//                        Toast.makeText(getActivity(), "sucess", Toast.LENGTH_SHORT).show();
+//                        CommonUtil.displayDialogWindow("Record Added Sucessfully", alertDialog, context);
+//                        //getActivity().finish();
+//                        //finish();
+//                    }
+//                });
+//    }
 
-        //  Log.d(TAG, "addAgentRequest: "+object.toString());
-        MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
-        mRegisterSubscription = service.addAgent(object)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<AddAgentResponseModel>() {
-                    @Override
-                    public void onCompleted() {
-                        // Toast.makeText(getActivity(), "check", Toast.LENGTH_SHORT).show();
-                    }
+    public static byte[] readPart(String fileName, long offset, int length) throws FileNotFoundException, Exception {
+        File f = new File(fileName);
+        Log.d(TAG, "readPart: Filesize:" + f.length());
+        byte[] data = new byte[(int) f.length()];
 
-                    @Override
-                    public void onError(Throwable e) {
-                        if (e instanceof HttpException) {
-                            ((HttpException) e).code();
-                            ((HttpException) e).message();
-                            ((HttpException) e).response().errorBody();
-//                            try {
-////                                ((HttpException) e).response().errorBody().string();
-////                                CommonUtil.displayDialogWindow("Record Added Sucessfully", alertDialog, context);
-//                            } catch (IOException e1) {
-//                                e1.printStackTrace();
-//                            }
- //                           e.printStackTrace();
-                        }
-                        Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
-                        hideDialog();
-                    }
-
-                    @Override
-                    public void onNext(AddAgentResponseModel addAgentResponseModel) {
-                        hideDialog();
-                        Toast.makeText(getActivity(), "sucess", Toast.LENGTH_SHORT).show();
-                        CommonUtil.displayDialogWindow("Record Added Sucessfully", alertDialog, context);
-                        //finish();
-                    }
-                });
+        File file = new File(fileName);
+        InputStream is = new FileInputStream(file);
+        is.skip(50);
+        is.read(data, 0, data.length);
+        is.close();
+        return data;
     }
 
-    private JsonObject getLoginObject() {
+    private String getLoginObject() {
         addDoc();
-        return new Gson().toJsonTree(addAgent)
-                .getAsJsonObject();
+        Log.d(TAG, "getLoginObject: " + new Gson().toJson(addAgent));
+        return
+                new Gson().toJson(addAgent);
     }
 
     private void addDoc() {
-        List<AgentDoc> agentDocList =new ArrayList<>();
+        byte[] dataimage = null;
+        List<AgentDoc> agentDocList = new ArrayList<>();
         for (int i = 0; i < imagesArrayList.size(); i++) {
             AgentDoc agentDoc = new AgentDoc();
-            agentDoc.setAgentId("");
+            agentDoc.setAgentId(null);
             agentDoc.setCreated(currentDatetime);
             agentDoc.setCreatedBy(CommonConstants.USERID);
-            agentDoc.setFileBytes(getImageByteArray(imagesArrayList.get(i)));
+
+            byte[] data = getImageByteArray(imageUri);
+
+            String value = Base64.encodeToString(data, Base64.DEFAULT);
+
+
+            byte[] output = value.getBytes();
+
+
+            agentDoc.setFileBytes(output);
+
+          /*  try {
+
+               dataimage=readPart(imageurl,100,1000);
+                Log.d(TAG, "addDoc: imageurl :"+ dataimage.length);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+              //  agentDoc.setFileBytes(readPart(imageurl,100,10));
+                String value = Base64.encodeToString(dataimage, Base64.DEFAULT);
+                agentDoc.setFileBytes(value.getBytes());
+                Log.d(TAG, "addDoc: value.getBytes()"+value);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }*/
             agentDoc.setFileExtension(".jpg");
             agentDoc.setFileName("agentappdoc");
             agentDoc.setFileTypeId(Integer.parseInt(CommonConstants.FILE_TYPE_ID_IMAGES));
             agentDoc.setModified(currentDatetime);
             agentDoc.setModifiedBy(CommonConstants.USERID);
             agentDoc.setIsActive(true);
-            agentDoc.setFileLocation("");
-           //addAgent.setAgentDocs(agentDoc);
+            agentDoc.setFileLocation("amith");
+            //addAgent.setAgentDocs(agentDoc);
             agentDocList.add(agentDoc);
         }
         addAgent.setAgentDocs(agentDocList);
-
-
     }
+
 
     private void startDialog() {
         final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
@@ -320,6 +391,97 @@ public class AggrementDocumentsFragment extends BaseFragment {
 //        }
     }
 
+    private byte[] testing(String imageurl) {
+        byte[] b = null;
+        File f = new File(imageurl);
+
+
+        return b;
+    }
+
+    public byte[] getImageByteArray(Uri uri) {
+        try {
+            if (uri != null) {
+                Bitmap bm = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bm.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+
+                return stream.toByteArray();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+//    public void bookNowServices(String url, JsonObject jsonRequest) {
+//
+//        RequestQueue queue = Volley.newRequestQueue(context);
+//
+//        JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, url, jsonRequest,
+//                new Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject jsonRequest) {
+//                        Log.e("AAAAAAAAAAA", "" + jsonRequest);
+//                      //  response(jsonRequest);
+//                    }
+//                },
+//
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        //   Handle Error
+//                        Log.e("error", "" + error);
+//                    }
+//                }) {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                HashMap<String, String> headers = new HashMap<>();
+//                headers.put("Content-Type", "application/json; charset=utf-8");
+//                return headers;
+//            }
+//
+//
+//            @Override
+//            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+//
+//                if (response.statusCode == 200) {
+//                    Log.e("statusCode", "statusCode " + response.statusCode);
+//
+//                    getActivity().runOnUiThread(new Runnable() {
+//                        public void run() {
+//
+//                        }
+//                    });
+//                }
+//
+//                return super.parseNetworkResponse(response);
+//            }
+//
+//            @Override
+//            protected VolleyError parseNetworkError(VolleyError volleyError) {
+//
+//                getActivity().runOnUiThread(new Runnable() {
+//                    public void run() {
+//
+//                    }
+//                });
+//
+//                return super.parseNetworkError(volleyError);
+//            }
+//        };
+//
+//        postRequest.setRetryPolicy(new DefaultRetryPolicy(
+//                15000,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//
+//        queue.add(postRequest);
+//    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -402,6 +564,7 @@ public class AggrementDocumentsFragment extends BaseFragment {
                     e.printStackTrace();
                 }
                 for (int i = 0; i < imagesPath.length; i++) {
+                    imageurl = imagesPath[i];
                     imagesPathList.add(imagesPath[i]);
                     yourbitmap = BitmapFactory.decodeFile(imagesPath[i]);
                     imagesArrayList.add(yourbitmap);
@@ -452,20 +615,21 @@ public class AggrementDocumentsFragment extends BaseFragment {
     }
 
     public byte[] getImageByteArray(Bitmap bitmap) {
+        byte[] bytes = null;
         try {
             if (bitmap != null) {
 //                Bitmap bm = MediaStore.Images.Media.getBitmap(context.getApplicationContext().getContentResolver(), uri);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
-
-                return stream.toByteArray();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                bytes = stream.toByteArray();
+                return bytes;
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+            bytes = null;
         }
-
-        return null;
+        return bytes;
     }
 
     public String getRealPathFromURI(Uri contentUri) {
@@ -475,6 +639,36 @@ public class AggrementDocumentsFragment extends BaseFragment {
                 .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
+    }
+
+    @Override
+    public void updateUi(boolean status, int actionID, Object serviceResponse) {
+        if (serviceResponse instanceof AddAgentResponseModel) {
+
+        }
+    }
+
+    @Override
+    public void onEvent(int eventId, Object eventData) {
+
+
+    }
+
+    @Override
+    public void getData(int actionID) {
+        HashMap<String, String> reqHeader = new HashMap<String, String>();
+        reqHeader.put("Content-Type", "application/json; charset=utf-8");
+
+        RequestManager.addRequest(new GsonObjectRequest<AddAgentResponseModel>
+                ("http://192.168.1.160/PayZanAPI/api/Agent/AddAgent", reqHeader, getLoginObject(),
+                        AddAgentResponseModel.class, new VolleyErrorListener(this,
+                        Event.AddAgent)) {
+
+            @Override
+            protected void deliverResponse(AddAgentResponseModel response) {
+                updateUi(true, Event.AddAgent, response);
+            }
+        });
     }
 }
 

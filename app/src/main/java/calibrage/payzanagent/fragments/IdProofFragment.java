@@ -110,7 +110,7 @@ public class IdProofFragment extends BaseFragment {
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isValidateUi()) {
+                //if (isValidateUi()) {
                    addIdProofDetails();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
@@ -126,7 +126,7 @@ public class IdProofFragment extends BaseFragment {
 
                     replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, AggrementDocumentsFragment.TAG);
 
-                }
+               // }
 
                 //startActivity(new Intent(BankDetailsActivity.this,IdProofActivity.class));
             }
@@ -176,8 +176,8 @@ public class IdProofFragment extends BaseFragment {
         agentIdProof.setCreated(currentDatetime);
         agentIdProof.setCreatedBy(CommonConstants.USERID);
         agentIdProof.setIsActive(true);
-        agentIdProof.setIdProofTypeId(businessListResults.get(spinnerCustom_personalId.getSelectedItemPosition()-1).getId());
-        agentIdProof.setIdProofNumber(personalIdNumber);
+        agentIdProof.setIdProofTypeId(25);
+        agentIdProof.setIdProofNumber("11254232");
         agentFinancialProof.setModified(currentDatetime);
         agentFinancialProof.setModifiedBy(CommonConstants.USERID);
         agentFinancialProof.setIsActive(true);
@@ -185,13 +185,39 @@ public class IdProofFragment extends BaseFragment {
         agentFinancialProof.setAgentId(null);
         agentFinancialProof.setCreated(currentDatetime);
         agentFinancialProof.setCreatedBy(CommonConstants.USERID);
-        agentFinancialProof.setIdProofTypeId(financialListResults.get(spinnerCustom_finacialId.getSelectedItemPosition()-1).getId());
-        agentFinancialProof.setIdProofNumber(financialIdNumber);
+        agentFinancialProof.setIdProofTypeId(27);
+        agentFinancialProof.setIdProofNumber("0987654321");
                 agentIdProofArrayList.add(agentIdProof);
                 agentIdProofArrayList.add(agentFinancialProof);
         addAgent.setAgentIdProofs(agentIdProofArrayList);
 
     }
+//    private void addIdProofDetails() {
+//
+//       agentIdProof.setModified(currentDatetime);
+//        agentIdProof.setModifiedBy(CommonConstants.USERID);
+//        agentIdProof.setIsActive(true);
+//        agentIdProof.setId(0);
+//        agentIdProof.setAgentId(null);
+//        agentIdProof.setCreated(currentDatetime);
+//        agentIdProof.setCreatedBy(CommonConstants.USERID);
+//        agentIdProof.setIsActive(true);
+//        agentIdProof.setIdProofTypeId(businessListResults.get(spinnerCustom_personalId.getSelectedItemPosition()-1).getId());
+//        agentIdProof.setIdProofNumber(personalIdNumber);
+//        agentFinancialProof.setModified(currentDatetime);
+//        agentFinancialProof.setModifiedBy(CommonConstants.USERID);
+//        agentFinancialProof.setIsActive(true);
+//        agentFinancialProof.setId(0);
+//        agentFinancialProof.setAgentId(null);
+//        agentFinancialProof.setCreated(currentDatetime);
+//        agentFinancialProof.setCreatedBy(CommonConstants.USERID);
+//        agentFinancialProof.setIdProofTypeId(financialListResults.get(spinnerCustom_finacialId.getSelectedItemPosition()-1).getId());
+//        agentFinancialProof.setIdProofNumber(financialIdNumber);
+//                agentIdProofArrayList.add(agentIdProof);
+//                agentIdProofArrayList.add(agentFinancialProof);
+//        addAgent.setAgentIdProofs(agentIdProofArrayList);
+//
+//    }
 
     private boolean isValidateUi() {
         boolean status = true;

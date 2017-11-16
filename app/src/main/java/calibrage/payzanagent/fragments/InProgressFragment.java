@@ -72,7 +72,7 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         fragmentManager = getActivity().getSupportFragmentManager();
-        getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_IN_PROGRESS);
+        getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_IN_PROGRESS+","+CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW);
 
         return view;
     }

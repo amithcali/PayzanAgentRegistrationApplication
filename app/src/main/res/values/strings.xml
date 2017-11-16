@@ -49,6 +49,7 @@
     <string name="pick_btn">Pick</string>
     <string name="add_btn">Add</string>
     <string name="hold_btn">Hold</string>
+    <string name="review">Review</string>
     <string name="submit_btn">Submit</string>
     <string name="agent_name">Agent Name</string>
     <string name="logout_menu">Logout</string>

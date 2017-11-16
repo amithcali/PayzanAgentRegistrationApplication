@@ -48,7 +48,7 @@ public class ServiceFactory {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(90, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS);
 
         //Enable log in debug mode

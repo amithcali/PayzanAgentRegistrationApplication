@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.interfaces.RequestClickListiner;
 import calibrage.payzanagent.model.AgentRequestModel;
+import calibrage.payzanagent.utils.CommonConstants;
 
 /**
  * Created by Admin on 11/2/2017.
@@ -74,24 +75,33 @@ public class InProgressRequetAdapter extends RecyclerView.Adapter<InProgressRequ
             holder.tvEmail.setText(email);
         }
 
+        if(data.get(holder.getAdapterPosition()).getStatusTypeId()== Integer.parseInt(CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW)){
+            holder.tvReview.setVisibility(View.VISIBLE);
+            holder.btnPick.setVisibility(View.GONE);
+        }else{
+            holder.tvReview.setVisibility(View.GONE);
+            holder.btnPick.setVisibility(View.VISIBLE);
+        }
 
         //  holder.tvBusinessCategory.setText(data.get(holder.getAdapterPosition()).getAddressLine1());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition(),true);
-            }
-        }); holder.btnPick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition(),true);
-            }
-        }); holder.btnHold.setOnClickListener(new View.OnClickListener() {
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition(),true);
+//            }
+//        })
+        ; holder.btnPick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition(),true);
             }
         });
+//        holder.btnHold.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition(),true);
+//            }
+//        });
 
 
     }
@@ -101,7 +111,7 @@ public class InProgressRequetAdapter extends RecyclerView.Adapter<InProgressRequ
         return data.size();
     }
     public class MyHolder extends RecyclerView.ViewHolder  {
-        TextView tvAgentName,tvBusinessCategory,tvEmail,tvMobileNumber,tvAddress;
+        TextView tvAgentName,tvBusinessCategory,tvEmail,tvMobileNumber,tvAddress,tvReview;
         Button btnPick,btnHold;
         public MyHolder(View itemView) {
             super(itemView);
@@ -109,9 +119,11 @@ public class InProgressRequetAdapter extends RecyclerView.Adapter<InProgressRequ
             //    tvBusinessCategory=(TextView)itemView.findViewById(R.id.tracking_list_businesscategory);
             tvMobileNumber = (TextView)itemView.findViewById(R.id.tracking_list_mobilenumber);
             tvEmail = (TextView)itemView.findViewById(R.id.tracking_list_email);
+            tvEmail = (TextView)itemView.findViewById(R.id.tracking_list_email);
+            tvReview=(TextView)itemView.findViewById(R.id.review_txt);
             tvAddress=(TextView)itemView.findViewById(R.id.tracking_list_address);
             btnPick = (Button)itemView.findViewById(R.id.btn_pick);
-            btnHold = (Button)itemView.findViewById(R.id.btn_hold);
+           // btnHold = (Button)itemView.findViewById(R.id.btn_hold);
            /* btnPick.setOnClickListener(this);
             btnHold.setOnClickListener(this);*/
         }

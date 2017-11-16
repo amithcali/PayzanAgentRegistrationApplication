@@ -223,7 +223,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
             @Override
             public void onClick(View v) {
        //         replaceFragment(getActivity(), MAIN_CONTAINER, new BankDetailFragment(), TAG, BankDetailFragment.TAG);
-                if (isValidateUi()) {
+                //if (isValidateUi()) {
                    addAgentPersonalInfo();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
@@ -234,7 +234,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                     replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, BankDetailFragment.TAG);
 
 
-                }
+               // }
 
                 // startActivity(new Intent(RegistrationView.this, BankDetailsActivity.class));
             }
@@ -688,33 +688,75 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         });
     }*/
 
-
+//
+//    private void addAgentPersonalInfo() {
+////        addAgent.setEmail();
+////        addAgent.setMobileNumber();
+//        addAgent.setPassword(strpass);
+//        addAgent.setUserName(strusername);
+//        agentPersonalInfo.setFirstName(stragentname);
+//        agentPersonalInfo.setPhone(strmobile);
+//        agentPersonalInfo.setAgentBusinessCategoryId(businessListResults.get(spinnerCustom.getSelectedItemPosition()-1).getId());
+//        agentPersonalInfo.setEmail(stremail);
+//        agentPersonalInfo.setAddress1(straddress1);
+//        agentPersonalInfo.setAddress2(straddress2);
+//        agentPersonalInfo.setEmail(stremail);
+//        agentPersonalInfo.setPhone(strmobile);
+//        if (isNewAgent){
+//            agentPersonalInfo.setAgentRequestId(null);
+//            Log.d(TAG, "addAgentPersonalInfo: "+"  printing nulllll");
+//        }else {
+//            agentPersonalInfo.setAgentRequestId(intAgentRequestId);
+//            Log.d(TAG, "addAgentPersonalInfo: "+intAgentRequestId);
+//        }
+//        agentPersonalInfo.setLandmark(strlandmark);
+//        agentPersonalInfo.setIsActive(true);
+//        agentPersonalInfo.setAspNetUserId("test");
+//        agentPersonalInfo.setTitleTypeId(titleListResults.get(spinnerTitleType.getSelectedItemPosition()-1).getId());
+//        agentPersonalInfo.setGenderTypeId(20);
+//        agentPersonalInfo.setVillageId(villageListResults.get(spinnerVillage.getSelectedItemPosition()).getId());
+//        agentPersonalInfo.setParentAspNetUserId(null);
+//        agentPersonalInfo.setId(0);
+//        agentPersonalInfo.setMiddleName(" ");
+//        agentPersonalInfo.setLastName(" ");
+//        agentPersonalInfo.setDOB("2017-10-30T17:15:42.569Z");
+//        agentPersonalInfo.setIsActive(true);
+//        agentPersonalInfo.setCreated(currentDatetime);
+//        agentPersonalInfo.setCreatedBy(CommonConstants.USERID);
+//        agentPersonalInfo.setModified(currentDatetime);
+//        agentPersonalInfo.setModifiedBy(CommonConstants.USERID);
+//        agentPersonalInfo.setFirstName(stragentname);
+//
+//        addAgent.setAgentPersonalInfo(agentPersonalInfo);
+//        Log.d(TAG, "addAgentPersonalInfo: "+addAgent.toString());
+//
+//    }
     private void addAgentPersonalInfo() {
 //        addAgent.setEmail();
 //        addAgent.setMobileNumber();
-        addAgent.setPassword(strpass);
-        addAgent.setUserName(strusername);
-        agentPersonalInfo.setFirstName(stragentname);
-        agentPersonalInfo.setPhone(strmobile);
-        agentPersonalInfo.setAgentBusinessCategoryId(businessListResults.get(spinnerCustom.getSelectedItemPosition()-1).getId());
-        agentPersonalInfo.setEmail(stremail);
-        agentPersonalInfo.setAddress1(straddress1);
-        agentPersonalInfo.setAddress2(straddress2);
-        agentPersonalInfo.setEmail(stremail);
-        agentPersonalInfo.setPhone(strmobile);
+        addAgent.setPassword("Amith123@");
+        addAgent.setUserName("8121090790");
+        agentPersonalInfo.setFirstName("amith");
+        agentPersonalInfo.setPhone("8121098703");
+        agentPersonalInfo.setAgentBusinessCategoryId(14);
+        agentPersonalInfo.setEmail("amith12345677@gmail.com");
+        agentPersonalInfo.setAddress1("amith");
+        agentPersonalInfo.setAddress2("amith");
+        agentPersonalInfo.setEmail("amith");
+        agentPersonalInfo.setPhone("8121098723");
         if (isNewAgent){
             agentPersonalInfo.setAgentRequestId(null);
             Log.d(TAG, "addAgentPersonalInfo: "+"  printing nulllll");
         }else {
-            agentPersonalInfo.setAgentRequestId(intAgentRequestId);
+            agentPersonalInfo.setAgentRequestId(10);
             Log.d(TAG, "addAgentPersonalInfo: "+intAgentRequestId);
         }
-        agentPersonalInfo.setLandmark(strlandmark);
+        agentPersonalInfo.setLandmark("amith");
         agentPersonalInfo.setIsActive(true);
         agentPersonalInfo.setAspNetUserId("test");
-        agentPersonalInfo.setTitleTypeId(titleListResults.get(spinnerTitleType.getSelectedItemPosition()-1).getId());
+        agentPersonalInfo.setTitleTypeId(17);
         agentPersonalInfo.setGenderTypeId(20);
-        agentPersonalInfo.setVillageId(villageListResults.get(spinnerVillage.getSelectedItemPosition()).getId());
+        agentPersonalInfo.setVillageId(6);
         agentPersonalInfo.setParentAspNetUserId(null);
         agentPersonalInfo.setId(0);
         agentPersonalInfo.setMiddleName(" ");

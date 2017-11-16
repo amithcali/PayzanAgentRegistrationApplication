@@ -114,7 +114,7 @@
                     android:layout_marginBottom="@dimen/edt_bottom_margin"
                     android:background="@drawable/roundededittext"
                     android:gravity="center_vertical"
-                    android:hint="Shift Code"
+                    android:hint="@string/select_shift_code"
                     android:maxLength="30"
                     android:imeOptions="actionDone"
                     android:paddingLeft="@dimen/edt_text_pading_left"

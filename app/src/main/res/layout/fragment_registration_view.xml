@@ -219,6 +219,7 @@
                         android:id="@+id/edt_mobileno"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/edt_height"
+                        android:digits="0123456789"
                         android:layout_marginBottom="@dimen/edt_bottom_margin"
                         android:background="@drawable/roundededittext"
                         android:gravity="center_vertical"

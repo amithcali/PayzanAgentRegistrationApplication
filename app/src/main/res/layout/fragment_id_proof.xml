@@ -32,7 +32,7 @@
             <calibrage.payzanagent.controls.CommonTextView
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/spinnertext_height"
-                android:text="Personal Id Proofs"
+                android:text="@string/personal_identity_proof"
                 android:textColor="@color/DarkRed"
                 android:textSize="@dimen/edt_FontSize" />
 
@@ -80,7 +80,7 @@
             <calibrage.payzanagent.controls.CommonTextView
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/spinnertext_height"
-                android:text="Financial Id Proofs"
+                android:text="@string/financial_identity_proof"
                 android:textColor="@color/DarkRed"
                 android:textSize="@dimen/edt_FontSize" />
 

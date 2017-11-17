@@ -68,7 +68,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         });
         context = this.getActivity();
         userid = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("userid");
-        getRequestCount(userid);
+        if (isOnline(getActivity())) {
+            getRequestCount(userid);
+        } else {
+            showToast(getActivity(), getString(R.string.no_internet));
+        }
         txtCount1 = (TextView) view.findViewById(R.id.txt_count1);
         txtCount2 = (TextView)view.findViewById(R.id.txt_count2);
         txtCount3 = (TextView)view.findViewById(R.id.txt_count3);

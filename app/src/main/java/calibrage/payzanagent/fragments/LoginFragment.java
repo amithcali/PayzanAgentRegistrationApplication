@@ -111,13 +111,20 @@ public class LoginFragment extends BaseFragment {
            //    startActivity(new Intent(LoginActivity.this,AgentRequestsFragment.class));
              //   login();
               // ReplcaFragment(new AgentRequestsFragment());
-                if (isValidateUi()) {
-                    login();
-                    dateAndtime();
-                   // replaceFragment(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);
+                if (isOnline(getActivity())) {
 
-                    // ReplcaFragment(new AgentRequestsFragment());
+                    if (isValidateUi()) {
+                        login();
+                        dateAndtime();
+                        // replaceFragment(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);
+
+                        // ReplcaFragment(new AgentRequestsFragment());
+                    }
+
+                } else {
+                    showToast(getActivity(), getString(R.string.no_internet));
                 }
+
 
 
             }

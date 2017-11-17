@@ -43,7 +43,7 @@ tools:context="calibrage.payzanagent.fragments.AggrementDocumentsFragment">
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"
-                        android:text="226"
+                        android:text=" "
                         android:textColor="@color/white"
                         android:textSize="30dp" />
                     <TextView
@@ -78,7 +78,7 @@ tools:context="calibrage.payzanagent.fragments.AggrementDocumentsFragment">
                         android:id="@+id/txt_count2"
                         android:layout_marginTop="20dp"
                         android:layout_height="wrap_content"
-                        android:text="11012"
+                        android:text=" "
                         android:textSize="30dp"
                         android:layout_gravity="center_horizontal"/>
                     <TextView
@@ -121,7 +121,7 @@ tools:context="calibrage.payzanagent.fragments.AggrementDocumentsFragment">
                         android:layout_height="wrap_content"
                         android:id="@+id/txt_count3"
                         android:layout_marginTop="20dp"
-                        android:text="524"
+                        android:text=" "
                         android:textSize="30dp"
                         android:layout_gravity="center_horizontal"/>
                     <TextView
@@ -157,7 +157,7 @@ tools:context="calibrage.payzanagent.fragments.AggrementDocumentsFragment">
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:id="@+id/txt_count4"
-                        android:text="1929"
+                        android:text=" "
                         android:textSize="30dp"
                         android:layout_gravity="center_horizontal"/>
                     <TextView

@@ -39,7 +39,7 @@
     <dimen name="img_width">80dp</dimen>
 
     <!-- comments box-->
-    <dimen name="comments_box_height">120dp</dimen>
+    <dimen name="comments_box_height">200dp</dimen>
     <dimen name="comments_box_width">250dp</dimen>
 
     <!--Header View Sizes-->
@@ -84,4 +84,7 @@
     <dimen name="tenDp">10dp</dimen>
     <dimen name="leven">11dp</dimen>
     <dimen name="tweleveDP">12dp</dimen>
+
+    <dimen name="comentboxWidth" >250dp</dimen>
+    <dimen name="comentboxheight" >100dp</dimen>
 </resources>

@@ -72,6 +72,7 @@ public class BankDetailFragment extends BaseFragment {
     private AddAgent addAgent;
     private String straccountname,straccountno,strshiftcode,currentDatetime;
     private AgentBankInfo agentBankInfo;
+    BankDetailFragment.CustomSpinnerAdapter customSpinnerAdapter;
 
 
     public BankDetailFragment() {
@@ -96,6 +97,7 @@ public class BankDetailFragment extends BaseFragment {
         currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
         agentBankInfo = new AgentBankInfo();
         initCustomSpinner_bank();
+
         getRequestBank(CommonConstants.BANK_CATEGORY_ID);
         initCustomSpinner_branch();
 
@@ -229,10 +231,23 @@ public class BankDetailFragment extends BaseFragment {
                         hideDialog();
                         Log.d("response", branch.getIsSuccess().toString());
                         branchListResults = (ArrayList<Branch.ListResult>) branch.getListResult();
-                        for (int i = 0; i < branch.getListResult().size(); i++) {
-                            branchArrayList.add(branch.getListResult().get(i).getBranchName());
+
+                        branchArrayList = new ArrayList();
+                        if(branch.getListResult().size()>0){
+                            for (int i = 0; i < branch.getListResult().size(); i++) {
+                                branchArrayList.add(branch.getListResult().get(i).getBranchName());
+                            }
+                        }else{
+                            branchArrayList.clear();
+                            customSpinnerAdapter.notifyDataSetChanged();
+                            shiftCode.setText("");
                         }
-                        BankDetailFragment.CustomSpinnerAdapter customSpinnerAdapter = new BankDetailFragment.CustomSpinnerAdapter(getActivity(), branchArrayList, false);
+
+
+
+
+
+                        customSpinnerAdapter = new BankDetailFragment.CustomSpinnerAdapter(getActivity(), branchArrayList, false);
                         spinnerCustom_brach.setAdapter(customSpinnerAdapter);
 
                     }

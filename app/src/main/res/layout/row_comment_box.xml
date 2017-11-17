@@ -34,37 +34,37 @@
         android:textColor="#000"
         android:textStyle="bold" />
 
-  <!--  <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/comment_round_corner"
-        android:orientation="horizontal">
+    <!--  <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="50dp"
+          android:background="@drawable/comment_round_corner"
+          android:orientation="horizontal">
 
-    &lt;!&ndash;    <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#d8d8d8"
-            android:text="Cancel"
-            android:textAllCaps="false"
-            android:textColor="#000"
-            android:textStyle="bold" />&ndash;&gt;
-&lt;!&ndash;
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/Maroon" />&ndash;&gt;
+      &lt;!&ndash;    <Button
+              android:id="@+id/btnCancel"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_weight="1"
+              android:background="#d8d8d8"
+              android:text="Cancel"
+              android:textAllCaps="false"
+              android:textColor="#000"
+              android:textStyle="bold" />&ndash;&gt;
+  &lt;!&ndash;
+          <View
+              android:layout_width="1dp"
+              android:layout_height="match_parent"
+              android:background="@color/Maroon" />&ndash;&gt;
 
-        <Button
-            android:id="@+id/btnDone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#d8d8d8"
-            android:text="Submit"
-            android:textAllCaps="false"
-            android:textColor="#000"
-            android:textStyle="bold" />
-    </LinearLayout>-->
+          <Button
+              android:id="@+id/btnDone"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_weight="1"
+              android:background="#d8d8d8"
+              android:text="Submit"
+              android:textAllCaps="false"
+              android:textColor="#000"
+              android:textStyle="bold" />
+      </LinearLayout>-->
 </LinearLayout>

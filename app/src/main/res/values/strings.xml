@@ -36,6 +36,8 @@
     <string name="village_str">village Name</string>
     <string name="address">Address</string>
     <string name="address_1">Address 1</string>
+    <string name="no_internet">No Internet Connection</string>
+
     <string name="address_2">Address 2</string>
     <string name="land_mark">Land Mark</string>
     <string name="state">State</string>

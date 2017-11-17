@@ -125,6 +125,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
     ArrayList<String> villageArrayList = new ArrayList<String>();
     private ArrayList<VillageModel.ListResult> villageListResults = new ArrayList<>();
+    RegistrationViewFragment.CustomSpinnerAdapter customSpinnerAdapter;
 
     public RegistrationViewFragment() {
         // Required empty public constructor
@@ -155,16 +156,21 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         initDistrictSpinner();
         initMandalSpinner();
         initVillageSpinner();
-        getRequest(CommonConstants.BUSINESS_CATEGORY_ID);
-        getRequestTitle(CommonConstants.TITLE_ID);
-        getRequestProvince(CommonConstants.PROVINCE_NAME);
+
+
+
+        if (isOnline(getActivity())) {
+            getRequest(CommonConstants.BUSINESS_CATEGORY_ID);
+            getRequestTitle(CommonConstants.TITLE_ID);
+            getRequestProvince(CommonConstants.PROVINCE_NAME);
+        } else {
+            showToast(getActivity(), getString(R.string.no_internet));
+        }
+
         listResults = new ArrayList();
         listResultArrayList = new ArrayList();
         titleResultArrayList = new ArrayList();
         provinceArrayList = new ArrayList();
-        districtArrayList = new ArrayList();
-        mandalArrayList = new ArrayList();
-        villageArrayList = new ArrayList();
         addAgent = new AddAgent();
         agentPersonalInfo = new AgentPersonalInfo();
         currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
@@ -307,6 +313,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                 //    Toast.makeText(parent.getContext(), "bankkkkkkk" +bankId, Toast.LENGTH_LONG).show();
                 if(!mandalListResults.isEmpty()){
                     mandalId =  mandalListResults.get((int) parent.getSelectedItemId()).getId();
+
                     getRequestVillage(String.valueOf(mandalId));
                 }else {
                     Toast.makeText(parent.getContext(), "Input Not Valid", Toast.LENGTH_LONG).show();
@@ -352,13 +359,22 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                     public void onNext(VillageModel villageModel) {
                         Log.d("response", villageModel.getIsSuccess().toString());
                         villageListResults = (ArrayList<VillageModel.ListResult>) villageModel.getListResult();
-                        //   bankArrayList.add(0,"--Select Bank--");
-                        for (int i = 0; i < villageModel.getListResult().size(); i++) {
-                            villageArrayList.add(villageModel.getListResult().get(i).getName());
 
+
+                        villageArrayList = new ArrayList();
+                        if(villageModel.getListResult().size()>0){
+
+                            for (int i = 0; i < villageModel.getListResult().size(); i++) {
+                                villageArrayList.add(villageModel.getListResult().get(i).getName());
+
+                            }
+                        }else{
+                            villageArrayList.clear();
+                            edtPincode.setText(" ");
+                            customSpinnerAdapter.notifyDataSetChanged();
                         }
 
-                        RegistrationViewFragment.CustomSpinnerAdapter customSpinnerAdapter = new RegistrationViewFragment.CustomSpinnerAdapter(getActivity(), villageArrayList);
+                       customSpinnerAdapter = new RegistrationViewFragment.CustomSpinnerAdapter(getActivity(), villageArrayList);
                         spinnerVillage.setAdapter(customSpinnerAdapter);
                     }
 
@@ -377,6 +393,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                 //    Toast.makeText(parent.getContext(), "bankkkkkkk" +bankId, Toast.LENGTH_LONG).show();
                 if(!districtListResults.isEmpty()){
                     districtId =  districtListResults.get((int) parent.getSelectedItemId()).getId();
+
                     getRequestMandal(String.valueOf(districtId));
                 }else {
                     Toast.makeText(parent.getContext(), "Input Not Valid", Toast.LENGTH_LONG).show();
@@ -423,13 +440,23 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                     public void onNext(MandalModel mandalModel) {
                         Log.d("response", mandalModel.getIsSuccess().toString());
                         mandalListResults = (ArrayList<MandalModel.ListResult>) mandalModel.getListResult();
-                        //   bankArrayList.add(0,"--Select Bank--");
-                        for (int i = 0; i < mandalModel.getListResult().size(); i++) {
-                            mandalArrayList.add(mandalModel.getListResult().get(i).getName());
 
+                        mandalArrayList = new ArrayList();
+                        if(mandalModel.getListResult().size()>0){
+
+                            for (int i = 0; i < mandalModel.getListResult().size(); i++) {
+                                mandalArrayList.add(mandalModel.getListResult().get(i).getName());
+
+                            }
+                        }else{
+                            mandalArrayList.clear();
+                            villageArrayList.clear();
+                            edtPincode.setText(" ");
+                            customSpinnerAdapter.notifyDataSetChanged();
                         }
 
-                        RegistrationViewFragment.CustomSpinnerAdapter customSpinnerAdapter = new RegistrationViewFragment.CustomSpinnerAdapter(getActivity(), mandalArrayList);
+
+                        customSpinnerAdapter = new RegistrationViewFragment.CustomSpinnerAdapter(getActivity(), mandalArrayList);
                         spinnerMandal.setAdapter(customSpinnerAdapter);
                     }
 
@@ -468,13 +495,13 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                     public void onNext(ProvinceModel provinceModel) {
                         Log.d("response", provinceModel.getIsSuccess().toString());
                         provinceListResults = (ArrayList<ProvinceModel.ListResult>) provinceModel.getListResult();
-                        //   bankArrayList.add(0,"--Select Bank--");
+                      //  provinceArrayList.add(0,"--Select Proviance--");
                         for (int i = 0; i < provinceModel.getListResult().size(); i++) {
                             provinceArrayList.add(provinceModel.getListResult().get(i).getName());
 
                         }
 
-                        RegistrationViewFragment.CustomSpinnerAdapter customSpinnerAdapter = new RegistrationViewFragment.CustomSpinnerAdapter(getActivity(), provinceArrayList);
+                        customSpinnerAdapter = new RegistrationViewFragment.CustomSpinnerAdapter(getActivity(), provinceArrayList);
                         spinnerProivne.setAdapter(customSpinnerAdapter);
                     }
 
@@ -491,7 +518,8 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
                 String item = parent.getItemAtPosition(position).toString();
                if(!provinceListResults.isEmpty()){
-                   provinceId =  provinceListResults.get((int) parent.getSelectedItemId()).getId();
+                   provinceId =  provinceListResults.get((int) (parent.getSelectedItemId())).getId();
+
                    getRequestDistrict(String.valueOf(provinceId));
                }else {
                    Toast.makeText(parent.getContext(), "Input Not Valid", Toast.LENGTH_LONG).show();
@@ -542,12 +570,22 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                         Log.d("response", districtModel.getIsSuccess().toString());
                         districtListResults = (ArrayList<DistrictModel.ListResult>) districtModel.getListResult();
                         //   bankArrayList.add(0,"--Select Bank--");
-                        for (int i = 0; i < districtModel.getListResult().size(); i++) {
-                            districtArrayList.add(districtModel.getListResult().get(i).getName());
+                        districtArrayList = new ArrayList();
+                        if(districtModel.getListResult().size()>0){
+                            for (int i = 0; i < districtModel.getListResult().size(); i++) {
+                                districtArrayList.add(districtModel.getListResult().get(i).getName());
 
+                            }
+                        }else{
+                            districtArrayList.clear();
+                            mandalArrayList.clear();
+                            villageArrayList.clear();
+                            edtPincode.setText(" ");
+                            customSpinnerAdapter.notifyDataSetChanged();
                         }
 
-                        RegistrationViewFragment.CustomSpinnerAdapter customSpinnerAdapter = new RegistrationViewFragment.CustomSpinnerAdapter(getActivity(), districtArrayList);
+
+                        customSpinnerAdapter = new RegistrationViewFragment.CustomSpinnerAdapter(getActivity(), districtArrayList);
                         spinnerDistrict.setAdapter(customSpinnerAdapter);
                     }
 
@@ -795,8 +833,9 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 /*  if (spinnerCustom.getSelectedItemPosition() == 0) {
             status = false;
              Toast.makeText(context, "select title", Toast.LENGTH_SHORT).show();
-        } else                       */
-        if (spinnerTitleType.getSelectedItemPosition() == 0) {
+        } else
+                            */
+ if (spinnerTitleType.getSelectedItemPosition() == 0) {
             status = false;
             Toast.makeText(context, "select Title Type", Toast.LENGTH_SHORT).show();
         }else if (stragentname.isEmpty() || edtAgentName.getText().length()<3) {

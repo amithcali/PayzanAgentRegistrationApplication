@@ -66,7 +66,12 @@ public class ApprovedAgentsFragment extends BaseFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         fragmentManager = getActivity().getSupportFragmentManager();
-        getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_APPROVED);
+        if (isOnline(getActivity())) {
+            getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_APPROVED);
+        } else {
+            showToast(getActivity(), getString(R.string.no_internet));
+        }
+
 
         return view ;
     }

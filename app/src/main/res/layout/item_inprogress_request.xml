@@ -80,7 +80,9 @@
                     android:layout_height="wrap_content"
                     android:text="@string/review"
                     android:textAllCaps="false"
-                    android:textColor="@color/accent"
+                    android:paddingLeft="5dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/new_green"
                     android:layout_marginLeft="@dimen/btn_margin_left"
                     android:layout_weight="0.5"
                     />

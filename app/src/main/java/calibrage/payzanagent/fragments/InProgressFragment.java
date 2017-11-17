@@ -72,7 +72,12 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         fragmentManager = getActivity().getSupportFragmentManager();
-        getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_IN_PROGRESS+","+CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW);
+        if (isOnline(getActivity())) {
+            getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_IN_PROGRESS+","+CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW);
+        } else {
+            showToast(getActivity(), getString(R.string.no_internet));
+        }
+
 
         return view;
     }

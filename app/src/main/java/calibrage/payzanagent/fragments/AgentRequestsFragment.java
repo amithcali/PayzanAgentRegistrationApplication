@@ -1,5 +1,6 @@
 package calibrage.payzanagent.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
@@ -90,7 +91,12 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
         String val= SharedPrefsData.getInstance(context).getStringFromSharedPrefs("mahesh");
        /* showToast(context, "Value :"+val);
         Log.d(TAG, "onCreateView: "+val);*/
-        getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_NEW+","+CommonConstants.STATUSTYPE_ID_REJECTED+","+CommonConstants.STATUSTYPE_ID_HOLD);
+        if (isOnline(getActivity())) {
+            getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_NEW+","+CommonConstants.STATUSTYPE_ID_REJECTED+","+CommonConstants.STATUSTYPE_ID_HOLD);
+        } else {
+            showToast(getActivity(), getString(R.string.no_internet));
+        }
+
 
         return view;
 
@@ -157,6 +163,7 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
     }
 
 
+    @SuppressLint("ResourceType")
     @Override
     public void onAdapterClickListiner(int pos,boolean isPickorHold) {
         position = pos;
@@ -166,7 +173,8 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View layout = inflater.inflate(R.layout.row_comment_box, null);
         adb.setContentView(layout);
-        adb.getWindow().setLayout(500, 200);
+       /* adb.getWindow().setLayout(500, 200);*/
+        adb.getWindow().setLayout((int) getResources().getDimension(R.dimen.comments_box_width), (int) getResources().getDimension(R.dimen.comments_box_height));
       //  adb.getWindow().setLayout(R.dimen.comments_box_width, R.dimen.comments_box_height);
         adb.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         adb.show();
@@ -238,6 +246,8 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
                            /* Toast.makeText(getActivity(), "sucess", Toast.LENGTH_SHORT).show();
                             Log.d(TAG, "onNext: Result :"+updateAgentRequestResponceModel.toString());*/
                             showToast(getActivity(), "Updated Successfully.....!");
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                             getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_NEW+","+CommonConstants.STATUSTYPE_ID_REJECTED+","+CommonConstants.STATUSTYPE_ID_HOLD);
 
                         }else {

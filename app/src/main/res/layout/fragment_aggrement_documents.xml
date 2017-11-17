@@ -17,6 +17,12 @@
         android:layout_marginRight="20dp"
         android:orientation="vertical">
 
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/progressBar"
+            android:visibility="gone"/>
+
         <calibrage.payzanagent.controls.CommonTextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -44,6 +50,7 @@
             android:layout_height="0.5dp"
             android:background="@color/Maroon"
             android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"
             android:alpha="0.5"
             />
@@ -51,7 +58,7 @@
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/imagesRecylerView"></android.support.v7.widget.RecyclerView>
+            android:id="@+id/imagesRecylerView" />
 
         <ScrollView
             android:layout_width="match_parent"

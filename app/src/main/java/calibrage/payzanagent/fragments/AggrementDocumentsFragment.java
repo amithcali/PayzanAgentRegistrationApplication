@@ -28,6 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,6 +94,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
     public int photoCount;
     private AgentDoc agentDoc;
     ImageAdapter imageAdapter;
+    ProgressBar progressBar;
 
     public AggrementDocumentsFragment() {
         // Required empty public constructor
@@ -116,6 +118,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
         btnFinish = (Button) view.findViewById(R.id.btn_finish);
         imageView = (ImageView) view.findViewById(R.id.view_image);
         lnrImages = (LinearLayout) view.findViewById(R.id.lnrImages);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         imagesRecylerView = (RecyclerView) view.findViewById(R.id.imagesRecylerView);
         context = this.getActivity();
         fragmentManager = getActivity().getSupportFragmentManager();
@@ -134,7 +137,9 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(getActivity(), "Adding Agent...");
+                //showDialog(getActivity(), "Adding Agent...");
+                progressBar.setVisibility(View.VISIBLE);
+
                 getData(Event.AddAgent);
 
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -289,10 +294,12 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
         String value = null;
         try {
             if (bitmap != null) {
+               // showDialog(getActivity(), "Adding Images...");
 //                Bitmap bm = MediaStore.Images.Media.getBitmap(context.getApplicationContext().getContentResolver(), uri);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                  value = Base64.encodeToString( stream.toByteArray(), Base64.NO_WRAP);
+                // hideDialog();
                 return value;
             }
         } catch (Exception e) {
@@ -313,13 +320,16 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
 
     @Override
     public void updateUi(boolean status, int actionID, Object serviceResponse) {
-        hideDialog();
+      //  hideDialog();
+        progressBar.setVisibility(View.GONE);
         if (serviceResponse instanceof AddAgentResponseModel) {
             AddAgentResponseModel addAgentResponseModel;
             addAgentResponseModel = (AddAgentResponseModel) serviceResponse;
             if(addAgentResponseModel.getIsSuccess()){
                 CommonUtil.displayDialogWindow(addAgentResponseModel.getEndUserMessage(),alertDialog,context);
                 replaceFinal(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);
+            }else {
+                CommonUtil.displayDialogWindow(addAgentResponseModel.getEndUserMessage(),alertDialog,context);
             }
 
         }

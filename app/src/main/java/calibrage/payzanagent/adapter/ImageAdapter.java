@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import calibrage.payzanagent.R;
+import calibrage.payzanagent.interfaces.DeleteImageListiner;
+import calibrage.payzanagent.interfaces.RequestClickListiner;
 
 /**
  * Created by Calibrage11 on 11/11/2017.
@@ -19,6 +21,7 @@ import calibrage.payzanagent.R;
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyHolder> {
     private Context context;
     private ArrayList<Bitmap> bitmapArrayList;
+    private DeleteImageListiner deleteImageListiner;
 
     public ImageAdapter(Context context, ArrayList<Bitmap> bitmaipArrayList) {
         this.context = context;
@@ -36,9 +39,22 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyHolder> {
     }
 
     @Override
-    public void onBindViewHolder(MyHolder holder, int position) {
+    public void onBindViewHolder(final MyHolder holder, int position) {
         holder.imageView.setImageBitmap(bitmapArrayList.get(holder.getAdapterPosition()));
+        holder.deleteIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteImageListiner.onAdapterClickListiner(holder.getAdapterPosition(),false);
+            }
+        });
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteImageListiner.onAdapterClickListiner(holder.getAdapterPosition(),true);
+            }
+        });
     }
+
 
     @Override
     public int getItemCount() {
@@ -46,11 +62,16 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyHolder> {
     }
 
     public class MyHolder extends RecyclerView.ViewHolder {
-        private ImageView imageView;
+        private ImageView imageView, deleteIcon;
 
         public MyHolder(View itemView) {
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.image);
+            deleteIcon = (ImageView) itemView.findViewById(R.id.deleteIcon);
         }
+    }
+
+    public void setOnAdapterListener(DeleteImageListiner onAdapterListener) {
+        this.deleteImageListiner = onAdapterListener;
     }
 }

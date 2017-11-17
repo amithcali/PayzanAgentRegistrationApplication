@@ -29,6 +29,8 @@ public class CommonConstants {
     public static String PROVINCE_NAME = "null";
     public static String FILE_TYPE_ID_DOCUMENTS = "22";
     public static String FILE_TYPE_ID_IMAGES = "23";
+    public static String GENDER_TYPE_MALE = "20";
+    public static String GENDER_TYPE_FEMALE = "21";
 
 
 

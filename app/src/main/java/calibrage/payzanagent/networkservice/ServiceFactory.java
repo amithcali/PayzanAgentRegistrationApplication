@@ -23,7 +23,7 @@ public class ServiceFactory {
     public static <T> T createRetrofitService(Context context, final Class<T> clazz) {
 
         Retrofit retrofit = new Retrofit.Builder()
-                 .baseUrl(BuildConfig.LOCAL_URL)
+                 .baseUrl(BuildConfig.AZURE_URL)
                 .client(getHttpClient(context))
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

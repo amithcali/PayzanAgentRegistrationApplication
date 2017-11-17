@@ -30,6 +30,7 @@ import calibrage.payzanagent.model.HomeModel;
 import calibrage.payzanagent.networkservice.ApiConstants;
 import calibrage.payzanagent.networkservice.MyServices;
 import calibrage.payzanagent.networkservice.ServiceFactory;
+import calibrage.payzanagent.utils.CommonConstants;
 import calibrage.payzanagent.utils.SharedPrefsData;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
@@ -134,10 +135,32 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                     public void onNext(HomeModel homeModel) {
                         hideDialog();
                         Log.d("response", homeModel.getIsSuccess().toString());
-                        txtCount1.setText(""+homeModel.getResult().get(5).getCount());
-                        txtCount2.setText(""+homeModel.getResult().get(4).getCount());
-                        txtCount3.setText(""+homeModel.getResult().get(3).getCount());
-                        txtCount4.setText(""+homeModel.getResult().get(2).getCount());
+                       // int status = homeModel.getResult().get(0).getStatusTypeId();
+
+                        for (int i = 0; i <homeModel.getResult().size() ; i++) {
+
+                            if(homeModel.getResult().get(i).getStatusTypeId()== Integer.parseInt(CommonConstants.STATUSTYPE_ID_NEW)){
+                                txtCount1.setText(""+homeModel.getResult().get(i).getCount());
+                            }else if(homeModel.getResult().get(i).getStatusTypeId()== Integer.parseInt(CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW)){
+                                txtCount3.setText(""+homeModel.getResult().get(i).getCount());
+                            }else if(homeModel.getResult().get(i).getStatusTypeId()== Integer.parseInt(CommonConstants.STATUSTYPE_ID_IN_PROGRESS)){
+                                txtCount2.setText(""+homeModel.getResult().get(i).getCount());
+                            }else if(homeModel.getResult().get(i).getStatusTypeId()== Integer.parseInt(CommonConstants.STATUSTYPE_ID_APPROVED)){
+                                txtCount4.setText(""+homeModel.getResult().get(i).getCount());
+                            }
+
+                        }
+
+//                        switch(status){
+//                            case 10: System.out.println("10");break;
+//                            case 20: System.out.println("20");break;
+//                            case 30: System.out.println("30");break;
+//                            default:System.out.println("Not in 10, 20 or 30");
+//                        }
+
+
+
+
                        /* homeListResults = (ArrayList<HomeModel.Result>) homeModel.getResult();
                         for (int i = 0; i < homeModel.getResult().size(); i++) {
                             homeArrayList.add(homeModel.getResult().get(i).getStatusType());

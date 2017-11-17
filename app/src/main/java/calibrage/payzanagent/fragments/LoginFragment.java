@@ -104,7 +104,7 @@ public class LoginFragment extends BaseFragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //replaceFragment(getActivity(), MAIN_CONTAINER, new BankDetailFragment(), TAG, BankDetailFragment.TAG);
+             // replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
               //  AgentUpdateRequest();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
@@ -118,8 +118,6 @@ public class LoginFragment extends BaseFragment {
 
                     // ReplcaFragment(new AgentRequestsFragment());
                 }
-
-
 
 
             }
@@ -200,7 +198,7 @@ public class LoginFragment extends BaseFragment {
                         hideDialog();
                         if(loginResponseModel.getIsSuccess())
                         {
-                            Toast.makeText(getActivity(), "sucess", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getActivity(), "sucess", Toast.LENGTH_SHORT).show();
                             //Log.d(TAG, "onNext: Result :"+loginResponseModel.toString());
                             CommonConstants.USERID = loginResponseModel.getResult().getUser().getId();
                             SharedPrefsData.getInstance(context).updateStringValue(context,"userid",loginResponseModel.getResult().getUser().getId());

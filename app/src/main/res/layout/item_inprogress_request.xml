@@ -80,9 +80,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/review"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
+                    android:textColor="@color/accent"
                     android:layout_marginLeft="@dimen/btn_margin_left"
-                    android:background="@color/cardview_dark_background"
                     android:layout_weight="0.5"
                     />
                 <!-- <ImageView

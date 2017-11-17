@@ -69,7 +69,8 @@
                 android:maxLength="40"
                 android:imeOptions="actionNext"
                 android:paddingLeft="@dimen/edt_text_pading_left"
-                android:textSize="@dimen/edt_FontSize" />
+                android:textSize="@dimen/edt_FontSize"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "/>
         </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
 
         <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
@@ -116,7 +117,8 @@
                 android:maxLength="40"
                 android:imeOptions="actionDone"
                 android:paddingLeft="@dimen/edt_text_pading_left"
-                android:textSize="@dimen/edt_FontSize" />
+                android:textSize="@dimen/edt_FontSize"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "/>
         </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
 
 

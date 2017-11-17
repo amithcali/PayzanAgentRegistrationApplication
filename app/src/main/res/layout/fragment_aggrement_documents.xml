@@ -39,10 +39,18 @@
             android:text="Add Documents"
             android:textAllCaps="false"
             android:textColor="@color/White" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/Maroon"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:alpha="0.5"
+            />
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:id="@+id/imagesRecylerView"></android.support.v7.widget.RecyclerView>
 
         <ScrollView

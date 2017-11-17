@@ -9,21 +9,24 @@ import com.google.gson.annotations.SerializedName;
 
 public class AgentDoc {
 
-    @SerializedName("FileBytes")
-    @Expose
-    private byte[] fileBytes;
     @SerializedName("AgentId")
     @Expose
     private String agentId;
-    @SerializedName("FileName")
-    @Expose
-    private String fileName;
     @SerializedName("FileLocation")
     @Expose
     private String fileLocation;
     @SerializedName("FileExtension")
     @Expose
     private String fileExtension;
+    @SerializedName("FileBytes")
+    @Expose
+    private String fileBytes;
+    @SerializedName("Base64File")
+    @Expose
+    private String base64File;
+    @SerializedName("FileName")
+    @Expose
+    private String fileName;
     @SerializedName("FileTypeId")
     @Expose
     private Integer fileTypeId;
@@ -46,28 +49,12 @@ public class AgentDoc {
     @Expose
     private String modified;
 
-    public byte[] getFileBytes() {
-        return fileBytes;
-    }
-
-    public void setFileBytes(byte[] fileBytes) {
-        this.fileBytes = fileBytes;
-    }
-
     public String getAgentId() {
         return agentId;
     }
 
     public void setAgentId(String agentId) {
         this.agentId = agentId;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
     }
 
     public String getFileLocation() {
@@ -84,6 +71,30 @@ public class AgentDoc {
 
     public void setFileExtension(String fileExtension) {
         this.fileExtension = fileExtension;
+    }
+
+    public String getFileBytes() {
+        return fileBytes;
+    }
+
+    public void setFileBytes(String fileBytes) {
+        this.fileBytes = fileBytes;
+    }
+
+    public String getBase64File() {
+        return base64File;
+    }
+
+    public void setBase64File(String base64File) {
+        this.base64File = base64File;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public Integer getFileTypeId() {
@@ -141,7 +152,6 @@ public class AgentDoc {
     public void setModified(String modified) {
         this.modified = modified;
     }
-
 
 }
 

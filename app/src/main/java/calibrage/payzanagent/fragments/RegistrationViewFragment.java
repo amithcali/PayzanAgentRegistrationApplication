@@ -713,7 +713,11 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         agentPersonalInfo.setIsActive(true);
         agentPersonalInfo.setAspNetUserId("test");
         agentPersonalInfo.setTitleTypeId(titleListResults.get(spinnerTitleType.getSelectedItemPosition()-1).getId());
-        agentPersonalInfo.setGenderTypeId(20);
+        if(titleListResults.get(spinnerTitleType.getSelectedItemPosition()-1).getId()==17){
+            agentPersonalInfo.setGenderTypeId(Integer.parseInt(CommonConstants.GENDER_TYPE_MALE));
+        }else {
+            agentPersonalInfo.setGenderTypeId(Integer.parseInt(CommonConstants.GENDER_TYPE_FEMALE));
+        }
         agentPersonalInfo.setVillageId(villageListResults.get(spinnerVillage.getSelectedItemPosition()).getId());
         agentPersonalInfo.setParentAspNetUserId(null);
         agentPersonalInfo.setId(0);
@@ -735,11 +739,11 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 //        addAgent.setEmail();
 //        addAgent.setMobileNumber();
         addAgent.setPassword("Amith123@");
-        addAgent.setUserName("8121090790");
+        addAgent.setUserName("8222090799");
         agentPersonalInfo.setFirstName("amith");
-        agentPersonalInfo.setPhone("8121098703");
+        agentPersonalInfo.setPhone("8222090799");
         agentPersonalInfo.setAgentBusinessCategoryId(14);
-        agentPersonalInfo.setEmail("amith12345677@gmail.com");
+        agentPersonalInfo.setEmail("amith123456787@gmail.com");
         agentPersonalInfo.setAddress1("amith");
         agentPersonalInfo.setAddress2("amith");
         agentPersonalInfo.setEmail("amith");

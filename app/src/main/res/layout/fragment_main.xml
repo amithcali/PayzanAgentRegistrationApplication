@@ -36,15 +36,16 @@ tools:context="calibrage.payzanagent.fragments.AggrementDocumentsFragment">
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <TextView
-                        android:textColor="@color/white"
                         android:id="@+id/txt_count1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"
                         android:text="226"
-                        android:textSize="30dp"
-                        android:layout_gravity="center_horizontal"/>
+                        android:textColor="@color/white"
+                        android:textSize="30dp" />
                     <TextView
                         android:textColor="@color/white"
                         android:id="@+id/txt_status_type1"

@@ -1,6 +1,7 @@
 package calibrage.payzanagent.fragments;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,13 +9,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.OpenableColumns;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -23,7 +20,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,35 +31,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
-
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import calibrage.payzanagent.Calib.ext.GsonObjectRequest;
 import calibrage.payzanagent.Calib.ext.RequestManager;
@@ -72,29 +46,21 @@ import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.CustomPhotoGalleryActivity;
 import calibrage.payzanagent.activity.HomeActivity;
 import calibrage.payzanagent.adapter.ImageAdapter;
+import calibrage.payzanagent.interfaces.DeleteImageListiner;
 import calibrage.payzanagent.model.AddAgent;
 import calibrage.payzanagent.model.AddAgentResponseModel;
 import calibrage.payzanagent.model.AgentDoc;
-import calibrage.payzanagent.model.LoginResponseModel;
-import calibrage.payzanagent.networkservice.ApiConstants;
-import calibrage.payzanagent.networkservice.MyServices;
-import calibrage.payzanagent.networkservice.ServiceFactory;
 import calibrage.payzanagent.utils.CommonConstants;
 import calibrage.payzanagent.utils.CommonUtil;
 import calibrage.payzanagent.utils.Event;
 import calibrage.payzanagent.utils.SharedPrefsData;
 import calibrage.payzanagent.utils.VolleyErrorListener;
-import retrofit2.adapter.rxjava.HttpException;
-import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
-import static android.provider.MediaStore.ACTION_IMAGE_CAPTURE;
 
 
-public class AggrementDocumentsFragment extends BaseFragment implements IScreen {
+public class AggrementDocumentsFragment extends BaseFragment implements IScreen,DeleteImageListiner {
 
     public static final String TAG = AggrementDocumentsFragment.class.getSimpleName();
 
@@ -103,7 +69,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen 
     protected static final int CAMERA_REQUEST = 1;
     protected static final int PICK_IMAGE_MULTIPLE = 1;
     private static final int REQUEST_PHOTO = 100, REQUIRED_SIZE = 100;
-    private Button btnContinue, btnFinish;
+    private Button btnAddDocuments, btnFinish;
     public static Toolbar toolbar;
     private Context context;
     private ArrayList<String> imagesPathList;
@@ -126,6 +92,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen 
     public String imageurl, currentDatetime;
     public int photoCount;
     private AgentDoc agentDoc;
+    ImageAdapter imageAdapter;
 
     public AggrementDocumentsFragment() {
         // Required empty public constructor
@@ -135,6 +102,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.fragment_aggrement_documents, container, false);
         view.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
@@ -143,7 +111,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen 
         });
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-        btnContinue = (Button) view.findViewById(R.id.btn_add_documents);
+        btnAddDocuments = (Button) view.findViewById(R.id.btn_add_documents);
         //  textView = (TextView)view.findViewById(R.id.txtPath);
         btnFinish = (Button) view.findViewById(R.id.btn_finish);
         imageView = (ImageView) view.findViewById(R.id.view_image);
@@ -157,23 +125,18 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen 
         RequestManager.initializeWith(context, new RequestManager.Config("data/data/predento/pics",
                 5242880, 4));
 
-        btnContinue.setOnClickListener(new View.OnClickListener() {
+        btnAddDocuments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startDialog();
-                //openPhotoChooser();
-                //startActivity(new Intent(BankDetailsActivity.this,IdProofActivity.class));
             }
         });
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // showDialog(getActivity(), "Authenticating...");
-                // addAgentRequest();
-
+                showDialog(getActivity(), "Adding Agent...");
                 getData(Event.AddAgent);
 
-                //  bookNowServices("http://192.168.1.160/PayZanAPI/api/Agent/AddAgent",getLoginObject());
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
             }
@@ -187,62 +150,9 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen 
     }
 
 
-//    private void addAgentRequest() {
-//        JsonObject object = getLoginObject();
-//
-//          Log.d(TAG, "addAgentRequest: "+object.toString());
-//        MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
-//        mRegisterSubscription = service.addAgent(object)
-//
-//                .subscribeOn(Schedulers.newThread())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<AddAgentResponseModel>() {
-//                    @Override
-//                    public void onCompleted() {
-//                        // Toast.makeText(getActivity(), "check", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        if (e instanceof HttpException) {
-//                            ((HttpException) e).code();
-//                            ((HttpException) e).message();
-//                            ((HttpException) e).response().errorBody();
-////                            try {
-//////                                ((HttpException) e).response().errorBody().string();
-//////                                CommonUtil.displayDialogWindow("Record Added Sucessfully", alertDialog, context);
-////                            } catch (IOException e1) {
-////                                e1.printStackTrace();
-////                            }
-// //                           e.printStackTrace();
-//                        }
-//                        Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
-//                        hideDialog();
-//                    }
-//
-//                    @Override
-//                    public void onNext(AddAgentResponseModel addAgentResponseModel) {
-//                        hideDialog();
-//                        Toast.makeText(getActivity(), "sucess", Toast.LENGTH_SHORT).show();
-//                        CommonUtil.displayDialogWindow("Record Added Sucessfully", alertDialog, context);
-//                        //getActivity().finish();
-//                        //finish();
-//                    }
-//                });
-//    }
 
-    public static byte[] readPart(String fileName, long offset, int length) throws FileNotFoundException, Exception {
-        File f = new File(fileName);
-        Log.d(TAG, "readPart: Filesize:" + f.length());
-        byte[] data = new byte[(int) f.length()];
 
-        File file = new File(fileName);
-        InputStream is = new FileInputStream(file);
-        is.skip(50);
-        is.read(data, 0, data.length);
-        is.close();
-        return data;
-    }
+
 
     private String getLoginObject() {
         addDoc();
@@ -252,51 +162,31 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen 
     }
 
     private void addDoc() {
-        byte[] dataimage = null;
         List<AgentDoc> agentDocList = new ArrayList<>();
         for (int i = 0; i < imagesArrayList.size(); i++) {
             AgentDoc agentDoc = new AgentDoc();
             agentDoc.setAgentId(null);
             agentDoc.setCreated(currentDatetime);
             agentDoc.setCreatedBy(CommonConstants.USERID);
-
-            byte[] data = getImageByteArray(imageUri);
-
-            String value = Base64.encodeToString(data, Base64.DEFAULT);
-
-
-            byte[] output = value.getBytes();
-
-
-            agentDoc.setFileBytes(output);
-
-          /*  try {
-
-               dataimage=readPart(imageurl,100,1000);
-                Log.d(TAG, "addDoc: imageurl :"+ dataimage.length);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-              //  agentDoc.setFileBytes(readPart(imageurl,100,10));
-                String value = Base64.encodeToString(dataimage, Base64.DEFAULT);
-                agentDoc.setFileBytes(value.getBytes());
-                Log.d(TAG, "addDoc: value.getBytes()"+value);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
+            agentDoc.setFileBytes(null);
+            agentDoc.setBase64File(getImageByteArray(imagesArrayList.get(0)));
             agentDoc.setFileExtension(".jpg");
-            agentDoc.setFileName("agentappdoc");
+            agentDoc.setFileName(addAgent.getAgentPersonalInfo().getFirstName());
             agentDoc.setFileTypeId(Integer.parseInt(CommonConstants.FILE_TYPE_ID_IMAGES));
             agentDoc.setModified(currentDatetime);
             agentDoc.setModifiedBy(CommonConstants.USERID);
             agentDoc.setIsActive(true);
-            agentDoc.setFileLocation("amith");
+            agentDoc.setFileLocation("App");
             //addAgent.setAgentDocs(agentDoc);
             agentDocList.add(agentDoc);
         }
-        addAgent.setAgentDocs(agentDocList);
+        if(agentDocList.isEmpty()){
+            showToast(context,"Please Select Document");
+        }
+        else{
+            addAgent.setAgentDocs(agentDocList);
+        }
+
     }
 
 
@@ -309,18 +199,14 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen 
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Take Photo")) {
-//                    Intent intent = new Intent(Intent.ACTION_PICK, null);
-//                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_UNSPECIFIED);
-//                    startActivityForResult(intent, 1);
                     photoCount = photoCount + 1;
 
                     dispatchTakePictureIntent(photoCount);
                 } else if (options[item].equals("Choose from Gallery")) {
-                  /*  Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, 2);*/
                     Intent intent = new Intent(getActivity(), CustomPhotoGalleryActivity.class);
                     startActivityForResult(intent, 2);
-                }/* else if (options[item].equals("Select File"))
+                }
+                /* else if (options[item].equals("Select File"))
                 {
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                     intent.setType("application/pdf");
@@ -335,44 +221,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen 
             }
         });
         builder.show();
-       /* AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(
-                getActivity());
-        myAlertDialog.setTitle("Upload Pictures");
 
-        myAlertDialog.setPositiveButton("Gallery",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        Intent intent = new Intent(getActivity(), CustomPhotoGalleryActivity.class);
-                        startActivityForResult(intent, PICK_IMAGE_MULTIPLE);
-                       *//* Intent pictureActionIntent = null;
-
-                        pictureActionIntent = new Intent(
-                                Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(
-                                pictureActionIntent,
-                                GALLERY_PICTURE);*//*
-
-                    }
-                });
-
-     *//*   myAlertDialog.setNegativeButton("Camera",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-
-                        Intent intent = new Intent(
-                                ACTION_IMAGE_CAPTURE);
-                        File f = new File(android.os.Environment
-                                .getExternalStorageDirectory(), "temp.jpg");
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                                Uri.fromFile(f));
-
-                        startActivityForResult(intent,
-                                CAMERA_REQUEST);
-
-                    }
-                });*//*
-        myAlertDialog.show();*/
     }
 
     private void dispatchTakePictureIntent(int imageCount) {
@@ -385,102 +234,9 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        if (takePictureIntent.resolveActivity(context.getPackageManager()) != null) {
-//            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-//        }
+
     }
 
-    private byte[] testing(String imageurl) {
-        byte[] b = null;
-        File f = new File(imageurl);
-
-
-        return b;
-    }
-
-    public byte[] getImageByteArray(Uri uri) {
-        try {
-            if (uri != null) {
-                Bitmap bm = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bm.compress(Bitmap.CompressFormat.JPEG, 90, stream);
-
-                return stream.toByteArray();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-
-//    public void bookNowServices(String url, JsonObject jsonRequest) {
-//
-//        RequestQueue queue = Volley.newRequestQueue(context);
-//
-//        JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, url, jsonRequest,
-//                new Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject jsonRequest) {
-//                        Log.e("AAAAAAAAAAA", "" + jsonRequest);
-//                      //  response(jsonRequest);
-//                    }
-//                },
-//
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        //   Handle Error
-//                        Log.e("error", "" + error);
-//                    }
-//                }) {
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                HashMap<String, String> headers = new HashMap<>();
-//                headers.put("Content-Type", "application/json; charset=utf-8");
-//                return headers;
-//            }
-//
-//
-//            @Override
-//            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-//
-//                if (response.statusCode == 200) {
-//                    Log.e("statusCode", "statusCode " + response.statusCode);
-//
-//                    getActivity().runOnUiThread(new Runnable() {
-//                        public void run() {
-//
-//                        }
-//                    });
-//                }
-//
-//                return super.parseNetworkResponse(response);
-//            }
-//
-//            @Override
-//            protected VolleyError parseNetworkError(VolleyError volleyError) {
-//
-//                getActivity().runOnUiThread(new Runnable() {
-//                    public void run() {
-//
-//                    }
-//                });
-//
-//                return super.parseNetworkError(volleyError);
-//            }
-//        };
-//
-//        postRequest.setRetryPolicy(new DefaultRetryPolicy(
-//                15000,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-//
-//        queue.add(postRequest);
-//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -502,59 +258,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen 
 
                 }
 
-                //   Bundle extras = data.getExtras();
-//                Bundle extras = data.getExtras();
-//                Bitmap imageBitmap = (Bitmap) extras.get("data");
-//               // imageView.setImageBitmap(imageBitmap);
-//
 
-                //   imageAdapter.notifyDataSetChanged();
-
-//                if (extras != null) {
-//                    Bitmap photo = extras.getParcelable("data");
-//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                    photo.compress(Bitmap.CompressFormat.JPEG, 75, stream);//
-//                }
-//                Log.d("image",""+imagesArrayList.size());
-                // Log.d("image",""+imagesArrayList.get(0));
-//                File f = new File(Environment.getExternalStorageDirectory().toString());
-//                for (File temp : f.listFiles()) {
-//                    if (temp.getName().equals("temp.jpg")) {
-//                        f = temp;
-//                        break;
-//                    }
-//                }
-//                try {
-//                    Bitmap bitmap;
-//                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-//
-//                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-//                            bitmapOptions);
-//
-//                    imageView.setImageBitmap(bitmap);
-//
-//                    String path = android.os.Environment
-//                            .getExternalStorageDirectory()
-//                            + File.separator
-//                            + "Phoenix" + File.separator + "default";
-//                    f.delete();
-//                    OutputStream outFile = null;
-//                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
-//                    try {
-//                        outFile = new FileOutputStream(file);
-//                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
-//                        outFile.flush();
-//                        outFile.close();
-//                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
             } else if (requestCode == 2) {
                 imagesPathList = new ArrayList<String>();
                 String[] imagesPath = data.getStringExtra("data").split("\\|");
@@ -568,68 +272,34 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen 
                     imagesPathList.add(imagesPath[i]);
                     yourbitmap = BitmapFactory.decodeFile(imagesPath[i]);
                     imagesArrayList.add(yourbitmap);
-//                    ImageView imageView = new ImageView(getActivity());
-//                    imageView.setImageBitmap(yourbitmap);
-//                    imageView.setAdjustViewBounds(true);
-//                    lnrImages.addView(imageView);
+
                 }
 
-             /*   Uri selectedImage = data.getData();
-                String[] filePath = { MediaStore.Images.Media.DATA };
-                Cursor c = getActivity().getContentResolver().query(selectedImage,filePath, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePath[0]);
-                String picturePath = c.getString(columnIndex);
-                c.close();
-                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-               // Log.d("path of image from gallery", picturePath+"");
-                imageView.setImageBitmap(thumbnail);*/
-            }/*else if (requestCode == 3){
-                // Get the Uri of the selected file
-                Uri uri = data.getData();
-                String uriString = uri.toString();
-                File myFile = new File(uriString);
-                String path = myFile.getAbsolutePath();
-                textView.setText("Selected File Path"+" "+":"+" "+uriString);
-                String displayName = null;
-
-                if (uriString.startsWith("content://")) {
-                    Cursor cursor = null;
-                    try {
-                        cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
-                        if (cursor != null && cursor.moveToFirst()) {
-                            displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                        }
-                    } finally {
-                        cursor.close();
-                    }
-                } else if (uriString.startsWith("file://")) {
-                    displayName = myFile.getName();
-                }
-            }*/
+            }
 
         }
-        ImageAdapter imageAdapter = new ImageAdapter(context, imagesArrayList);
+         imageAdapter = new ImageAdapter(context, imagesArrayList);
+        imageAdapter.setOnAdapterListener(AggrementDocumentsFragment.this);
         imagesRecylerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         imagesRecylerView.setAdapter(imageAdapter);
+
     }
 
-    public byte[] getImageByteArray(Bitmap bitmap) {
-        byte[] bytes = null;
+    public String getImageByteArray(Bitmap bitmap) {
+        String value = null;
         try {
             if (bitmap != null) {
 //                Bitmap bm = MediaStore.Images.Media.getBitmap(context.getApplicationContext().getContentResolver(), uri);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                bytes = stream.toByteArray();
-                return bytes;
+                 value = Base64.encodeToString( stream.toByteArray(), Base64.NO_WRAP);
+                return value;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
-            bytes = null;
+
         }
-        return bytes;
+        return value;
     }
 
     public String getRealPathFromURI(Uri contentUri) {
@@ -643,7 +313,14 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen 
 
     @Override
     public void updateUi(boolean status, int actionID, Object serviceResponse) {
+        hideDialog();
         if (serviceResponse instanceof AddAgentResponseModel) {
+            AddAgentResponseModel addAgentResponseModel;
+            addAgentResponseModel = (AddAgentResponseModel) serviceResponse;
+            if(addAgentResponseModel.getIsSuccess()){
+                CommonUtil.displayDialogWindow(addAgentResponseModel.getEndUserMessage(),alertDialog,context);
+                replaceFinal(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);
+            }
 
         }
     }
@@ -658,9 +335,10 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen 
     public void getData(int actionID) {
         HashMap<String, String> reqHeader = new HashMap<String, String>();
         reqHeader.put("Content-Type", "application/json; charset=utf-8");
+       // showDialog(getActivity(),"");
 
         RequestManager.addRequest(new GsonObjectRequest<AddAgentResponseModel>
-                ("http://192.168.1.160/PayZanAPI/api/Agent/AddAgent", reqHeader, getLoginObject(),
+                ("http://payzandev1.azurewebsites.net/api/Agent/AddAgent", reqHeader, getLoginObject(),
                         AddAgentResponseModel.class, new VolleyErrorListener(this,
                         Event.AddAgent)) {
 
@@ -670,36 +348,37 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen 
             }
         });
     }
-}
 
+    @Override
+    public void onAdapterClickListiner(int pos,boolean isPopUp) {
 
-/*
-
-      public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == PICK_IMAGE_MULTIPLE ) {
-                imagesPathList = new ArrayList<String>();
-                String[] imagesPath = data.getStringExtra("data").split("\\|");
-                try {
-                    lnrImages.removeAllViews();
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                }
-                for (int i = 0; i < imagesPath.length; i++) {
-                    imagesPathList.add(imagesPath[i]);
-                    yourbitmap = BitmapFactory.decodeFile(imagesPath[i]);
-                    ImageView imageView = new ImageView(getActivity());
-                    imageView.setImageBitmap(yourbitmap);
-                    imageView.setAdjustViewBounds(true);
-                    lnrImages.addView(imageView);
-                }
+        if(isPopUp){
+            showImageDialog(pos);
+        }else {
+            if(!imagesArrayList.isEmpty()){
+                imagesArrayList.remove(pos);
+                imageAdapter.notifyDataSetChanged();
             }
         }
 
+    }
+
+    private void showImageDialog(int pos) {
+
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_showimage);
+
+
+        final ImageView expand_image = (ImageView) dialog.findViewById(R.id.expand_image);
+        expand_image.setImageBitmap(imagesArrayList.get(pos));
+
+        dialog.show();
+        dialog.setCanceledOnTouchOutside(true);
 
     }
-*/
+}
+
+
 
 
 

@@ -66,26 +66,80 @@ public class BaseFragment extends Fragment {
             new Handler().post(mPendingRunnable);
         }
     }
+    public void replaceFinal(final FragmentActivity activity, final int container, final Fragment
+            fragment, final String cuurentFragmentTag, final String newFragmentTag) {
+        Runnable mPendingRunnable = new Runnable() {
+            @Override
+            public void run() {
+                // update the main content by replacing fragments
+                FragmentTransaction fragmentTransaction = activity
+                        .getSupportFragmentManager()
+                        .beginTransaction();
+                fragmentTransaction
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                for(int i = 0; i < activity.getSupportFragmentManager().getBackStackEntryCount()-1
+                        ; ++i) {
+                    activity.getSupportFragmentManager().popBackStack();
+                }
+       /*         fragmentTransaction
+                        .addToBackStack(cuurentFragmentTag)
+                        .add(container, fragment, newFragmentTag);*/
+                fragmentTransaction.commitAllowingStateLoss();
+            }
+        };
+        // If mPendingRunnable is not null, then add to the message queue
+        if (mPendingRunnable != null) {
+            new Handler().post(mPendingRunnable);
+        }
+    }
 
     private ProgressDialog mProgressDialog;
 
-    public void showDialog(FragmentActivity activity, String message) {
+    public void showDialog(final FragmentActivity activity, final String message) {
+
+
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(activity);
             mProgressDialog.setIndeterminate(true);
             mProgressDialog.setMessage(message);
             mProgressDialog.setCancelable(false);
             mProgressDialog.setCanceledOnTouchOutside(false);
-
         }
         if (mProgressDialog != null && !mProgressDialog.isShowing())
             mProgressDialog.show();
 
+//        getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+
+
     }
 
+
     public void hideDialog() {
+
         if (mProgressDialog != null && mProgressDialog.isShowing())
             mProgressDialog.dismiss();
+
+//        getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+
     }
     public boolean isOnline(Context context) {
         ConnectivityManager cm =

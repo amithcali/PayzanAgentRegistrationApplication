@@ -74,14 +74,14 @@ import rx.schedulers.Schedulers;
 import static calibrage.payzanagent.utils.CommonUtil.MY_PERMISSIONS_REQUEST_LOCATION;
 
 
-public class RegistrationViewFragment extends BaseFragment implements OnMapReadyCallback {
+public class RegistrationViewFragment extends BaseFragment implements OnMapReadyCallback,View.OnClickListener{
 
     public static final String TAG = RegistrationViewFragment.class.getSimpleName();
 
     private Button btnContinue;
     View view;
     FragmentManager fragmentManager;
-    EditText edtAgentName, edtUserName, edtPassWord, edtMobile, edtEmail, edtAddress1,edtAddress2, edtLandMark,edtPincode;
+    EditText edtFirstName, edtUserName, edtPassWord, edtMobile, edtEmail, edtAddress1,edtAddress2, edtLandMark,edtPincode,edtMiddleName,edtLastName;
     //edtState,
     private AgentRequestModel agentRequestModel;
     private StatesModel statesModel;
@@ -99,6 +99,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     private GoogleMap googleMap;
     private CommonTextView latlog;
     private GPSTracker gpsTracker;
+    private Button personalButton,bankButton,idButton,documentButton;
     private boolean isNewAgent;
     private Double lat = 0.0, log = 0.0;
     LocationManager locationManager;
@@ -108,7 +109,8 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     private NCBTextInputLayout agentNameTXT;
     Location lastLocation;
     int intAgentRequestId;
-    private String stragentname,strusername,strpass,strmobile,stremail,straddress1,straddress2,strlandmark,strpin,currentDatetime;
+
+    private String strfirstname,strusername,strpass,strmobile,stremail,straddress1,straddress2,strlandmark,strpin,currentDatetime,strlastname,strmiddlename = " ";
     private AgentPersonalInfo agentPersonalInfo;
     private ArrayList<BusinessCategoryModel.ListResult> businessListResults =new ArrayList<>();
     private ArrayList<BusinessCategoryModel.ListResult> titleListResults =new ArrayList<>();
@@ -176,7 +178,9 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
        // Log.d(TAG, "dateanddtime"+currentDatetime);
         btnContinue = (Button) view.findViewById(R.id.btn_continue);
-        edtAgentName = (EditText) view.findViewById(R.id.edt_Agentname);
+        edtFirstName = (EditText) view.findViewById(R.id.edt_firstName);
+        edtMiddleName = (EditText)view.findViewById(R.id.edt_middleName);
+        edtLastName = (EditText)view.findViewById(R.id.edt_lastName); 
        // edtAgencyName = (EditText) view.findViewById(R.id.edt_Agencyname);
        // edtIdNo = (EditText) view.findViewById(R.id.edt_idno);
         edtUserName = (EditText) view.findViewById(R.id.edt_userName);
@@ -187,6 +191,18 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         edtAddress2 = (EditText) view.findViewById(R.id.edt_address2);
         edtLandMark = (EditText) view.findViewById(R.id.edt_land_mark);
         edtPincode = (EditText) view.findViewById(R.id.edt_pincode);
+        personalButton = (Button)view.findViewById(R.id.btn_personal);
+        bankButton = (Button)view.findViewById(R.id.btn_bank);
+        idButton = (Button)view.findViewById(R.id.btn_id);
+        documentButton = (Button)view.findViewById(R.id.btn_doc);
+
+        personalButton.setOnClickListener(this);
+        bankButton.setOnClickListener(this);
+       /* idButton.setOnClickListener(this);
+        documentButton.setOnClickListener(this);
+*/
+
+
         //edtProvince = (EditText) view.findViewById(R.id.edt_provinceName);
 
        // edtState = (EditText) view.findViewById(R.id.edt_state);
@@ -261,7 +277,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                 name =  agentRequestModel.getListResult().get(pos).getFirstName() +" "+ agentRequestModel.getListResult().get(pos).getLastName();
             }
             // edtIdNo.setText(String.valueOf(agentRequestModel.getListResult().get(pos).getId()));
-            edtAgentName.setText(name);
+            edtFirstName.setText(name);
             edtMobile.setText(agentRequestModel.getListResult().get(pos).getMobileNumber());
             edtEmail.setText(agentRequestModel.getListResult().get(pos).getEmail());
             edtAddress1.setText(agentRequestModel.getListResult().get(pos).getAddressLine1());
@@ -732,7 +748,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 //        addAgent.setMobileNumber();
         addAgent.setPassword(strpass);
         addAgent.setUserName(strusername);
-        agentPersonalInfo.setFirstName(stragentname);
+        agentPersonalInfo.setFirstName(strfirstname);
         agentPersonalInfo.setPhone(strmobile);
         agentPersonalInfo.setAgentBusinessCategoryId(businessListResults.get(spinnerCustom.getSelectedItemPosition()-1).getId());
         agentPersonalInfo.setEmail(stremail);
@@ -759,15 +775,15 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         agentPersonalInfo.setVillageId(villageListResults.get(spinnerVillage.getSelectedItemPosition()).getId());
         agentPersonalInfo.setParentAspNetUserId(null);
         agentPersonalInfo.setId(0);
-        agentPersonalInfo.setMiddleName(" ");
-        agentPersonalInfo.setLastName(" ");
+        agentPersonalInfo.setMiddleName(strmiddlename);
+        agentPersonalInfo.setLastName(strlastname);
         agentPersonalInfo.setDOB("2017-10-30T17:15:42.569Z");
         agentPersonalInfo.setIsActive(true);
         agentPersonalInfo.setCreated(currentDatetime);
         agentPersonalInfo.setCreatedBy(CommonConstants.USERID);
         agentPersonalInfo.setModified(currentDatetime);
         agentPersonalInfo.setModifiedBy(CommonConstants.USERID);
-        agentPersonalInfo.setFirstName(stragentname);
+        agentPersonalInfo.setFirstName(strfirstname);
 
         addAgent.setAgentPersonalInfo(agentPersonalInfo);
         Log.d(TAG, "addAgentPersonalInfo: "+addAgent.toString());
@@ -818,7 +834,9 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 */
     private boolean isValidateUi() {
         boolean status = true;
-        stragentname = edtAgentName.getText().toString().trim();
+        strfirstname = edtFirstName.getText().toString().trim();
+        strmiddlename = edtMiddleName.getText().toString().trim();
+        strlastname = edtLastName.getText().toString().trim();
         strusername=edtUserName.getText().toString();
         strpass=edtPassWord.getText().toString();
         strmobile=edtMobile.getText().toString();
@@ -838,11 +856,16 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
  if (spinnerTitleType.getSelectedItemPosition() == 0) {
             status = false;
             Toast.makeText(context, "select Title Type", Toast.LENGTH_SHORT).show();
-        }else if (stragentname.isEmpty() || edtAgentName.getText().length()<3) {
+        }else if (strfirstname.isEmpty() || edtFirstName.getText().length()<3) {
             status = false;
-            edtAgentName.setError("AgentName is required");
-            edtAgentName.requestFocusFromTouch();
+            edtFirstName.setError("FirstName is required");
+            edtFirstName.requestFocusFromTouch();
             //   Toast.makeText(context, "AgentName is required", Toast.LENGTH_SHORT).show();
+        }else if (strlastname.isEmpty()) {
+         status = false;
+         edtLastName.setError("LastName is required");
+         edtLastName.requestFocusFromTouch();
+        //   Toast.makeText(context, "AgentName is required", Toast.LENGTH_SHORT).show();
         } else if (spinnerCustom.getSelectedItemPosition() == 0) {
             status = false;
             Toast.makeText(context, "select business category", Toast.LENGTH_SHORT).show();
@@ -1077,6 +1100,42 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
     }
+
+
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btn_personal:
+                showToast(getActivity(),"Please Fill The Personal Details");
+
+                // replaceFragment(getActivity(), MAIN_CONTAINER, new RegistrationViewFragment(), TAG, RegistrationViewFragment.TAG);
+
+                break;
+            case R.id.btn_bank:
+                if (isValidateUi()) {
+                    addAgentPersonalInfo();
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("personalinfo", addAgent);
+                    Fragment fragment = new BankDetailFragment();
+                    fragment.setArguments(bundle);
+                    replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, BankDetailFragment.TAG);
+                }
+                //replaceFragment(getActivity(),MAIN_CONTAINER,new AgentRequestsFragment(),TAG,AgentRequestsFragment.TAG);
+                break;
+           /* case R.id.btn_id:
+                showToast(getActivity(),"Please Fill The Personal Details");
+                // replaceFragment(getActivity(),MAIN_CONTAINER,new InProgressFragment(),TAG,InProgressFragment.TAG);
+                break;
+            case R.id.btn_doc:
+                showToast(getActivity(),"Please Fill The Personal Details");
+                //replaceFragment(getActivity(),MAIN_CONTAINER,new ApprovedAgentsFragment(),TAG,ApprovedAgentsFragment.TAG);
+                break;*/
+        }
+    }
+
 
     class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 

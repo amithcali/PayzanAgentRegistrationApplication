@@ -49,11 +49,18 @@
     <string name="title_type">Title Type</string>
     <string name="comment">Comments</string>
     <string name="pick_btn">Pick</string>
+    <string name="personnal_btn">Personal</string>
+    <string name="bank_btn">Bank</string>
+    <string name="id_btn">Id Proof</string>
+    <string name="doc_btn">Documents</string>
     <string name="add_btn">Add</string>
     <string name="hold_btn">Hold</string>
     <string name="review">Review</string>
     <string name="submit_btn">Submit</string>
     <string name="agent_name">Agent Name</string>
+    <string name="first_name">First Name</string>
+    <string name="middle_name">Middle Name</string>
+    <string name="lastmane_name">Last Name</string>
     <string name="logout_menu">Logout</string>
     <string name="agent_requests">Agent Requests</string>
     <string name="yet_to_go">Yet to go</string>
@@ -63,4 +70,6 @@
     <string name="financial_identity_proof">Financial Identity Proof</string>
    <!-- <string name="select_shift_code">Select Shift Code</string>-->
     <string name="select_shift_code"><font size="20">Select Shift Code</font></string>
+    <string name="new_agent_registration">New Agent Registration</string>
+    <string name="bank_details">Bank Details</string>
 </resources>

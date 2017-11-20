@@ -19,9 +19,63 @@
             android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:gravity="center"
+            android:textStyle="bold"
             android:text="Identity Proofs"
             android:textColor="@color/Black"
             android:textSize="18dp" />
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/lyt_margin_top"
+            android:layout_marginBottom="@dimen/lyt_margin_bottom"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_personal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="@string/personnal_btn"
+                android:textAllCaps="false"
+                android:textColor="@color/Maroon"
+                android:background="@drawable/border_accent"
+                />
+            <Button
+                android:layout_width="0dp"
+                android:id="@+id/btn_bank"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:textAllCaps="false"
+                android:text="@string/bank_btn"
+                android:layout_marginLeft="@dimen/btn_register_margin"
+                android:textColor="@color/Maroon"
+                android:background="@drawable/border_accent"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_id"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:text="@string/id_btn"
+                android:layout_marginLeft="@dimen/btn_register_margin"
+                android:background="@drawable/border_maroon_button"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_doc"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:textColor="@color/Maroon"
+                android:text="@string/doc_btn"
+                android:layout_marginLeft="@dimen/btn_register_margin"
+                android:background="@drawable/border_accent"/>
+
+        </LinearLayout>
 
 
         <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout

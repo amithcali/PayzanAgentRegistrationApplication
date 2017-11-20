@@ -50,7 +50,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class IdProofFragment extends BaseFragment {
+public class IdProofFragment extends BaseFragment implements View.OnClickListener {
 
     public static final String TAG = IdProofFragment.class.getSimpleName();
 
@@ -63,6 +63,7 @@ public class IdProofFragment extends BaseFragment {
     EditText numberpersonal,numberfinancial;
     Spinner spinnerCustom_personalId,spinnerCustom_finacialId;
     private Subscription operatorSubscription;
+    private Button personalButton,bankButton,idButton,documentButton;
     private ArrayList<AgentRequestModel.ListResult> listResults;
     ArrayList<String> businessArrayList = new ArrayList<String>();
 
@@ -103,6 +104,16 @@ public class IdProofFragment extends BaseFragment {
         agentFinancialProof = new AgentIdProof();
         initCustomSpinner_personalId();
         getRequest(CommonConstants.PERSONALID_CATEGORY_ID);
+        personalButton = (Button)view.findViewById(R.id.btn_personal);
+        bankButton = (Button)view.findViewById(R.id.btn_bank);
+        idButton = (Button)view.findViewById(R.id.btn_id);
+        documentButton = (Button)view.findViewById(R.id.btn_doc);
+
+       /* personalButton.setOnClickListener(this);
+        bankButton.setOnClickListener(this);*/
+        idButton.setOnClickListener(this);
+        documentButton.setOnClickListener(this);
+
         initCustomSpinner_financialId();
         getRequestFinacial(CommonConstants.FINANCIALID_CATEGORY_ID);
 
@@ -379,6 +390,43 @@ public class IdProofFragment extends BaseFragment {
         });
 
     }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+          /*  case R.id.btn_personal:
+                showToast(getActivity(),"Please Fill The Personal Details");
+
+                // replaceFragment(getActivity(), MAIN_CONTAINER, new RegistrationViewFragment(), TAG, RegistrationViewFragment.TAG);
+
+                break;
+            case R.id.btn_bank:
+                showToast(getActivity(),"Please Fill The Personal Details");
+                //replaceFragment(getActivity(),MAIN_CONTAINER,new AgentRequestsFragment(),TAG,AgentRequestsFragment.TAG);
+                break;*/
+            case R.id.btn_id:
+                showToast(getActivity(),"Please Fill The Identity Proof Details");
+                // replaceFragment(getActivity(),MAIN_CONTAINER,new InProgressFragment(),TAG,InProgressFragment.TAG);
+                break;
+            case R.id.btn_doc:
+           //     showToast(getActivity(),"Please Fill The Personal Details");
+                if (isValidateUi()) {
+                    addIdProofDetails();
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("idproof", addAgent);
+                    Fragment fragment = new AggrementDocumentsFragment();
+                    fragment.setArguments(bundle);
+                    replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, AggrementDocumentsFragment.TAG);
+
+                }
+
+                //replaceFragment(getActivity(),MAIN_CONTAINER,new ApprovedAgentsFragment(),TAG,ApprovedAgentsFragment.TAG);
+                break;
+        }
+    }
+
     class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
         private final Context activity;

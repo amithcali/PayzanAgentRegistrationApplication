@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -61,7 +62,7 @@ import rx.Subscription;
 import static android.app.Activity.RESULT_OK;
 
 
-public class AggrementDocumentsFragment extends BaseFragment implements IScreen,DeleteImageListiner {
+public class AggrementDocumentsFragment extends BaseFragment implements IScreen,DeleteImageListiner, View.OnClickListener {
 
     public static final String TAG = AggrementDocumentsFragment.class.getSimpleName();
 
@@ -95,6 +96,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
     private AgentDoc agentDoc;
     ImageAdapter imageAdapter;
     ProgressBar progressBar;
+    private Button personalButton,bankButton,idButton,documentButton;
 
     public AggrementDocumentsFragment() {
         // Required empty public constructor
@@ -119,6 +121,17 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
         imageView = (ImageView) view.findViewById(R.id.view_image);
         lnrImages = (LinearLayout) view.findViewById(R.id.lnrImages);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        personalButton = (Button)view.findViewById(R.id.btn_personal);
+        bankButton = (Button)view.findViewById(R.id.btn_bank);
+        idButton = (Button)view.findViewById(R.id.btn_id);
+        documentButton = (Button)view.findViewById(R.id.btn_doc);
+
+     /*   personalButton.setOnClickListener(this);
+        bankButton.setOnClickListener(this);
+        idButton.setOnClickListener(this);*/
+        documentButton.setOnClickListener(this);
+
+
         imagesRecylerView = (RecyclerView) view.findViewById(R.id.imagesRecylerView);
         context = this.getActivity();
         fragmentManager = getActivity().getSupportFragmentManager();
@@ -385,6 +398,28 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
         dialog.show();
         dialog.setCanceledOnTouchOutside(true);
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+  /*          case R.id.btn_personal:
+                showToast(getActivity(),"Please Fill The Personal Details");
+                // replaceFragment(getActivity(), MAIN_CONTAINER, new RegistrationViewFragment(), TAG, RegistrationViewFragment.TAG);
+                break;
+            case R.id.btn_bank:
+                showToast(getActivity(),"Please Fill The Personal Details");
+                //replaceFragment(getActivity(),MAIN_CONTAINER,new AgentRequestsFragment(),TAG,AgentRequestsFragment.TAG);
+                break;
+            case R.id.btn_id:
+                showToast(getActivity(),"Please Fill The Personal Details");
+                // replaceFragment(getActivity(),MAIN_CONTAINER,new InProgressFragment(),TAG,InProgressFragment.TAG);
+                break;*/
+            case R.id.btn_doc:
+                showToast(getActivity(),"Please Add Documents");
+                //replaceFragment(getActivity(),MAIN_CONTAINER,new ApprovedAgentsFragment(),TAG,ApprovedAgentsFragment.TAG);
+                break;
+        }
     }
 }
 

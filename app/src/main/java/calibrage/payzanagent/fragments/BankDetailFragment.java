@@ -50,7 +50,7 @@ import static android.content.ContentValues.TAG;
 import static android.os.Parcelable.CONTENTS_FILE_DESCRIPTOR;
 
 
-public class BankDetailFragment extends BaseFragment {
+public class BankDetailFragment extends BaseFragment implements View.OnClickListener {
 
     public static final String TAG = BankDetailFragment.class.getSimpleName();
 
@@ -63,6 +63,7 @@ public class BankDetailFragment extends BaseFragment {
     Spinner spinnerCustom_bank;
     Spinner spinnerCustom_brach;
     int bankId;
+    private Button personalButton,bankButton,idButton,documentButton;
     EditText accountName,accountNo,shiftCode;
     ArrayList<String> bankArrayList = new ArrayList<String>();
     ArrayList<String> branchArrayList = new ArrayList<String>();
@@ -97,6 +98,16 @@ public class BankDetailFragment extends BaseFragment {
         currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
         agentBankInfo = new AgentBankInfo();
         initCustomSpinner_bank();
+        personalButton = (Button)view.findViewById(R.id.btn_personal);
+        bankButton = (Button)view.findViewById(R.id.btn_bank);
+        idButton = (Button)view.findViewById(R.id.btn_id);
+        documentButton = (Button)view.findViewById(R.id.btn_doc);
+
+        bankButton.setOnClickListener(this);
+        idButton.setOnClickListener(this);
+       /* personalButton.setOnClickListener(this);
+        documentButton.setOnClickListener(this);*/
+
 
         getRequestBank(CommonConstants.BANK_CATEGORY_ID);
         initCustomSpinner_branch();
@@ -351,6 +362,44 @@ public class BankDetailFragment extends BaseFragment {
             }
         });
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+           /* case R.id.btn_personal:
+                showToast(getActivity(),"Please Fill The Personal Details");
+
+                // replaceFragment(getActivity(), MAIN_CONTAINER, new RegistrationViewFragment(), TAG, RegistrationViewFragment.TAG);
+
+                break;*/
+            case R.id.btn_bank:
+                 showToast(getActivity(),"Please Fill The Bank Details");
+                //replaceFragment(getActivity(),MAIN_CONTAINER,new AgentRequestsFragment(),TAG,AgentRequestsFragment.TAG);
+                break;
+            case R.id.btn_id:
+             //   showToast(getActivity(),"Please Fill The Personal Details");
+
+                if (isValidateUi()) {
+                    agentBankDetails();
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("bankinfo", addAgent);
+                    Fragment fragment = new IdProofFragment();
+                    fragment.setArguments(bundle);
+                    replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, IdProofFragment.TAG);
+
+                }
+
+
+                // replaceFragment(getActivity(),MAIN_CONTAINER,new InProgressFragment(),TAG,InProgressFragment.TAG);
+                break;
+          /*  case R.id.btn_doc:
+                showToast(getActivity(),"Please Fill The Personal Details");
+                //replaceFragment(getActivity(),MAIN_CONTAINER,new ApprovedAgentsFragment(),TAG,ApprovedAgentsFragment.TAG);
+                break;*/
+        }
     }
 
     class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {

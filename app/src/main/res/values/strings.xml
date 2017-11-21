@@ -30,6 +30,7 @@
     <string name="user_name">User Name</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="email_id">Email Id</string>
+    <string name="dob_id">Date of Birth</string>
     <string name="provinance_name">Provinance Name</string>
     <string name="district_str">District Name</string>
     <string name="mandal_str">Mandal Name</string>
@@ -46,6 +47,7 @@
     <string name="location_on_map">Location on Map</string>
     <string name="continue_btn">Continue</string>
     <string name="business_category">Business Category</string>
+    <string name="Gender_category">Gender</string>
     <string name="title_type">Title Type</string>
     <string name="comment">Comments</string>
     <string name="pick_btn">Pick</string>

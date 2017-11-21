@@ -9,15 +9,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class AgentPersonalInfo {
 
-    @SerializedName("AspNetUserId")
-    @Expose
-    private String aspNetUserId;
-    @SerializedName("AgentBusinessCategoryId")
-    @Expose
-    private Integer agentBusinessCategoryId;
-    @SerializedName("AgentRequestId")
-    @Expose
-    private Integer agentRequestId;
     @SerializedName("TitleTypeId")
     @Expose
     private Integer titleTypeId;
@@ -36,6 +27,9 @@ public class AgentPersonalInfo {
     @SerializedName("Email")
     @Expose
     private String email;
+    @SerializedName("Password")
+    @Expose
+    private String password;
     @SerializedName("GenderTypeId")
     @Expose
     private Integer genderTypeId;
@@ -56,49 +50,19 @@ public class AgentPersonalInfo {
     private Integer villageId;
     @SerializedName("ParentAspNetUserId")
     @Expose
-    private String parentAspNetUserId;
-    @SerializedName("Id")
+    private Object parentAspNetUserId;
+    @SerializedName("AgentBusinessCategoryId")
     @Expose
-    private Integer id;
-    @SerializedName("IsActive")
+    private Integer agentBusinessCategoryId;
+    @SerializedName("AgentRequestId")
     @Expose
-    private Boolean isActive;
+    private Integer agentRequestId;
     @SerializedName("CreatedBy")
     @Expose
     private String createdBy;
     @SerializedName("ModifiedBy")
     @Expose
     private String modifiedBy;
-    @SerializedName("Created")
-    @Expose
-    private String created;
-    @SerializedName("Modified")
-    @Expose
-    private String modified;
-
-    public String getAspNetUserId() {
-        return aspNetUserId;
-    }
-
-    public void setAspNetUserId(String aspNetUserId) {
-        this.aspNetUserId = aspNetUserId;
-    }
-
-    public Integer getAgentBusinessCategoryId() {
-        return agentBusinessCategoryId;
-    }
-
-    public void setAgentBusinessCategoryId(Integer agentBusinessCategoryId) {
-        this.agentBusinessCategoryId = agentBusinessCategoryId;
-    }
-
-    public Integer getAgentRequestId() {
-        return agentRequestId;
-    }
-
-    public void setAgentRequestId(Integer agentRequestId) {
-        this.agentRequestId = agentRequestId;
-    }
 
     public Integer getTitleTypeId() {
         return titleTypeId;
@@ -146,6 +110,14 @@ public class AgentPersonalInfo {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Integer getGenderTypeId() {
@@ -196,28 +168,28 @@ public class AgentPersonalInfo {
         this.villageId = villageId;
     }
 
-    public String getParentAspNetUserId() {
+    public Object getParentAspNetUserId() {
         return parentAspNetUserId;
     }
 
-    public void setParentAspNetUserId(String parentAspNetUserId) {
+    public void setParentAspNetUserId(Object parentAspNetUserId) {
         this.parentAspNetUserId = parentAspNetUserId;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getAgentBusinessCategoryId() {
+        return agentBusinessCategoryId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setAgentBusinessCategoryId(Integer agentBusinessCategoryId) {
+        this.agentBusinessCategoryId = agentBusinessCategoryId;
     }
 
-    public Boolean getIsActive() {
-        return isActive;
+    public Integer getAgentRequestId() {
+        return agentRequestId;
     }
 
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
+    public void setAgentRequestId(Integer agentRequestId) {
+        this.agentRequestId = agentRequestId;
     }
 
     public String getCreatedBy() {
@@ -234,22 +206,6 @@ public class AgentPersonalInfo {
 
     public void setModifiedBy(String modifiedBy) {
         this.modifiedBy = modifiedBy;
-    }
-
-    public String getCreated() {
-        return created;
-    }
-
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
-    public String getModified() {
-        return modified;
-    }
-
-    public void setModified(String modified) {
-        this.modified = modified;
     }
 
 }

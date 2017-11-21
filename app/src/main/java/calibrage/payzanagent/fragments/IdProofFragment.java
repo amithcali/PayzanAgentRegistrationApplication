@@ -29,16 +29,23 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.HomeActivity;
 import calibrage.payzanagent.model.AddAgent;
 import calibrage.payzanagent.model.AgentIdProof;
 import calibrage.payzanagent.model.AgentRequestModel;
+import calibrage.payzanagent.model.BankInfoResponseModel;
 import calibrage.payzanagent.model.BusinessCategoryModel;
+import calibrage.payzanagent.model.IdProofModel;
+import calibrage.payzanagent.model.IdProofResponseModel;
 import calibrage.payzanagent.networkservice.ApiConstants;
 import calibrage.payzanagent.networkservice.MyServices;
 import calibrage.payzanagent.networkservice.ServiceFactory;
@@ -68,9 +75,11 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
     ArrayList<String> businessArrayList = new ArrayList<String>();
 
     ArrayList<String> financiaStringArrayList = new ArrayList<String>();
-    private AddAgent addAgent;
-    private ArrayList<AgentIdProof> agentIdProofArrayList;
-    private AgentIdProof agentIdProof,agentFinancialProof;
+   // private AddAgent addAgent;
+  //  AgentIdProof agentidProof;
+    private AgentIdProof idProof;
+    private ArrayList<IdProofModel> idProofArrayList;
+    private IdProofModel agentIdProof,agentFinancialProof;
     private ArrayList<BusinessCategoryModel.ListResult> businessListResults =new ArrayList<>();
     private ArrayList<BusinessCategoryModel.ListResult> financialListResults =new ArrayList<>();
 
@@ -98,10 +107,12 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
         HomeActivity.toolbar.setTitle(getResources().getString(R.string.agentrequest_sname));
         HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
         currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
-        agentIdProofArrayList = new ArrayList<>();
+      //  agentIdProofArrayList = new ArrayList<>();
         listResults =new  ArrayList();
-        agentIdProof = new AgentIdProof();
-        agentFinancialProof = new AgentIdProof();
+        idProofArrayList = new ArrayList<>();
+        agentFinancialProof = new IdProofModel();
+        agentIdProof = new IdProofModel();
+        idProof = new AgentIdProof();
         initCustomSpinner_personalId();
         getRequest(CommonConstants.PERSONALID_CATEGORY_ID);
         personalButton = (Button)view.findViewById(R.id.btn_personal);
@@ -122,44 +133,28 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 if (isValidateUi()) {
-                   addIdProofDetails();
+                  //  addIdProofDetails();
+                    postIdInfo();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-                    Bundle bundle = new Bundle();
+                  /*  Bundle bundle = new Bundle();
                     bundle.putParcelable("idproof", addAgent);
                     Fragment fragment = new AggrementDocumentsFragment();
                     fragment.setArguments(bundle);
-                  //  ReplcaFragment(fragment);
-
-                  /*  fragmentManager.beginTransaction()
-                            .replace(R.id.content_frame,  fragment,"DocTag")
-                            .commit();*/
-
-                    replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, AggrementDocumentsFragment.TAG);
+                    replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, AggrementDocumentsFragment.TAG);*/
 
                 }
 
                 //startActivity(new Intent(BankDetailsActivity.this,IdProofActivity.class));
             }
         });
-        Bundle bundle = getArguments();
+       /* Bundle bundle = getArguments();
         if (bundle != null) {
-            addAgent = bundle.getParcelable("bankinfo");
+            agentId = bundle.getInt("agentid");
+            Log.d(TAG, "onCreateView: agentid"+agentId)
+            //addAgent = bundle.getParcelable("bankinfo");
         }
-       /* view.setFocusableInTouchMode(true);
-        view.requestFocus();
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    closeTab();
-
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });*/
+*/
         return view;
     }
 
@@ -203,30 +198,69 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
         addAgent.setAgentIdProofs(agentIdProofArrayList);
 
     }*/
-    private void addIdProofDetails() {
+    private JsonObject addIdProofDetails() {
 
-       agentIdProof.setModified(currentDatetime);
-        agentIdProof.setModifiedBy(CommonConstants.USERID);
-        agentIdProof.setIsActive(true);
-        agentIdProof.setId(0);
-        agentIdProof.setAgentId(null);
-        agentIdProof.setCreated(currentDatetime);
-        agentIdProof.setCreatedBy(CommonConstants.USERID);
-        agentIdProof.setIsActive(true);
-        agentIdProof.setIdProofTypeId(businessListResults.get(spinnerCustom_personalId.getSelectedItemPosition()-1).getId());
-        agentIdProof.setIdProofNumber(personalIdNumber);
-        agentFinancialProof.setModified(currentDatetime);
-        agentFinancialProof.setModifiedBy(CommonConstants.USERID);
-        agentFinancialProof.setIsActive(true);
-        agentFinancialProof.setId(0);
-        agentFinancialProof.setAgentId(null);
-        agentFinancialProof.setCreated(currentDatetime);
-        agentFinancialProof.setCreatedBy(CommonConstants.USERID);
+       agentIdProof.setIdProofNumber(personalIdNumber);
+       agentIdProof.setIdProofTypeId(businessListResults.get(spinnerCustom_personalId.getSelectedItemPosition()-1).getId());
         agentFinancialProof.setIdProofTypeId(financialListResults.get(spinnerCustom_finacialId.getSelectedItemPosition()-1).getId());
-        agentFinancialProof.setIdProofNumber(financialIdNumber);
-                agentIdProofArrayList.add(agentIdProof);
-                agentIdProofArrayList.add(agentFinancialProof);
-        addAgent.setAgentIdProofs(agentIdProofArrayList);
+       agentFinancialProof.setIdProofNumber(financialIdNumber);
+        idProofArrayList.add(agentFinancialProof);
+        idProofArrayList.add(agentIdProof);
+        idProof.setIdProofs((List<IdProofModel>) idProofArrayList);
+        idProof.setAgentId(CommonConstants.AGENT_ID);
+        idProof.setCreatedBy(CommonConstants.USERID);
+        idProof.setModifiedBy(CommonConstants.USERID);
+        return new Gson().toJsonTree(idProof)
+                .getAsJsonObject();
+
+
+    }
+
+
+
+    private void postIdInfo() {
+        showDialog(getActivity(), "Authenticating...");
+        JsonObject object = addIdProofDetails();
+        MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
+        operatorSubscription = service.postIdInfo(object)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<IdProofResponseModel>() {
+                    @Override
+                    public void onCompleted() {
+                        // Toast.makeText(getActivity(), "check", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ((HttpException) e).code();
+                            ((HttpException) e).message();
+                            ((HttpException) e).response().errorBody();
+                            try {
+                                ((HttpException) e).response().errorBody().string();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(IdProofResponseModel idProofResponseModel) {
+                        hideDialog();
+                        if(idProofResponseModel.getIsSuccess())
+                        {
+                            showToast(context,idProofResponseModel.getEndUserMessage());
+                            replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
+
+                        }else {
+                            showToast(context,idProofResponseModel.getEndUserMessage());
+                        }
+
+                    }
+                });
 
     }
 
@@ -411,18 +445,17 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
             case R.id.btn_doc:
            //     showToast(getActivity(),"Please Fill The Personal Details");
                 if (isValidateUi()) {
-                    addIdProofDetails();
+                    //  addIdProofDetails();
+                    postIdInfo();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-                    Bundle bundle = new Bundle();
+                  /*  Bundle bundle = new Bundle();
                     bundle.putParcelable("idproof", addAgent);
                     Fragment fragment = new AggrementDocumentsFragment();
                     fragment.setArguments(bundle);
-                    replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, AggrementDocumentsFragment.TAG);
-
+                    replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, AggrementDocumentsFragment.TAG);*/
                 }
 
-                //replaceFragment(getActivity(),MAIN_CONTAINER,new ApprovedAgentsFragment(),TAG,ApprovedAgentsFragment.TAG);
                 break;
         }
     }

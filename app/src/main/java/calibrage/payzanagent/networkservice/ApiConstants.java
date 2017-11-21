@@ -27,6 +27,8 @@ public interface ApiConstants {
     String ADD_AGENT = "/api/Agent/AddAgent";
    String UPDATE_AGENT_REQUEST= "api/AgentRequestInfo/UpdateAgentRequestStatus";
    String REGISTER_AGENT_PERSONAL_INFO= "api/Agent/RegisterAgent";
+   String REGISTER_AGENT_BANK_INFO= "api/AgentBank/insert";
+   String REGISTER_AGENT_ID_INFO= "api/AgentIdProof/AddAgentIdProofs";
 
     //  String LOGIN = "API
 }

@@ -69,7 +69,7 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
                              Bundle savedInstanceState) {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-       view = inflater.inflate(R.layout.fragment_in_progress, container, false) ;
+        view = inflater.inflate(R.layout.fragment_in_progress, container, false) ;
         context = this.getActivity();
         HomeActivity.toolbar.setTitle(getResources().getString(R.string.inprogressrequest_sname));
         HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
@@ -130,7 +130,7 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
                         else {
                             noRecords.setVisibility(View.GONE);
                         }
-                       inProgressRequetAdapter = new InProgressRequetAdapter(context, listResults);
+                        inProgressRequetAdapter = new InProgressRequetAdapter(context, listResults);
                         recyclerView.setAdapter(inProgressRequetAdapter);
                         inProgressRequetAdapter.setOnAdapterListener(InProgressFragment.this);
                         agentRequestModelBundle = agentRequestModel;

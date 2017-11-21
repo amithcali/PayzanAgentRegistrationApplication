@@ -937,6 +937,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                         hideDialog();
                         if (personalInfoResponseModel.getIsSuccess()) {
                             showToast(context, personalInfoResponseModel.getEndUserMessage());
+                            CommonConstants.AGENT_ID = personalInfoResponseModel.getResult().getAgentId();
                             replaceFragment(getActivity(), MAIN_CONTAINER, new BankDetailFragment(), TAG, BankDetailFragment.TAG);
 
                         } else {
@@ -996,7 +997,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         strfirstname = edtFirstName.getText().toString().trim();
         strmiddlename = edtMiddleName.getText().toString().trim();
         strlastname = edtLastName.getText().toString().trim();
-        strusername = edtUserName.getText().toString();
+      //  strusername = edtUserName.getText().toString();
         strpass = edtPassWord.getText().toString();
         strmobile = edtMobile.getText().toString();
         stremail = edtEmail.getText().toString();
@@ -1028,12 +1029,12 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         } else if (spinnerCustom.getSelectedItemPosition() == 0) {
             status = false;
             Toast.makeText(context, "select business category", Toast.LENGTH_SHORT).show();
-        } else if (strusername.isEmpty() || edtUserName.getText().length() < 4) {
+        } /*else if (strusername.isEmpty() || edtUserName.getText().length() < 4) {
             status = false;
             edtUserName.setError("UserName is required");
             edtUserName.requestFocusFromTouch();
             //Toast.makeText(context, "UserName is required", Toast.LENGTH_SHORT).show();
-        } else if (strpass.isEmpty() || edtPassWord.getText().length() < 4) {
+        } */else if (strpass.isEmpty() || edtPassWord.getText().length() < 4) {
             status = false;
             edtPassWord.setError("Password is required");
             edtPassWord.requestFocusFromTouch();

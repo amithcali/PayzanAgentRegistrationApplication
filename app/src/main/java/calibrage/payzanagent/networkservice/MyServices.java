@@ -5,10 +5,12 @@ import com.google.gson.JsonObject;
 import calibrage.payzanagent.model.AddAgent;
 import calibrage.payzanagent.model.AddAgentResponseModel;
 import calibrage.payzanagent.model.AgentRequestModel;
+import calibrage.payzanagent.model.BankInfoResponseModel;
 import calibrage.payzanagent.model.Branch;
 import calibrage.payzanagent.model.BusinessCategoryModel;
 import calibrage.payzanagent.model.DistrictModel;
 import calibrage.payzanagent.model.HomeModel;
+import calibrage.payzanagent.model.IdProofResponseModel;
 import calibrage.payzanagent.model.LoginResponseModel;
 import calibrage.payzanagent.model.MandalModel;
 import calibrage.payzanagent.model.PersonalInfoResponseModel;
@@ -71,6 +73,13 @@ public interface MyServices {
 
     @POST(ApiConstants.REGISTER_AGENT_PERSONAL_INFO)
     Observable<PersonalInfoResponseModel> postPersonalInfo(@Body JsonObject data);
+
+    @POST(ApiConstants.REGISTER_AGENT_BANK_INFO)
+    Observable<BankInfoResponseModel> postBankInfo(@Body JsonObject data);
+
+    @POST(ApiConstants.REGISTER_AGENT_ID_INFO)
+    Observable<IdProofResponseModel> postIdInfo(@Body JsonObject data);
+
 
     @GET
     Observable<StatusCountModel> UpdateStatusCount(@Url String url);

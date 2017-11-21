@@ -25,6 +25,9 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -33,8 +36,10 @@ import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.HomeActivity;
 import calibrage.payzanagent.model.AddAgent;
 import calibrage.payzanagent.model.AgentBankInfo;
+import calibrage.payzanagent.model.BankInfoResponseModel;
 import calibrage.payzanagent.model.Branch;
 import calibrage.payzanagent.model.BusinessCategoryModel;
+import calibrage.payzanagent.model.PersonalInfoResponseModel;
 import calibrage.payzanagent.networkservice.ApiConstants;
 import calibrage.payzanagent.networkservice.MyServices;
 import calibrage.payzanagent.networkservice.ServiceFactory;
@@ -124,34 +129,37 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
             public void onClick(View v) {
                 if (isValidateUi()) {
                     //    login();
-                    agentBankDetails();
+                  //  agentBankDetails();
+                    postBankInfo();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-                    Bundle bundle = new Bundle();
+                   /* Bundle bundle = new Bundle();
                     bundle.putParcelable("bankinfo", addAgent);
                     Fragment fragment = new IdProofFragment();
                     fragment.setArguments(bundle);
                  //   ReplcaFragment(fragment);
-                   /* fragmentManager.beginTransaction()
+                   *//* fragmentManager.beginTransaction()
                             .replace(R.id.content_frame,  fragment,"IdTag")
-                            .commit();*/
-                    replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, IdProofFragment.TAG);
+                            .commit();*//*
+                    replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, IdProofFragment.TAG);*/
 
                }
 
                 //startActivity(new Intent(BankDetailsActivity.this,IdProofActivity.class));
             }
         });
-        Bundle bundle = getArguments();
+     /*   Bundle bundle = getArguments();
         if (bundle != null) {
-            addAgent = bundle.getParcelable("personalinfo");
-        }
+            agentId = bundle.getInt("agentid");
+            Log.d(TAG, "onCreateView: agentid"+agentId);
+           // addAgent = bundle.getParcelable("personalinfo");
+        }*/
 
         return view;
     }
 
 
-    private void agentBankDetails() {
+    private JsonObject agentBankDetails() {
         agentBankInfo.setModifiedBy(CommonConstants.USERID);
         agentBankInfo.setModified(currentDatetime);
         agentBankInfo.setCreatedBy(CommonConstants.USERID);
@@ -160,10 +168,65 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
         agentBankInfo.setAccountHolderName(straccountname);
         agentBankInfo.setAccountNumber(straccountno);
         agentBankInfo.setBankId(""+branchListResults.get(spinnerCustom_brach.getSelectedItemPosition()).getId());
-        agentBankInfo.setAgentId(null);
+        agentBankInfo.setAgentId(""+CommonConstants.AGENT_ID);
         agentBankInfo.setId(0);
-        addAgent.setAgentBankInfo(agentBankInfo);
+        return new Gson().toJsonTree(agentBankInfo)
+                .getAsJsonObject();
+        //addAgent.setAgentBankInfo(agentBankInfo);
     }
+
+
+
+
+    private void postBankInfo() {
+        showDialog(getActivity(), "Authenticating...");
+        JsonObject object = agentBankDetails();
+        MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
+        operatorSubscription = service.postBankInfo(object)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<BankInfoResponseModel>() {
+                    @Override
+                    public void onCompleted() {
+                        // Toast.makeText(getActivity(), "check", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ((HttpException) e).code();
+                            ((HttpException) e).message();
+                            ((HttpException) e).response().errorBody();
+                            try {
+                                ((HttpException) e).response().errorBody().string();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(BankInfoResponseModel bankInfoResponseModel) {
+                        hideDialog();
+                        if(bankInfoResponseModel.getIsSuccess())
+                        {
+                            showToast(context,bankInfoResponseModel.getEndUserMessage());
+                            replaceFragment(getActivity(), MAIN_CONTAINER, new IdProofFragment(), TAG, IdProofFragment.TAG);
+
+                        }else {
+                            showToast(context,bankInfoResponseModel.getEndUserMessage());
+                        }
+
+                    }
+                });
+
+    }
+
+
+
+
    /* private void agentBankDetails() {
         agentBankInfo.setModifiedBy(CommonConstants.USERID);
         agentBankInfo.setModified(currentDatetime);
@@ -379,16 +442,21 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                 break;
             case R.id.btn_id:
              //   showToast(getActivity(),"Please Fill The Personal Details");
-
                 if (isValidateUi()) {
-                    agentBankDetails();
+                    //    login();
+                    //  agentBankDetails();
+                    postBankInfo();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-                    Bundle bundle = new Bundle();
+                   /* Bundle bundle = new Bundle();
                     bundle.putParcelable("bankinfo", addAgent);
                     Fragment fragment = new IdProofFragment();
                     fragment.setArguments(bundle);
-                    replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, IdProofFragment.TAG);
+                 //   ReplcaFragment(fragment);
+                   *//* fragmentManager.beginTransaction()
+                            .replace(R.id.content_frame,  fragment,"IdTag")
+                            .commit();*//*
+                    replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, IdProofFragment.TAG);*/
 
                 }
 

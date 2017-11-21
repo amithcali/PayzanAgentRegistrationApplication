@@ -32,6 +32,7 @@ public class CommonConstants {
     public static String FILE_TYPE_ID_IMAGES = "23";
     public static String GENDER_TYPE_MALE = "20";
     public static String GENDER_TYPE_FEMALE = "21";
+    public static String AGENT_ID = " ";
 
 
 

@@ -41,6 +41,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,7 +56,9 @@ import calibrage.payzanagent.model.AgentPersonalInfo;
 import calibrage.payzanagent.model.AgentRequestModel;
 import calibrage.payzanagent.model.BusinessCategoryModel;
 import calibrage.payzanagent.model.DistrictModel;
+import calibrage.payzanagent.model.LoginResponseModel;
 import calibrage.payzanagent.model.MandalModel;
+import calibrage.payzanagent.model.PersonalInfoResponseModel;
 import calibrage.payzanagent.model.ProvinceModel;
 import calibrage.payzanagent.model.StatesModel;
 import calibrage.payzanagent.model.VillageModel;
@@ -128,6 +132,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     ArrayList<String> villageArrayList = new ArrayList<String>();
     private ArrayList<VillageModel.ListResult> villageListResults = new ArrayList<>();
     RegistrationViewFragment.CustomSpinnerAdapter customSpinnerAdapter;
+    private Subscription mRegisterSubscription;
 
     public RegistrationViewFragment() {
         // Required empty public constructor
@@ -246,14 +251,15 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
             public void onClick(View v) {
        //         replaceFragment(getActivity(), MAIN_CONTAINER, new BankDetailFragment(), TAG, BankDetailFragment.TAG);
                 if (isValidateUi()) {
-                   addAgentPersonalInfo();
+                    postPersonalInfo();
+                  // addAgentPersonalInfo();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("personalinfo", addAgent);
-                    Fragment fragment = new BankDetailFragment();
-                    fragment.setArguments(bundle);
-                    replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, BankDetailFragment.TAG);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putParcelable("personalinfo", addAgent);
+//                    Fragment fragment = new BankDetailFragment();
+//                    fragment.setArguments(bundle);
+                  //  replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, BankDetailFragment.TAG);
 
 
                 }
@@ -743,7 +749,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     }*/
 
 
-    private void addAgentPersonalInfo() {
+    private JsonObject addAgentPersonalInfo() {
 //        addAgent.setEmail();
 //        addAgent.setMobileNumber();
         addAgent.setPassword(strpass);
@@ -785,8 +791,56 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         agentPersonalInfo.setModifiedBy(CommonConstants.USERID);
         agentPersonalInfo.setFirstName(strfirstname);
 
-        addAgent.setAgentPersonalInfo(agentPersonalInfo);
+      //  addAgent.setAgentPersonalInfo(agentPersonalInfo);
         Log.d(TAG, "addAgentPersonalInfo: "+addAgent.toString());
+        return new Gson().toJsonTree(agentPersonalInfo)
+                .getAsJsonObject();
+
+    }
+
+    private void postPersonalInfo() {
+        showDialog(getActivity(), "Authenticating...");
+        JsonObject object = addAgentPersonalInfo();
+        MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
+        mRegisterSubscription = service.postPersonalInfo(object)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<PersonalInfoResponseModel>() {
+                    @Override
+                    public void onCompleted() {
+                        // Toast.makeText(getActivity(), "check", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ((HttpException) e).code();
+                            ((HttpException) e).message();
+                            ((HttpException) e).response().errorBody();
+                            try {
+                                ((HttpException) e).response().errorBody().string();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(PersonalInfoResponseModel personalInfoResponseModel) {
+                        hideDialog();
+                        if(personalInfoResponseModel.getIsSuccess())
+                        {
+                            showToast(context,personalInfoResponseModel.getEndUserMessage());
+                            replaceFragment(getActivity(), MAIN_CONTAINER, new BankDetailFragment(), TAG, BankDetailFragment.TAG);
+
+                        }else {
+                            showToast(context,personalInfoResponseModel.getEndUserMessage());
+                        }
+
+                    }
+                });
 
     }
    /* private void addAgentPersonalInfo() {
@@ -1105,26 +1159,30 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_personal:
-                showToast(getActivity(),"Please Fill The Personal Details");
+                showToast(getActivity(), "Please Fill The Personal Details");
 
                 // replaceFragment(getActivity(), MAIN_CONTAINER, new RegistrationViewFragment(), TAG, RegistrationViewFragment.TAG);
 
                 break;
             case R.id.btn_bank:
                 if (isValidateUi()) {
-                    addAgentPersonalInfo();
+                    //      addAgentPersonalInfo();
+                    postPersonalInfo();
+                    // addAgentPersonalInfo();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("personalinfo", addAgent);
-                    Fragment fragment = new BankDetailFragment();
-                    fragment.setArguments(bundle);
-                    replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, BankDetailFragment.TAG);
                 }
-                //replaceFragment(getActivity(),MAIN_CONTAINER,new AgentRequestsFragment(),TAG,AgentRequestsFragment.TAG);
-                break;
+//                    Bundle bundle = new Bundle();
+//                    bundle.putParcelable("personalinfo", addAgent);
+//                    Fragment fragment = new BankDetailFragment();
+//                    fragment.setArguments(bundle);
+                    //  replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, BankDetailFragment.TAG);
+
+
+                    //replaceFragment(getActivity(),MAIN_CONTAINER,new AgentRequestsFragment(),TAG,AgentRequestsFragment.TAG);
+                    break;
            /* case R.id.btn_id:
                 showToast(getActivity(),"Please Fill The Personal Details");
                 // replaceFragment(getActivity(),MAIN_CONTAINER,new InProgressFragment(),TAG,InProgressFragment.TAG);
@@ -1133,56 +1191,57 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                 showToast(getActivity(),"Please Fill The Personal Details");
                 //replaceFragment(getActivity(),MAIN_CONTAINER,new ApprovedAgentsFragment(),TAG,ApprovedAgentsFragment.TAG);
                 break;*/
-        }
-    }
-
-
-    class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
-
-        private final Context activity;
-        private ArrayList<String> asr;
-
-        public CustomSpinnerAdapter(Context context, ArrayList<String> asr) {
-            this.asr = asr;
-            activity = context;
+                }
         }
 
 
-        public int getCount() {
-            return asr.size();
-        }
+        class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
-        public Object getItem(int i) {
-            return asr.get(i);
-        }
+            private final Context activity;
+            private ArrayList<String> asr;
 
-        public long getItemId(int i) {
-            return (long) i;
-        }
+            public CustomSpinnerAdapter(Context context, ArrayList<String> asr) {
+                this.asr = asr;
+                activity = context;
+            }
 
 
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            TextView txt = new TextView(getActivity());
-            txt.setPadding(16, 16, 16, 16);
-            txt.setTextSize(18);
-            txt.setGravity(Gravity.CENTER_VERTICAL);
-            txt.setText(asr.get(position));
-            txt.setTextColor(Color.parseColor("#000000"));
-            return txt;
+            public int getCount() {
+                return asr.size();
+            }
+
+            public Object getItem(int i) {
+                return asr.get(i);
+            }
+
+            public long getItemId(int i) {
+                return (long) i;
+            }
+
+
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                TextView txt = new TextView(getActivity());
+                txt.setPadding(16, 16, 16, 16);
+                txt.setTextSize(18);
+                txt.setGravity(Gravity.CENTER_VERTICAL);
+                txt.setText(asr.get(position));
+                txt.setTextColor(Color.parseColor("#000000"));
+                return txt;
+            }
+
+            public View getView(int i, View view, ViewGroup viewgroup) {
+                TextView txt = new TextView(getActivity());
+                txt.setGravity(Gravity.LEFT);
+                txt.setPadding(16, 16, 16, 16);
+                txt.setTextSize(18);
+                txt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.down24, 0);
+                txt.setText(asr.get(i));
+                txt.setTextColor(Color.parseColor("#000000"));
+                return txt;
+            }
         }
 
-        public View getView(int i, View view, ViewGroup viewgroup) {
-            TextView txt = new TextView(getActivity());
-            txt.setGravity(Gravity.LEFT);
-            txt.setPadding(16, 16, 16, 16);
-            txt.setTextSize(18);
-            txt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.down24, 0);
-            txt.setText(asr.get(i));
-            txt.setTextColor(Color.parseColor("#000000"));
-            return txt;
-        }
-    }
 
     public void ReplcaFragment(android.support.v4.app.Fragment fragment) {
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();

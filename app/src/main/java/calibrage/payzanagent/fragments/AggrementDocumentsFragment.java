@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import calibrage.payzanagent.BuildConfig;
 import calibrage.payzanagent.Calib.ext.GsonObjectRequest;
 import calibrage.payzanagent.Calib.ext.RequestManager;
 import calibrage.payzanagent.Calib.ui.IScreen;
@@ -52,6 +53,7 @@ import calibrage.payzanagent.interfaces.DeleteImageListiner;
 import calibrage.payzanagent.model.AddAgent;
 import calibrage.payzanagent.model.AddAgentResponseModel;
 import calibrage.payzanagent.model.AgentDoc;
+import calibrage.payzanagent.networkservice.ApiConstants;
 import calibrage.payzanagent.utils.CommonConstants;
 import calibrage.payzanagent.utils.CommonUtil;
 import calibrage.payzanagent.utils.Event;
@@ -188,7 +190,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
             agentDoc.setCreatedBy(CommonConstants.USERID);
             agentDoc.setFileBytes(null);
             agentDoc.setBase64File(getImageByteArray(imagesArrayList.get(0)));
-            agentDoc.setFileExtension(".jpg");
+            agentDoc.setFileExtension(".JPEG");
             agentDoc.setFileName(addAgent.getAgentPersonalInfo().getFirstName());
             agentDoc.setFileTypeId(Integer.parseInt(CommonConstants.FILE_TYPE_ID_IMAGES));
             agentDoc.setModified(currentDatetime);
@@ -275,8 +277,6 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
                     }
 
                 }
-
-
             } else if (requestCode == 2) {
                 imagesPathList = new ArrayList<String>();
                 String[] imagesPath = data.getStringExtra("data").split("\\|");
@@ -309,9 +309,10 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
             if (bitmap != null) {
                // showDialog(getActivity(), "Adding Images...");
 //                Bitmap bm = MediaStore.Images.Media.getBitmap(context.getApplicationContext().getContentResolver(), uri);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                 value = Base64.encodeToString( stream.toByteArray(), Base64.NO_WRAP);
+              //  BitmapFactory.decodeFile(imagesPath[i]);
+//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                 //value = Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP);
                 // hideDialog();
                 return value;
             }
@@ -361,7 +362,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
        // showDialog(getActivity(),"");
 
         RequestManager.addRequest(new GsonObjectRequest<AddAgentResponseModel>
-                ("http://payzandev1.azurewebsites.net/api/Agent/AddAgent", reqHeader, getLoginObject(),
+                (BuildConfig.LOCAL_URL+ ApiConstants.ADD_AGENT, reqHeader, getLoginObject(),
                         AddAgentResponseModel.class, new VolleyErrorListener(this,
                         Event.AddAgent)) {
 

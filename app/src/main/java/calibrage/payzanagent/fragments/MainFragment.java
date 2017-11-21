@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     String userid;
     TextView txtCount1,txtCount2,txtCount3,txtCount4,txtStatusType1,txtStatusType2,txtStatusType3,txtStatusType4;
     Button btnNewAgent,btnAgentRequest,btnToverify,btnApprovedAgents;
+    private ImageView refresh;
    /* ArrayList<String> homeArrayList = new ArrayList<String>();
     private ArrayList<HomeModel.Result> homeListResults = new ArrayList<>();*/
     //,btnSettings
@@ -81,6 +83,17 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         txtStatusType2 = (TextView)view.findViewById(R.id.txt_status_type2);
         txtStatusType3 = (TextView)view.findViewById(R.id.txt_status_type3);
         txtStatusType4 = (TextView)view.findViewById(R.id.txt_status_type4);
+        refresh = (ImageView) view.findViewById(R.id.refresh);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isOnline(getActivity())) {
+                    getRequestCount(userid);
+                } else {
+                    showToast(getActivity(), getString(R.string.no_internet));
+                }
+            }
+        });
 
 
         stUsername = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("username");

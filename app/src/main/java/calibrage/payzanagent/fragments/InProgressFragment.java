@@ -11,6 +11,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.HomeActivity;
@@ -53,6 +56,9 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
     private ArrayList<AgentRequestModel.ListResult> listResults;
     private AgentRequestModel agentRequestModelBundle;
     public  static Toolbar toolbar;
+    private EditText search;
+    private   InProgressRequetAdapter inProgressRequetAdapter;
+    private List<String> list = new ArrayList<String>();
 
     public InProgressFragment() {
         // Required empty public constructor
@@ -69,6 +75,7 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
         HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
         recyclerView = (RecyclerView) view.findViewById(R.id.recylerview_card_inprogress);
         noRecords = (TextView)view.findViewById(R.id.no_records);
+        search = (EditText)view.findViewById(R.id.search);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         fragmentManager = getActivity().getSupportFragmentManager();
@@ -77,6 +84,7 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
         } else {
             showToast(getActivity(), getString(R.string.no_internet));
         }
+      //  addTextListener();
 
 
         return view;
@@ -118,20 +126,52 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
                         listResults = (ArrayList<AgentRequestModel.ListResult>) agentRequestModel.getListResult();
                         if (listResults.isEmpty()){
                             noRecords.setVisibility(View.VISIBLE);
-
                         }
                         else {
                             noRecords.setVisibility(View.GONE);
                         }
-                        InProgressRequetAdapter inProgressRequetAdapter = new InProgressRequetAdapter(context, listResults);
+                       inProgressRequetAdapter = new InProgressRequetAdapter(context, listResults);
                         recyclerView.setAdapter(inProgressRequetAdapter);
                         inProgressRequetAdapter.setOnAdapterListener(InProgressFragment.this);
                         agentRequestModelBundle = agentRequestModel;
+                        for (int i = 0; i <listResults.size(); i++) {
+                            list.add(listResults.get(i).getMobileNumber());
+                        }
 
                     }
 
                 });
 
+    }
+
+    public void addTextListener(){
+
+        search.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {}
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence query, int start, int before, int count) {
+
+                query = query.toString().toLowerCase();
+
+                final List<String> filteredList = new ArrayList<>();
+
+                for (int i = 0; i < list.size(); i++) {
+
+                    final String text = list.get(i).toLowerCase();
+                    if (text.contains(query)) {
+                        filteredList.add(list.get(i));
+                    }
+                }
+
+                inProgressRequetAdapter = new InProgressRequetAdapter(context, listResults);
+                recyclerView.setAdapter(inProgressRequetAdapter);
+                inProgressRequetAdapter.setOnAdapterListener(InProgressFragment.this);
+                inProgressRequetAdapter.notifyDataSetChanged();  // data set changed
+            }
+        });
     }
     public void ReplcaFragment(android.support.v4.app.Fragment fragment) {
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();

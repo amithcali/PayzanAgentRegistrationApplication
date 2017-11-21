@@ -11,6 +11,7 @@ import calibrage.payzanagent.model.DistrictModel;
 import calibrage.payzanagent.model.HomeModel;
 import calibrage.payzanagent.model.LoginResponseModel;
 import calibrage.payzanagent.model.MandalModel;
+import calibrage.payzanagent.model.PersonalInfoResponseModel;
 import calibrage.payzanagent.model.ProvinceModel;
 import calibrage.payzanagent.model.StatesModel;
 import calibrage.payzanagent.model.StatusCountModel;
@@ -67,6 +68,9 @@ public interface MyServices {
 
     @POST(ApiConstants.UPDATE_AGENT_REQUEST)
     Observable<UpdateAgentRequestResponceModel> AgentUpdateRequest(@Body JsonObject data);
+
+    @POST(ApiConstants.REGISTER_AGENT_PERSONAL_INFO)
+    Observable<PersonalInfoResponseModel> postPersonalInfo(@Body JsonObject data);
 
     @GET
     Observable<StatusCountModel> UpdateStatusCount(@Url String url);

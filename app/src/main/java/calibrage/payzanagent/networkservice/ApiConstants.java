@@ -26,6 +26,7 @@ public interface ApiConstants {
     String BRANCH_REQUESTS = "api/Banks/GetBanksByBankTypeId/";
     String ADD_AGENT = "/api/Agent/AddAgent";
    String UPDATE_AGENT_REQUEST= "api/AgentRequestInfo/UpdateAgentRequestStatus";
+   String REGISTER_AGENT_PERSONAL_INFO= "api/Agent/RegisterAgent";
 
     //  String LOGIN = "API
 }

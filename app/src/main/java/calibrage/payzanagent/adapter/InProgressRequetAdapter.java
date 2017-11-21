@@ -46,7 +46,6 @@ public class InProgressRequetAdapter extends RecyclerView.Adapter<InProgressRequ
         {
             middlename = " ";
             name = data.get(holder.getAdapterPosition()).getTitleType()+" "+data.get(holder.getAdapterPosition()).getFirstName()+" "+data.get(holder.getAdapterPosition()).getLastName();
-
         }
         else {
             name = data.get(holder.getAdapterPosition()).getTitleType()+" "+data.get(holder.getAdapterPosition()).getFirstName()+" "+middlename+" "+data.get(holder.getAdapterPosition()).getLastName();

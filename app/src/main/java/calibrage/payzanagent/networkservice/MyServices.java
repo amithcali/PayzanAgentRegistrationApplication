@@ -9,6 +9,7 @@ import calibrage.payzanagent.model.BankInfoResponseModel;
 import calibrage.payzanagent.model.Branch;
 import calibrage.payzanagent.model.BusinessCategoryModel;
 import calibrage.payzanagent.model.DistrictModel;
+import calibrage.payzanagent.model.GetBankInfoModel;
 import calibrage.payzanagent.model.HomeModel;
 import calibrage.payzanagent.model.IdProofResponseModel;
 import calibrage.payzanagent.model.LoginResponseModel;
@@ -80,8 +81,14 @@ public interface MyServices {
     @POST(ApiConstants.REGISTER_AGENT_ID_INFO)
     Observable<IdProofResponseModel> postIdInfo(@Body JsonObject data);
 
+    @POST(ApiConstants.UPDATE_PERSONAL_INFO)
+    Observable<AddAgentResponseModel> update(@Body JsonObject data);
+
 
     @GET
     Observable<StatusCountModel> UpdateStatusCount(@Url String url);
+
+    @GET
+    Observable<GetBankInfoModel> GetAgentBankInfo(@Url String url);
 
 }

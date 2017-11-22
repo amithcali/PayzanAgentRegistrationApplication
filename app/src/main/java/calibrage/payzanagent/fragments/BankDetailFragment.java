@@ -39,6 +39,7 @@ import calibrage.payzanagent.model.AgentBankInfo;
 import calibrage.payzanagent.model.BankInfoResponseModel;
 import calibrage.payzanagent.model.Branch;
 import calibrage.payzanagent.model.BusinessCategoryModel;
+import calibrage.payzanagent.model.GetBankInfoModel;
 import calibrage.payzanagent.model.PersonalInfoResponseModel;
 import calibrage.payzanagent.networkservice.ApiConstants;
 import calibrage.payzanagent.networkservice.MyServices;
@@ -53,6 +54,7 @@ import rx.schedulers.Schedulers;
 
 import static android.content.ContentValues.TAG;
 import static android.os.Parcelable.CONTENTS_FILE_DESCRIPTOR;
+import static calibrage.payzanagent.utils.CommonConstants.Is_Update;
 
 
 public class BankDetailFragment extends BaseFragment implements View.OnClickListener {
@@ -68,15 +70,15 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
     Spinner spinnerCustom_bank;
     Spinner spinnerCustom_brach;
     int bankId;
-    private Button personalButton,bankButton,idButton,documentButton;
-    EditText accountName,accountNo,shiftCode;
+    private Button personalButton, bankButton, idButton, documentButton;
+    EditText accountName, accountNo, shiftCode;
     ArrayList<String> bankArrayList = new ArrayList<String>();
     ArrayList<String> branchArrayList = new ArrayList<String>();
     private ArrayList<Branch.ListResult> branchListResults = new ArrayList<>();
     private ArrayList<BusinessCategoryModel.ListResult> bankListResults = new ArrayList<>();
-    public  static Toolbar toolbar;
+    public static Toolbar toolbar;
     private AddAgent addAgent;
-    private String straccountname,straccountno,strshiftcode,currentDatetime;
+    private String straccountname, straccountno, strshiftcode, currentDatetime;
     private AgentBankInfo agentBankInfo;
     BankDetailFragment.CustomSpinnerAdapter customSpinnerAdapter;
 
@@ -103,10 +105,10 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
         currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
         agentBankInfo = new AgentBankInfo();
         initCustomSpinner_bank();
-        personalButton = (Button)view.findViewById(R.id.btn_personal);
-        bankButton = (Button)view.findViewById(R.id.btn_bank);
-        idButton = (Button)view.findViewById(R.id.btn_id);
-        documentButton = (Button)view.findViewById(R.id.btn_doc);
+        personalButton = (Button) view.findViewById(R.id.btn_personal);
+        bankButton = (Button) view.findViewById(R.id.btn_bank);
+        idButton = (Button) view.findViewById(R.id.btn_id);
+        documentButton = (Button) view.findViewById(R.id.btn_doc);
 
         bankButton.setOnClickListener(this);
         idButton.setOnClickListener(this);
@@ -119,9 +121,9 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
 
         btnContinue = (Button) view.findViewById(R.id.btn_continue);
-        accountName = (EditText)view.findViewById(R.id.txt_accountholdername);
-        accountNo = (EditText)view.findViewById(R.id.txt_accountno);
-        shiftCode = (EditText)view.findViewById(R.id.txt_swift_code);
+        accountName = (EditText) view.findViewById(R.id.txt_accountholdername);
+        accountNo = (EditText) view.findViewById(R.id.txt_accountno);
+        shiftCode = (EditText) view.findViewById(R.id.txt_swift_code);
 
         fragmentManager = getActivity().getSupportFragmentManager();
         btnContinue.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +131,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
             public void onClick(View v) {
                 if (isValidateUi()) {
                     //    login();
-                  //  agentBankDetails();
+                    //  agentBankDetails();
                     postBankInfo();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
@@ -143,7 +145,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                             .commit();*//*
                     replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, IdProofFragment.TAG);*/
 
-               }
+                }
 
                 //startActivity(new Intent(BankDetailsActivity.this,IdProofActivity.class));
             }
@@ -167,15 +169,13 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
         agentBankInfo.setIsActive(true);
         agentBankInfo.setAccountHolderName(straccountname);
         agentBankInfo.setAccountNumber(straccountno);
-        agentBankInfo.setBankId(""+branchListResults.get(spinnerCustom_brach.getSelectedItemPosition()).getId());
-        agentBankInfo.setAgentId(""+CommonConstants.AGENT_ID);
+        agentBankInfo.setBankId("" + branchListResults.get(spinnerCustom_brach.getSelectedItemPosition()).getId());
+        agentBankInfo.setAgentId("" + CommonConstants.AGENT_ID);
         agentBankInfo.setId(0);
         return new Gson().toJsonTree(agentBankInfo)
                 .getAsJsonObject();
         //addAgent.setAgentBankInfo(agentBankInfo);
     }
-
-
 
 
     private void postBankInfo() {
@@ -210,13 +210,12 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                     @Override
                     public void onNext(BankInfoResponseModel bankInfoResponseModel) {
                         hideDialog();
-                        if(bankInfoResponseModel.getIsSuccess())
-                        {
-                            showToast(context,bankInfoResponseModel.getEndUserMessage());
+                        if (bankInfoResponseModel.getIsSuccess()) {
+                            showToast(context, bankInfoResponseModel.getEndUserMessage());
                             replaceFragment(getActivity(), MAIN_CONTAINER, new IdProofFragment(), TAG, IdProofFragment.TAG);
 
-                        }else {
-                            showToast(context,bankInfoResponseModel.getEndUserMessage());
+                        } else {
+                            showToast(context, bankInfoResponseModel.getEndUserMessage());
                         }
 
                     }
@@ -245,33 +244,32 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
         boolean status = true;
         straccountname = accountName.getText().toString().trim();
         straccountno = accountNo.getText().toString();
-        strshiftcode=shiftCode.getText().toString();
+        strshiftcode = shiftCode.getText().toString();
 
 
-
-        if (straccountname.isEmpty()||accountName.getText().length()<4) {
+        if (straccountname.isEmpty() || accountName.getText().length() < 4) {
             status = false;
             accountName.setError("AccountHolder Name is required");
             accountName.requestFocusFromTouch();
             //Toast.makeText(context, "AccountHolder Name is required", Toast.LENGTH_SHORT).show();
-        }else if (straccountno.isEmpty()) {
+        } else if (straccountno.isEmpty()) {
             status = false;
             accountNo.setError("Account Number is required");
             accountNo.requestFocusFromTouch();
-          //  Toast.makeText(context, "Account Number is required", Toast.LENGTH_SHORT).show();
-        }else if (strshiftcode.isEmpty()) {
+            //  Toast.makeText(context, "Account Number is required", Toast.LENGTH_SHORT).show();
+        } else if (strshiftcode.isEmpty()) {
             status = false;
             shiftCode.setError("Shiftcode is required");
             shiftCode.requestFocusFromTouch();
-           // Toast.makeText(context, "Shiftcode is required", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(context, "Shiftcode is required", Toast.LENGTH_SHORT).show();
         }
         return status;
     }
 
     private void getRequestBranch(String providerType) {
         showDialog(getActivity(), "Authenticating...");
-       String data= BuildConfig.LOCAL_URL+ApiConstants.BRANCH_REQUESTS+providerType ;
-        Log.d(TAG, "getRequestBranch: URL:"+data);
+        String data = BuildConfig.LOCAL_URL + ApiConstants.BRANCH_REQUESTS + providerType;
+        Log.d(TAG, "getRequestBranch: URL:" + data);
 
         MyServices service = ServiceFactory.createRetrofitService(context, MyServices.class);
         operatorSubscription = service.getBranchRequest(data)
@@ -307,22 +305,22 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                         branchListResults = (ArrayList<Branch.ListResult>) branch.getListResult();
 
                         branchArrayList = new ArrayList();
-                        if(branch.getListResult().size()>0){
+                        if (branch.getListResult().size() > 0) {
                             for (int i = 0; i < branch.getListResult().size(); i++) {
                                 branchArrayList.add(branch.getListResult().get(i).getBranchName());
                             }
-                        }else{
+                        } else {
                             branchArrayList.clear();
                             customSpinnerAdapter.notifyDataSetChanged();
                             shiftCode.setText("");
                         }
 
-
-
-
-
                         customSpinnerAdapter = new BankDetailFragment.CustomSpinnerAdapter(getActivity(), branchArrayList, false);
                         spinnerCustom_brach.setAdapter(customSpinnerAdapter);
+
+                       // if (Is_Update) {
+                            getAgentBankInfo("dce0a289-5803-46fb-ae19-13f737fed7c3");
+                      //  }
 
                     }
 
@@ -331,13 +329,13 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
     private void getRequestBank(String providerType) {
         MyServices service = ServiceFactory.createRetrofitService(context, MyServices.class);
-        operatorSubscription = service.getBusinessRequest(ApiConstants.BUSINESS_CAT_REQUESTS+providerType )
+        operatorSubscription = service.getBusinessRequest(ApiConstants.BUSINESS_CAT_REQUESTS + providerType)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<BusinessCategoryModel>() {
                     @Override
                     public void onCompleted() {
-                     //   Toast.makeText(context, "check", Toast.LENGTH_SHORT).show();
+                        //   Toast.makeText(context, "check", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -360,19 +358,57 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                     public void onNext(BusinessCategoryModel businessCategoryModel) {
                         Log.d("response", businessCategoryModel.getIsSuccess().toString());
                         bankListResults = (ArrayList<BusinessCategoryModel.ListResult>) businessCategoryModel.getListResult();
-                     //   bankArrayList.add(0,"--Select Bank--");
+                        //   bankArrayList.add(0,"--Select Bank--");
                         for (int i = 0; i < businessCategoryModel.getListResult().size(); i++) {
                             bankArrayList.add(businessCategoryModel.getListResult().get(i).getDescription());
 
                         }
 
-                        BankDetailFragment.CustomSpinnerAdapterBank customSpinnerAdapterBank =new BankDetailFragment.CustomSpinnerAdapterBank(getActivity(), bankArrayList);
+                        BankDetailFragment.CustomSpinnerAdapterBank customSpinnerAdapterBank = new BankDetailFragment.CustomSpinnerAdapterBank(getActivity(), bankArrayList);
                         spinnerCustom_bank.setAdapter(customSpinnerAdapterBank);
                     }
 
                 });
 
 
+    }
+
+    private void getAgentBankInfo(String agentId) {
+        MyServices service = ServiceFactory.createRetrofitService(context, MyServices.class);
+        operatorSubscription = service.GetAgentBankInfo(ApiConstants.GET_AGENT_BANK_INFO + agentId)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<GetBankInfoModel>() {
+                    @Override
+                    public void onCompleted() {
+                        //   Toast.makeText(context, "check", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ((HttpException) e).code();
+                            ((HttpException) e).message();
+                            ((HttpException) e).response().errorBody();
+                            try {
+                                ((HttpException) e).response().errorBody().string();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(context, "fail", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(GetBankInfoModel getBankInfoModel) {
+                        accountName.setText(getBankInfoModel.getListResult().get(0).getAccountHolderName());
+                        accountNo.setText(getBankInfoModel.getListResult().get(0).getAccountHolderName());
+                        spinnerCustom_bank.setSelection(bankArrayList.indexOf(getBankInfoModel.getListResult().get(0).getBankName()));
+                        spinnerCustom_brach.setSelection(branchArrayList.indexOf(getBankInfoModel.getListResult().get(0).getBranchName()));
+                    }
+
+                });
     }
 
     private void initCustomSpinner_branch() {
@@ -383,12 +419,11 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 String item = parent.getItemAtPosition(position).toString();
-                if(!branchListResults.isEmpty())
-                {
+                if (!branchListResults.isEmpty()) {
                     shiftCode.setText(branchListResults.get(position).getSwiftCode());
                 }
 
-             //    Toast.makeText(parent.getContext(), "Android Custom Spinner Example Output..." + item+parent.getSelectedItemId(), Toast.LENGTH_LONG).show();
+                //    Toast.makeText(parent.getContext(), "Android Custom Spinner Example Output..." + item+parent.getSelectedItemId(), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -409,12 +444,12 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
 //                String item = parent.getItemAtPosition(position).toString();
                 bankId = (int) parent.getSelectedItemId();
-               // int i = 12;
-                Log.d(TAG, "onItemSelected: "+bankId);
-                bankId =  bankListResults.get((int) parent.getSelectedItemId()).getId();
+                // int i = 12;
+                Log.d(TAG, "onItemSelected: " + bankId);
+                bankId = bankListResults.get((int) parent.getSelectedItemId()).getId();
                 getRequestBranch(String.valueOf(bankId));
-               // getRequestBranch(String.valueOf(i));
-               //    Toast.makeText(parent.getContext(), "bankkkkkkk" +bankId, Toast.LENGTH_LONG).show();
+                // getRequestBranch(String.valueOf(i));
+                //    Toast.makeText(parent.getContext(), "bankkkkkkk" +bankId, Toast.LENGTH_LONG).show();
 
 
             }
@@ -429,7 +464,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
            /* case R.id.btn_personal:
                 showToast(getActivity(),"Please Fill The Personal Details");
 
@@ -437,11 +472,11 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
                 break;*/
             case R.id.btn_bank:
-                 showToast(getActivity(),"Please Fill The Bank Details");
+                showToast(getActivity(), "Please Fill The Bank Details");
                 //replaceFragment(getActivity(),MAIN_CONTAINER,new AgentRequestsFragment(),TAG,AgentRequestsFragment.TAG);
                 break;
             case R.id.btn_id:
-             //   showToast(getActivity(),"Please Fill The Personal Details");
+                //   showToast(getActivity(),"Please Fill The Personal Details");
                 if (isValidateUi()) {
                     //    login();
                     //  agentBankDetails();
@@ -531,7 +566,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
 
-    private class CustomSpinnerAdapterBank extends BaseAdapter implements SpinnerAdapter{
+    private class CustomSpinnerAdapterBank extends BaseAdapter implements SpinnerAdapter {
         private final Context activity;
         private ArrayList<String> asr;
 

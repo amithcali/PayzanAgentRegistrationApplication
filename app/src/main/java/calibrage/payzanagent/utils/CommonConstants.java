@@ -33,6 +33,7 @@ public class CommonConstants {
     public static String GENDER_TYPE_MALE = "20";
     public static String GENDER_TYPE_FEMALE = "21";
     public static String AGENT_ID = " ";
+    public static boolean Is_Update = false;
 
 
 

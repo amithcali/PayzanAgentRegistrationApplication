@@ -37,6 +37,10 @@ import com.google.gson.Gson;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,7 +68,7 @@ import rx.Subscription;
 import static android.app.Activity.RESULT_OK;
 
 
-public class AggrementDocumentsFragment extends BaseFragment implements IScreen,DeleteImageListiner, View.OnClickListener {
+public class AggrementDocumentsFragment extends BaseFragment implements DeleteImageListiner, View.OnClickListener {
 
     public static final String TAG = AggrementDocumentsFragment.class.getSimpleName();
 
@@ -155,7 +159,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
                 //showDialog(getActivity(), "Adding Agent...");
                 progressBar.setVisibility(View.VISIBLE);
 
-                getData(Event.AddAgent);
+                //getData(Event.AddAgent);
 
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
@@ -168,9 +172,6 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
 
         return view;
     }
-
-
-
 
 
 
@@ -211,7 +212,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
 
 
     private void startDialog() {
-        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery","Select File", "Cancel"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Add Documents.....");
@@ -226,16 +227,16 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
                     Intent intent = new Intent(getActivity(), CustomPhotoGalleryActivity.class);
                     startActivityForResult(intent, 2);
                 }
-                /* else if (options[item].equals("Select File"))
+                 else if (options[item].equals("Select File"))
                 {
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                     intent.setType("application/pdf");
                     startActivityForResult(intent,3);
 
-                    *//*Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, 2);
-*//*
-                }*/ else if (options[item].equals("Cancel")) {
+                    //Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    //startActivityForResult(intent, 2);
+
+                } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
             }
@@ -293,6 +294,10 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
 
                 }
 
+            }else if(requestCode ==3){
+
+                data.getData();
+
             }
 
         }
@@ -307,13 +312,13 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
         String value = null;
         try {
             if (bitmap != null) {
-               // showDialog(getActivity(), "Adding Images...");
-//                Bitmap bm = MediaStore.Images.Media.getBitmap(context.getApplicationContext().getContentResolver(), uri);
-              //  BitmapFactory.decodeFile(imagesPath[i]);
-//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                 //value = Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP);
-                // hideDialog();
+             //   showDialog(getActivity(), "Adding Images...");
+             //   Bitmap bm = MediaStore.Images.Media.getBitmap(context.getApplicationContext().getContentResolver(), uri);
+               // BitmapFactory.decodeFile(imagesPath[i]);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                 value = Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP);
+               //  hideDialog();
                 return value;
             }
         } catch (Exception e) {
@@ -321,6 +326,28 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
 
         }
         return value;
+    }
+
+    public static String convertFileToByteArray(File f) {
+        byte[] byteArray = null;
+        try {
+            InputStream inputStream = new FileInputStream(f);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            byte[] b = new byte[1024 * 11];
+            int bytesRead = 0;
+
+            while ((bytesRead = inputStream.read(b)) != -1) {
+                bos.write(b, 0, bytesRead);
+            }
+
+            byteArray = bos.toByteArray();
+
+            Log.e("Byte array", ">" + byteArray);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Base64.encodeToString(byteArray, Base64.NO_WRAP);
     }
 
     public String getRealPathFromURI(Uri contentUri) {
@@ -332,46 +359,46 @@ public class AggrementDocumentsFragment extends BaseFragment implements IScreen,
         return cursor.getString(column_index);
     }
 
-    @Override
-    public void updateUi(boolean status, int actionID, Object serviceResponse) {
-      //  hideDialog();
-        progressBar.setVisibility(View.GONE);
-        if (serviceResponse instanceof AddAgentResponseModel) {
-            AddAgentResponseModel addAgentResponseModel;
-            addAgentResponseModel = (AddAgentResponseModel) serviceResponse;
-            if(addAgentResponseModel.getIsSuccess()){
-                CommonUtil.displayDialogWindow(addAgentResponseModel.getEndUserMessage(),alertDialog,context);
-                replaceFinal(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);
-            }else {
-                CommonUtil.displayDialogWindow(addAgentResponseModel.getEndUserMessage(),alertDialog,context);
-            }
-
-        }
-    }
-
-    @Override
-    public void onEvent(int eventId, Object eventData) {
-
-
-    }
-
-    @Override
-    public void getData(int actionID) {
-        HashMap<String, String> reqHeader = new HashMap<String, String>();
-        reqHeader.put("Content-Type", "application/json; charset=utf-8");
-       // showDialog(getActivity(),"");
-
-        RequestManager.addRequest(new GsonObjectRequest<AddAgentResponseModel>
-                (BuildConfig.LOCAL_URL+ ApiConstants.ADD_AGENT, reqHeader, getLoginObject(),
-                        AddAgentResponseModel.class, new VolleyErrorListener(this,
-                        Event.AddAgent)) {
-
-            @Override
-            protected void deliverResponse(AddAgentResponseModel response) {
-                updateUi(true, Event.AddAgent, response);
-            }
-        });
-    }
+//    @Override
+//    public void updateUi(boolean status, int actionID, Object serviceResponse) {
+//      //  hideDialog();
+//        progressBar.setVisibility(View.GONE);
+//        if (serviceResponse instanceof AddAgentResponseModel) {
+//            AddAgentResponseModel addAgentResponseModel;
+//            addAgentResponseModel = (AddAgentResponseModel) serviceResponse;
+//            if(addAgentResponseModel.getIsSuccess()){
+//                CommonUtil.displayDialogWindow(addAgentResponseModel.getEndUserMessage(),alertDialog,context);
+//                replaceFinal(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);
+//            }else {
+//                CommonUtil.displayDialogWindow(addAgentResponseModel.getEndUserMessage(),alertDialog,context);
+//            }
+//
+//        }
+//    }
+//
+//    @Override
+//    public void onEvent(int eventId, Object eventData) {
+//
+//
+//    }
+//
+//    @Override
+//    public void getData(int actionID) {
+//        HashMap<String, String> reqHeader = new HashMap<String, String>();
+//        reqHeader.put("Content-Type", "application/json; charset=utf-8");
+//       // showDialog(getActivity(),"");
+//
+//        RequestManager.addRequest(new GsonObjectRequest<AddAgentResponseModel>
+//                (BuildConfig.LOCAL_URL+ ApiConstants.ADD_AGENT, reqHeader, getLoginObject(),
+//                        AddAgentResponseModel.class, new VolleyErrorListener(this,
+//                        Event.AddAgent)) {
+//
+//            @Override
+//            protected void deliverResponse(AddAgentResponseModel response) {
+//                updateUi(true, Event.AddAgent, response);
+//            }
+//        });
+//    }
 
     @Override
     public void onAdapterClickListiner(int pos,boolean isPopUp) {

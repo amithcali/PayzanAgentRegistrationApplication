@@ -2,6 +2,7 @@ package calibrage.payzanagent.networkservice;
 
 import com.google.gson.JsonObject;
 
+import calibrage.payzanagent.BuildConfig;
 import calibrage.payzanagent.model.AddAgent;
 import calibrage.payzanagent.model.AddAgentResponseModel;
 import calibrage.payzanagent.model.AgentRequestModel;
@@ -10,6 +11,7 @@ import calibrage.payzanagent.model.Branch;
 import calibrage.payzanagent.model.BusinessCategoryModel;
 import calibrage.payzanagent.model.DistrictModel;
 import calibrage.payzanagent.model.GetBankInfoModel;
+import calibrage.payzanagent.model.GetPersonalInfoModel;
 import calibrage.payzanagent.model.HomeModel;
 import calibrage.payzanagent.model.IdProofResponseModel;
 import calibrage.payzanagent.model.LoginResponseModel;
@@ -48,6 +50,9 @@ public interface MyServices {
     Observable<BusinessCategoryModel> getBusinessRequest(@Url String url);
 
     @GET
+    Observable<GetPersonalInfoModel> getUpdatePersonalInfoRequest(@Url String url);
+
+    @GET
     Observable<HomeModel> getHomeRequest(@Url String url);
 
     @GET
@@ -75,8 +80,13 @@ public interface MyServices {
     @POST(ApiConstants.REGISTER_AGENT_PERSONAL_INFO)
     Observable<PersonalInfoResponseModel> postPersonalInfo(@Body JsonObject data);
 
+    @POST(BuildConfig.LOCAL_URL+ApiConstants.UPDATE_PERSONAL_INFO)
+    Observable<PersonalInfoResponseModel> updatePersonalInfo(@Body JsonObject data);
+
     @POST(ApiConstants.REGISTER_AGENT_BANK_INFO)
     Observable<BankInfoResponseModel> postBankInfo(@Body JsonObject data);
+    @POST(ApiConstants.UPDATE_AGENT_BANK_INFO)
+    Observable<BankInfoResponseModel> updateBankInfo(@Body JsonObject data);
 
     @POST(ApiConstants.REGISTER_AGENT_ID_INFO)
     Observable<IdProofResponseModel> postIdInfo(@Body JsonObject data);

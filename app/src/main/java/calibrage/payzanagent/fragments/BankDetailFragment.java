@@ -1,16 +1,13 @@
 package calibrage.payzanagent.fragments;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,7 +37,6 @@ import calibrage.payzanagent.model.BankInfoResponseModel;
 import calibrage.payzanagent.model.Branch;
 import calibrage.payzanagent.model.BusinessCategoryModel;
 import calibrage.payzanagent.model.GetBankInfoModel;
-import calibrage.payzanagent.model.PersonalInfoResponseModel;
 import calibrage.payzanagent.networkservice.ApiConstants;
 import calibrage.payzanagent.networkservice.MyServices;
 import calibrage.payzanagent.networkservice.ServiceFactory;
@@ -51,10 +47,6 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-import static android.content.ContentValues.TAG;
-import static android.os.Parcelable.CONTENTS_FILE_DESCRIPTOR;
-import static calibrage.payzanagent.utils.CommonConstants.Is_Update;
 
 
 public class BankDetailFragment extends BaseFragment implements View.OnClickListener {
@@ -81,6 +73,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
     private String straccountname, straccountno, strshiftcode, currentDatetime;
     private AgentBankInfo agentBankInfo;
     BankDetailFragment.CustomSpinnerAdapter customSpinnerAdapter;
+    private boolean isUpdate;
 
 
     public BankDetailFragment() {
@@ -132,7 +125,12 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                 if (isValidateUi()) {
                     //    login();
                     //  agentBankDetails();
-                    postBankInfo();
+                    if (isUpdate) {
+                        updateBankInfo();
+                    } else {
+                        postBankInfo();
+                    }
+
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                    /* Bundle bundle = new Bundle();
@@ -183,6 +181,51 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
         JsonObject object = agentBankDetails();
         MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
         operatorSubscription = service.postBankInfo(object)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<BankInfoResponseModel>() {
+                    @Override
+                    public void onCompleted() {
+                        // Toast.makeText(getActivity(), "check", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ((HttpException) e).code();
+                            ((HttpException) e).message();
+                            ((HttpException) e).response().errorBody();
+                            try {
+                                ((HttpException) e).response().errorBody().string();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(BankInfoResponseModel bankInfoResponseModel) {
+                        hideDialog();
+                        if (bankInfoResponseModel.getIsSuccess()) {
+                            showToast(context, bankInfoResponseModel.getEndUserMessage());
+                            replaceFragment(getActivity(), MAIN_CONTAINER, new IdProofFragment(), TAG, IdProofFragment.TAG);
+
+                        } else {
+                            showToast(context, bankInfoResponseModel.getEndUserMessage());
+                        }
+
+                    }
+                });
+
+    }
+
+    private void updateBankInfo() {
+        showDialog(getActivity(), "Authenticating...");
+        JsonObject object = agentBankDetails();
+        MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
+        operatorSubscription = service.updateBankInfo(object)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<BankInfoResponseModel>() {
@@ -318,9 +361,9 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                         customSpinnerAdapter = new BankDetailFragment.CustomSpinnerAdapter(getActivity(), branchArrayList, false);
                         spinnerCustom_brach.setAdapter(customSpinnerAdapter);
 
-                       // if (Is_Update) {
-                            getAgentBankInfo("dce0a289-5803-46fb-ae19-13f737fed7c3");
-                      //  }
+                        // if (Is_Update) {
+                        getAgentBankInfo(CommonConstants.AGENT_ID);
+                        //  }
 
                     }
 
@@ -402,10 +445,16 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
                     @Override
                     public void onNext(GetBankInfoModel getBankInfoModel) {
-                        accountName.setText(getBankInfoModel.getListResult().get(0).getAccountHolderName());
-                        accountNo.setText(getBankInfoModel.getListResult().get(0).getAccountHolderName());
-                        spinnerCustom_bank.setSelection(bankArrayList.indexOf(getBankInfoModel.getListResult().get(0).getBankName()));
-                        spinnerCustom_brach.setSelection(branchArrayList.indexOf(getBankInfoModel.getListResult().get(0).getBranchName()));
+                        if (!getBankInfoModel.getListResult().isEmpty()) {
+                            isUpdate = true;
+                            accountName.setText(getBankInfoModel.getListResult().get(0).getAccountHolderName());
+                            accountNo.setText(getBankInfoModel.getListResult().get(0).getAccountNumber());
+                            spinnerCustom_bank.setSelection(bankArrayList.indexOf(getBankInfoModel.getListResult().get(0).getBankName()));
+                            spinnerCustom_brach.setSelection(branchArrayList.indexOf(getBankInfoModel.getListResult().get(0).getBranchName()));
+                        } else {
+                            isUpdate = false;
+                        }
+
                     }
 
                 });
@@ -480,6 +529,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                 if (isValidateUi()) {
                     //    login();
                     //  agentBankDetails();
+
                     postBankInfo();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);

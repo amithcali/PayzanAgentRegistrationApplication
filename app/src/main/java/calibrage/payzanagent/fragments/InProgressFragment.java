@@ -185,6 +185,7 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
         bundle.putInt("position",pos);
         Fragment fragment = new RegistrationViewFragment();
         fragment.setArguments(bundle);
+        CommonConstants.Is_New_Agent_Request = false;
 //        ReplcaFragment(fragment);
         replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, RegistrationViewFragment.TAG);
        // fragmentManager.beginTransaction().replace(R.id.content_frame, fragment,"AgentTag").commit();

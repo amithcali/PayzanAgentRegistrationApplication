@@ -200,18 +200,21 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         switch (view.getId()){
             case R.id.btn_newAgent:
                 replaceFragment(getActivity(), MAIN_CONTAINER, new RegistrationViewFragment(), TAG, RegistrationViewFragment.TAG);
-
+                CommonConstants.Is_New_Agent_Request = true;
                 break;
             case R.id.btn_agentRequests:
                 replaceFragment(getActivity(),MAIN_CONTAINER,new AgentRequestsFragment(),TAG,AgentRequestsFragment.TAG);
+                CommonConstants.Is_New_Agent_Request = false;
                 break;
             case R.id.btn_yetToVerify:
                //showToast(getActivity(),"Yet to implement feature");
                 replaceFragment(getActivity(),MAIN_CONTAINER,new InProgressFragment(),TAG,InProgressFragment.TAG);
+                CommonConstants.Is_New_Agent_Request = false;
                 break;
             case R.id.btn_approvedAgents:
               //  showToast(getActivity(),"Yet to implement feature");
                 replaceFragment(getActivity(),MAIN_CONTAINER,new ApprovedAgentsFragment(),TAG,ApprovedAgentsFragment.TAG);
+                CommonConstants.Is_New_Agent_Request = false;
                 break;
           /*  case R.id.btn_settings:
                 //  showToast(getActivity(),"Yet to implement feature");

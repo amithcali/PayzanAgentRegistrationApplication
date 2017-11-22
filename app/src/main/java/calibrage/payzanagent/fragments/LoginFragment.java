@@ -104,12 +104,12 @@ public class LoginFragment extends BaseFragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
+             // replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
               //  AgentUpdateRequest();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
 
-             /*   if (isOnline(getActivity())) {
+                if (isOnline(getActivity())) {
 
                     if (isValidateUi()) {
                         login();
@@ -122,7 +122,6 @@ public class LoginFragment extends BaseFragment {
                 } else {
                     showToast(getActivity(), getString(R.string.no_internet));
                 }
-*/
 
 
             }
@@ -206,6 +205,7 @@ public class LoginFragment extends BaseFragment {
                            // Toast.makeText(getActivity(), "sucess", Toast.LENGTH_SHORT).show();
                             //Log.d(TAG, "onNext: Result :"+loginResponseModel.toString());
                             CommonConstants.USERID = loginResponseModel.getResult().getUser().getId();
+                            CommonConstants.USER_NAME = loginResponseModel.getResult().getUser().getUserName();
                             SharedPrefsData.getInstance(context).updateStringValue(context,"userid",loginResponseModel.getResult().getUser().getId());
                             SharedPrefsData.getInstance(context).updateStringValue(context,"username",loginResponseModel.getResult().getUser().getUserName());
                             //    CommonConstants.WALLETID = String.valueOf(loginResponseModel.getData().getUserWallet().getWalletId());

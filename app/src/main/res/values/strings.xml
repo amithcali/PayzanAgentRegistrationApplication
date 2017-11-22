@@ -56,6 +56,7 @@
     <string name="id_btn">Id Proof</string>
     <string name="doc_btn">Documents</string>
     <string name="add_btn">Add</string>
+    <string name="convert_btn">Convert As Agent</string>
     <string name="hold_btn">Hold</string>
     <string name="review">Review</string>
     <string name="submit_btn">Submit</string>

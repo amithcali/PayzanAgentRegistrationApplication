@@ -34,11 +34,13 @@ public class CommonConstants {
     public static String GENDER_TYPE_FEMALE = "21";
     public static String AGENT_ID = " ";
     public static boolean Is_Update = false;
+    public static boolean Is_New_Agent_Request = false;
 
 
 
 
     public static String USERID =" ";
+    public static String USER_NAME =" ";
     public static String WALLETID ="";
     public static String WALLETMONEY ="0";
     public static String PACKAGE = "calibrage.payzanagent";

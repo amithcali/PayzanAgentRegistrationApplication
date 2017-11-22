@@ -33,7 +33,6 @@ public interface ApiConstants {
    String REGISTER_AGENT_ID_INFO= "api/AgentIdProof/AddAgentIdProofs";
    String GET_AGENT_BANK_INFO= "api/AgentBank/GetAgentBankByAgentId/";
    String GET_AGENT_IDPROOF= "api/AgentIdProof/GetAgentIdProofsByAgentId/";
-   String UPDATE_PERSONAL_INFO= "/api/Agent/UpdateAgentPersonalInfo";
    String UPDATE_PERSONAL_INFO= "api/Agent/UpdateAgentPersonalInfo";
 
     //  String LOGIN = "API

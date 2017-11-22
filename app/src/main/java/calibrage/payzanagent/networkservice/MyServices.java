@@ -14,6 +14,7 @@ import calibrage.payzanagent.model.GetBankInfoModel;
 import calibrage.payzanagent.model.GetIdproofModel;
 import calibrage.payzanagent.model.GetPersonalInfoModel;
 import calibrage.payzanagent.model.HomeModel;
+import calibrage.payzanagent.model.IdProofDeleteModel;
 import calibrage.payzanagent.model.IdProofResponseModel;
 import calibrage.payzanagent.model.LoginResponseModel;
 import calibrage.payzanagent.model.MandalModel;
@@ -24,6 +25,7 @@ import calibrage.payzanagent.model.StatusCountModel;
 import calibrage.payzanagent.model.UpdateAgentRequestResponceModel;
 import calibrage.payzanagent.model.VillageModel;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -86,11 +88,18 @@ public interface MyServices {
 
     @POST(ApiConstants.REGISTER_AGENT_BANK_INFO)
     Observable<BankInfoResponseModel> postBankInfo(@Body JsonObject data);
+
+    @DELETE
+    Observable<IdProofDeleteModel> deleteidInfo(@Url String data);
+
     @POST(ApiConstants.UPDATE_AGENT_BANK_INFO)
     Observable<BankInfoResponseModel> updateBankInfo(@Body JsonObject data);
 
     @POST(ApiConstants.REGISTER_AGENT_ID_INFO)
     Observable<IdProofResponseModel> postIdInfo(@Body JsonObject data);
+
+    @POST(ApiConstants.UPDATE_AGENT_ID_INFO)
+    Observable<IdProofResponseModel> updateIdInfo(@Body JsonObject data);
 
     @POST(ApiConstants.UPDATE_PERSONAL_INFO)
     Observable<AddAgentResponseModel> update(@Body JsonObject data);

@@ -185,7 +185,7 @@ public class GetPersonalInfoModel {
         private Integer villageId;
         @SerializedName("ParentAspNetUserId")
         @Expose
-        private Object parentAspNetUserId;
+        private String parentAspNetUserId;
         @SerializedName("EducationTypeId")
         @Expose
         private Object educationTypeId;
@@ -488,11 +488,11 @@ public class GetPersonalInfoModel {
             this.villageId = villageId;
         }
 
-        public Object getParentAspNetUserId() {
+        public String getParentAspNetUserId() {
             return parentAspNetUserId;
         }
 
-        public void setParentAspNetUserId(Object parentAspNetUserId) {
+        public void setParentAspNetUserId(String parentAspNetUserId) {
             this.parentAspNetUserId = parentAspNetUserId;
         }
 

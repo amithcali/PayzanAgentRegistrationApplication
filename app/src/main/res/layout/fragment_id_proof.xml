@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context="calibrage.payzanagent.fragments.IdProofFragment">
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -80,12 +83,11 @@
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/recylerview">
+            android:id="@+id/recylerview"
+            android:nestedScrollingEnabled="false">
         </android.support.v7.widget.RecyclerView>
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -203,8 +205,8 @@
             android:textColor="@color/White" />
 
     </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
 
+    </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
 </LinearLayout>

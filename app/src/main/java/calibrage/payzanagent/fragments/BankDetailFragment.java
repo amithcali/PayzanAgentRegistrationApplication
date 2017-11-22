@@ -74,6 +74,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
     private AgentBankInfo agentBankInfo;
     BankDetailFragment.CustomSpinnerAdapter customSpinnerAdapter;
     private boolean isUpdate;
+    private int id;
 
 
     public BankDetailFragment() {
@@ -159,7 +160,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
     }
 
 
-    private JsonObject agentBankDetails() {
+    private JsonObject agentBankDetails(boolean isUpdate) {
         agentBankInfo.setModifiedBy(CommonConstants.USERID);
         agentBankInfo.setModified(currentDatetime);
         agentBankInfo.setCreatedBy(CommonConstants.USERID);
@@ -169,7 +170,12 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
         agentBankInfo.setAccountNumber(straccountno);
         agentBankInfo.setBankId("" + branchListResults.get(spinnerCustom_brach.getSelectedItemPosition()).getId());
         agentBankInfo.setAgentId("" + CommonConstants.AGENT_ID);
-        agentBankInfo.setId(0);
+        if(isUpdate){
+            agentBankInfo.setId(id);
+        }else {
+            agentBankInfo.setId(0);
+        }
+
         return new Gson().toJsonTree(agentBankInfo)
                 .getAsJsonObject();
         //addAgent.setAgentBankInfo(agentBankInfo);
@@ -178,7 +184,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
     private void postBankInfo() {
         showDialog(getActivity(), "Authenticating...");
-        JsonObject object = agentBankDetails();
+        JsonObject object = agentBankDetails(false);
         MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
         operatorSubscription = service.postBankInfo(object)
                 .subscribeOn(Schedulers.newThread())
@@ -223,7 +229,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
     private void updateBankInfo() {
         showDialog(getActivity(), "Authenticating...");
-        JsonObject object = agentBankDetails();
+        JsonObject object = agentBankDetails(true);
         MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
         operatorSubscription = service.updateBankInfo(object)
                 .subscribeOn(Schedulers.newThread())
@@ -236,6 +242,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -247,7 +254,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                             }
                             e.printStackTrace();
                         }
-                        Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "failupdate", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -430,6 +437,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                     @Override
                     public void onError(Throwable e) {
                         if (e instanceof HttpException) {
+                            hideDialog();
                             ((HttpException) e).code();
                             ((HttpException) e).message();
                             ((HttpException) e).response().errorBody();
@@ -449,10 +457,13 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                             isUpdate = true;
                             accountName.setText(getBankInfoModel.getListResult().get(0).getAccountHolderName());
                             accountNo.setText(getBankInfoModel.getListResult().get(0).getAccountNumber());
+                            id = getBankInfoModel.getListResult().get(0).getId();
                             spinnerCustom_bank.setSelection(bankArrayList.indexOf(getBankInfoModel.getListResult().get(0).getBankName()));
                             spinnerCustom_brach.setSelection(branchArrayList.indexOf(getBankInfoModel.getListResult().get(0).getBranchName()));
+                            btnContinue.setText("Update");
                         } else {
                             isUpdate = false;
+                            btnContinue.setText("Continue");
                         }
 
                     }

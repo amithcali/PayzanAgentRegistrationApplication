@@ -55,6 +55,7 @@ import java.util.regex.Pattern;
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.HomeActivity;
 import calibrage.payzanagent.controls.CommonTextView;
+import calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout;
 import calibrage.payzanagent.model.AddAgent;
 import calibrage.payzanagent.model.AgentPersonalInfo;
 import calibrage.payzanagent.model.AgentRequestModel;
@@ -112,6 +113,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     int provinceId, districtId, mandalId, villageId;
     public AddAgent addAgent;
     private NCBTextInputLayout agentNameTXT;
+    private NoChangingBackgroundTextInputLayout il_passqword;
     Location lastLocation;
     int intAgentRequestId;
     private int mYear, mMonth, mDay;
@@ -155,6 +157,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     private String parentAspNetId;
     private String createdBy;
     private int id;
+    private String dateOfBirth;
 
     public RegistrationViewFragment() {
         // Required empty public constructor
@@ -230,8 +233,11 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         personalButton = (Button) view.findViewById(R.id.btn_personal);
         bankButton = (Button) view.findViewById(R.id.btn_bank);
         idButton = (Button) view.findViewById(R.id.btn_id);
+        il_passqword = (NoChangingBackgroundTextInputLayout)view.findViewById(R.id.il_passqword);
         documentButton = (Button) view.findViewById(R.id.btn_doc);
-        edtPassWord.setVisibility(View.VISIBLE);
+      //  edtPassWord.setVisibility(View.VISIBLE);
+
+        il_passqword.setVisibility(View.VISIBLE);
 
         edtDOB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -381,7 +387,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                         hideDialog();
                         if (personalInfoResponseModel.getIsSuccess()) {
                             showToast(context, personalInfoResponseModel.getEndUserMessage());
-                            CommonConstants.AGENT_ID = personalInfoResponseModel.getResult().getAgentId();
+                            CommonConstants.AGENT_ID = personalInfoResponseModel.getResult().getAspNetUserId();
                             replaceFragment(getActivity(), MAIN_CONTAINER, new BankDetailFragment(), TAG, BankDetailFragment.TAG);
 
                         } else {
@@ -439,11 +445,13 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                             edtLastName.setText(getPersonalInfoModel.getListResult().get(0).getLastName());
                             spinnerBusinessCat.setSelection(businessArrayList.indexOf(getPersonalInfoModel.getListResult().get(0).getBusinessCategoryName()));
                             edtMobile.setText(getPersonalInfoModel.getListResult().get(0).getPhone());
-                            edtPassWord.setVisibility(View.GONE);
+                          //  edtPassWord.setVisibility(View.GONE);
+                            il_passqword.setVisibility(View.GONE);
                            // edtPassWord.setText(getPersonalInfoModel.getListResult().get(0).getPhone());
                             spinnerGender.setSelection(genderArrayList.indexOf(getPersonalInfoModel.getListResult().get(0).getGenderType()));
                             edtEmail.setText(getPersonalInfoModel.getListResult().get(0).getEmail());
-                            edtDOB.setText(getPersonalInfoModel.getListResult().get(0).getDOB());
+                            dateOfBirth = getPersonalInfoModel.getListResult().get(0).getDOB();
+                            edtDOB.setText(formatDateTimeUi());
                             edtAddress1.setText(getPersonalInfoModel.getListResult().get(0).getAddress1());
                             edtAddress2.setText(getPersonalInfoModel.getListResult().get(0).getAddress2());
                             edtLandMark.setText(getPersonalInfoModel.getListResult().get(0).getLandmark());
@@ -456,9 +464,10 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                             agentRequestId = getPersonalInfoModel.getListResult().get(0).getAgentRequestId();
                             if(getPersonalInfoModel.getListResult().get(0).getAspNetUserId()!=null){
                                 aspNetId = getPersonalInfoModel.getListResult().get(0).getAspNetUserId();
-                            }if(getPersonalInfoModel.getListResult().get(0).getParentAspNetUserId().toString()!=null){
-                                parentAspNetId = getPersonalInfoModel.getListResult().get(0).getParentAspNetUserId().toString();
                             }
+//                            if(getPersonalInfoModel.getListResult().get(0).getParentAspNetUserId()!=null){
+//                                parentAspNetId = getPersonalInfoModel.getListResult().get(0).getParentAspNetUserId();
+//                            }
                             createdBy = getPersonalInfoModel.getListResult().get(0).getCreated().toString();
                             CommonConstants.AGENT_ID = getPersonalInfoModel.getListResult().get(0).getAspNetUserId();
                             id = getPersonalInfoModel.getListResult().get(0).getId();
@@ -1066,7 +1075,8 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         return new Gson().toJsonTree(agentPersonalInfo)
                 .getAsJsonObject();
 
-    } private JsonObject updatePersonalInfoObject() {
+    }
+    private JsonObject updatePersonalInfoObject() {
         PostUpdatePersonalInfo postUpdatePersonalInfo = new PostUpdatePersonalInfo();
         postUpdatePersonalInfo.setFirstName(strfirstname);
         postUpdatePersonalInfo.setPhone(strmobile);
@@ -1586,7 +1596,21 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         }
 
     }
+    public String formatDateTimeUi() {
+        String date = null;
+       /* String strCurrentDate = edtDOB.getText().toString();*/
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        try {
+            Date newDate = format.parse(dateOfBirth);
+            format = new SimpleDateFormat("dd/MM/yyyy");
+            date = format.format(newDate);
+            Log.d(TAG, "formatDateTime: "+date);
+            return date;
+        } catch (Exception e) {
+            return date;
+        }
 
+    }
     @Override
     public void onResume() {
         super.onResume();

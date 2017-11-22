@@ -38,7 +38,7 @@ public class IdproofAdapter extends RecyclerView.Adapter<IdproofAdapter.Myholder
     }
 
     @Override
-    public void onBindViewHolder(IdproofAdapter.Myholder holder, int position) {
+    public void onBindViewHolder(final IdproofAdapter.Myholder holder, int position) {
 
         holder.name.setText(listResultList.get(holder.getAdapterPosition()).getIdProofType());
         holder.value.setText(listResultList.get(holder.getAdapterPosition()).getIdProofNumber());
@@ -46,7 +46,7 @@ public class IdproofAdapter extends RecyclerView.Adapter<IdproofAdapter.Myholder
         holder.deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                deleteIdproofListiner.onAdapterClickListiner(holder.getAdapterPosition());
             }
         });
 

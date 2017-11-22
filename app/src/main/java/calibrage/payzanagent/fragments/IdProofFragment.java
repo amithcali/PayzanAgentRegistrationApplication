@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -39,11 +41,15 @@ import java.util.List;
 
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.HomeActivity;
+import calibrage.payzanagent.adapter.IdproofAdapter;
+import calibrage.payzanagent.interfaces.DeleteIdproofListiner;
 import calibrage.payzanagent.model.AddAgent;
 import calibrage.payzanagent.model.AgentIdProof;
 import calibrage.payzanagent.model.AgentRequestModel;
 import calibrage.payzanagent.model.BankInfoResponseModel;
 import calibrage.payzanagent.model.BusinessCategoryModel;
+import calibrage.payzanagent.model.GetBankInfoModel;
+import calibrage.payzanagent.model.GetIdproofModel;
 import calibrage.payzanagent.model.IdProofModel;
 import calibrage.payzanagent.model.IdProofResponseModel;
 import calibrage.payzanagent.networkservice.ApiConstants;
@@ -57,7 +63,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class IdProofFragment extends BaseFragment implements View.OnClickListener {
+public class IdProofFragment extends BaseFragment implements View.OnClickListener,DeleteIdproofListiner {
 
     public static final String TAG = IdProofFragment.class.getSimpleName();
 
@@ -73,6 +79,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
     private Button personalButton,bankButton,idButton,documentButton;
     private ArrayList<AgentRequestModel.ListResult> listResults;
     ArrayList<String> businessArrayList = new ArrayList<String>();
+    private ArrayList<GetIdproofModel.ListResult> agentIdproofList = new ArrayList<>();
 
     ArrayList<String> financiaStringArrayList = new ArrayList<String>();
    // private AddAgent addAgent;
@@ -82,6 +89,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
     private IdProofModel agentIdProof,agentFinancialProof;
     private ArrayList<BusinessCategoryModel.ListResult> businessListResults =new ArrayList<>();
     private ArrayList<BusinessCategoryModel.ListResult> financialListResults =new ArrayList<>();
+    private RecyclerView  recylerView;
 
     public IdProofFragment() {
         // Required empty public constructor
@@ -103,6 +111,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
         btnContinue = (Button)view.findViewById(R.id.btn_continue);
         numberpersonal = (EditText)view.findViewById(R.id.txt_number);
         numberfinancial = (EditText)view.findViewById(R.id.txt_number_financial);
+        recylerView = (RecyclerView) view.findViewById(R.id.recylerview);
         context = this.getActivity();
         HomeActivity.toolbar.setTitle(getResources().getString(R.string.agentrequest_sname));
         HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
@@ -127,6 +136,8 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 
         initCustomSpinner_financialId();
         getRequestFinacial(CommonConstants.FINANCIALID_CATEGORY_ID);
+
+        getAgentIdproofInfo("dce0a289-5803-46fb-ae19-13f737fed7c3");
 
         fragmentManager = getActivity().getSupportFragmentManager();
         btnContinue.setOnClickListener(new View.OnClickListener() {
@@ -264,14 +275,53 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 
     }
 
+
+    private void getAgentIdproofInfo(String agentId) {
+        MyServices service = ServiceFactory.createRetrofitService(context, MyServices.class);
+        operatorSubscription = service.GetAgentIdproofInfo(ApiConstants.GET_AGENT_IDPROOF + agentId)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<GetIdproofModel>() {
+                    @Override
+                    public void onCompleted() {
+                        //   Toast.makeText(context, "check", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            ((HttpException) e).code();
+                            ((HttpException) e).message();
+                            ((HttpException) e).response().errorBody();
+                            try {
+                                ((HttpException) e).response().errorBody().string();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(context, "fail", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(GetIdproofModel idproofModel) {
+                        agentIdproofList = (ArrayList<GetIdproofModel.ListResult>) idproofModel.getListResult();
+                        IdproofAdapter idproofAdapter = new IdproofAdapter(context,idproofModel.getListResult()) ;
+                        idproofAdapter.setOnAdapterListener(IdProofFragment.this);
+                        recylerView.setLayoutManager(new LinearLayoutManager(context));
+                        recylerView.setAdapter(idproofAdapter);
+                    }
+                });
+                }
+
+
+
+
+
     private boolean isValidateUi() {
         boolean status = true;
         personalIdNumber = numberpersonal.getText().toString().trim();
         financialIdNumber = numberfinancial.getText().toString();
-
-
-
-
         if (spinnerCustom_personalId.getSelectedItemPosition() == 0) {
             status = false;
             Toast.makeText(context, "Select personal id type", Toast.LENGTH_SHORT).show();
@@ -458,6 +508,11 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 
                 break;
         }
+    }
+
+    @Override
+    public void onAdapterClickListiner(int pos) {
+
     }
 
     class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {

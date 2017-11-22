@@ -11,6 +11,7 @@ import calibrage.payzanagent.model.Branch;
 import calibrage.payzanagent.model.BusinessCategoryModel;
 import calibrage.payzanagent.model.DistrictModel;
 import calibrage.payzanagent.model.GetBankInfoModel;
+import calibrage.payzanagent.model.GetIdproofModel;
 import calibrage.payzanagent.model.GetPersonalInfoModel;
 import calibrage.payzanagent.model.HomeModel;
 import calibrage.payzanagent.model.IdProofResponseModel;
@@ -100,5 +101,7 @@ public interface MyServices {
 
     @GET
     Observable<GetBankInfoModel> GetAgentBankInfo(@Url String url);
+    @GET
+    Observable<GetIdproofModel> GetAgentIdproofInfo(@Url String url);
 
 }

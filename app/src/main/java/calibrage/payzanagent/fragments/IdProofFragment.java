@@ -1,12 +1,15 @@
 package calibrage.payzanagent.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -92,7 +95,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
     private ArrayList<BusinessCategoryModel.ListResult> businessListResults =new ArrayList<>();
     private ArrayList<BusinessCategoryModel.ListResult> financialListResults =new ArrayList<>();
     private RecyclerView  recylerView;
-    private boolean isUpdate;
+    private boolean isUpdate=false;
 
     public IdProofFragment() {
         // Required empty public constructor
@@ -193,6 +196,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -265,7 +269,6 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 
     }*/
     private JsonObject addIdProofDetails() {
-
        agentIdProof.setIdProofNumber(personalIdNumber);
        agentIdProof.setIdProofTypeId(businessListResults.get(spinnerCustom_personalId.getSelectedItemPosition()-1).getId());
         agentFinancialProof.setIdProofTypeId(financialListResults.get(spinnerCustom_finacialId.getSelectedItemPosition()-1).getId());
@@ -319,6 +322,8 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                         if(idProofResponseModel.getIsSuccess())
                         {
                             showToast(context,idProofResponseModel.getEndUserMessage());
+                            isUpdate = true;
+                            btnContinue.setText("Update");
                             replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
 
                         }else {
@@ -557,17 +562,23 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                 break;
             case R.id.btn_doc:
            //     showToast(getActivity(),"Please Fill The Personal Details");
-                if (isValidateUi()) {
-                    //  addIdProofDetails();
-                    postIdInfo();
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+
+                if (isUpdate) {
+                    replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
+                }else{
+                    if (isValidateUi()) {
+                        //  addIdProofDetails();
+                        postIdInfo();
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                   /*  Bundle bundle = new Bundle();
                     bundle.putParcelable("idproof", addAgent);
                     Fragment fragment = new AggrementDocumentsFragment();
                     fragment.setArguments(bundle);
                     replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, AggrementDocumentsFragment.TAG);*/
+                    }
                 }
+
 
                 break;
         }
@@ -575,9 +586,35 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onAdapterClickListiner(int pos) {
-        deleteId(pos);
-        //showToast(getActivity(),"jxbfdjgdbvdhgbjdfg");
 
+        //showToast(getActivity(),"jxbfdjgdbvdhgbjdfg");
+        showConformationDialog( pos);
+
+    }
+
+    private void showConformationDialog(final int pos){
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(context);
+        }
+        builder.setTitle("Delete entry")
+                .setMessage("Are you sure you want to delete this entry?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        deleteId(pos);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     private void deleteId(int pos) {
@@ -614,7 +651,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                         if (idProofDeleteModel.getIsSuccess()) {
                             showToast(context, idProofDeleteModel.getEndUserMessage());
                            // replaceFragment(getActivity(), MAIN_CONTAINER, new IdProofFragment(), TAG, IdProofFragment.TAG);
-
+                            getAgentIdproofInfo(CommonConstants.AGENT_ID);
                         } else {
                             showToast(context, idProofDeleteModel.getEndUserMessage());
                         }

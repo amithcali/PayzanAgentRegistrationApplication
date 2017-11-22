@@ -12,7 +12,6 @@ public class CommonConstants {
 
     public  static String SERVICE_PROVIDER_ID_POSTPAID = "8";
     public  static String SERVICE_PROVIDER_ID_PREPAID = "7";
-    public static String AGENT_REQUEST_ID = null;
     public static String BUSINESS_CATEGORY_ID = "3";
     public static String TITLE_ID = "4";
     public static String GENDER_ID = "5";
@@ -32,9 +31,11 @@ public class CommonConstants {
     public static String FILE_TYPE_ID_IMAGES = "23";
     public static String GENDER_TYPE_MALE = "20";
     public static String GENDER_TYPE_FEMALE = "21";
+
     public static String AGENT_ID = " ";
     public static boolean Is_Update = false;
     public static boolean Is_New_Agent_Request = false;
+    public static String AGENT_REQUEST_ID = "";
 
 
 

@@ -12,9 +12,9 @@ public class AgentDoc {
     @SerializedName("AgentId")
     @Expose
     private String agentId;
-    @SerializedName("FileLocation")
+    @SerializedName("FileTypeId")
     @Expose
-    private String fileLocation;
+    private Integer fileTypeId;
     @SerializedName("FileExtension")
     @Expose
     private String fileExtension;
@@ -24,15 +24,6 @@ public class AgentDoc {
     @SerializedName("Base64File")
     @Expose
     private String base64File;
-    @SerializedName("FileName")
-    @Expose
-    private String fileName;
-    @SerializedName("FileTypeId")
-    @Expose
-    private Integer fileTypeId;
-    @SerializedName("Id")
-    @Expose
-    private Integer id;
     @SerializedName("IsActive")
     @Expose
     private Boolean isActive;
@@ -42,12 +33,6 @@ public class AgentDoc {
     @SerializedName("ModifiedBy")
     @Expose
     private String modifiedBy;
-    @SerializedName("Created")
-    @Expose
-    private String created;
-    @SerializedName("Modified")
-    @Expose
-    private String modified;
 
     public String getAgentId() {
         return agentId;
@@ -57,12 +42,12 @@ public class AgentDoc {
         this.agentId = agentId;
     }
 
-    public String getFileLocation() {
-        return fileLocation;
+    public Integer getFileTypeId() {
+        return fileTypeId;
     }
 
-    public void setFileLocation(String fileLocation) {
-        this.fileLocation = fileLocation;
+    public void setFileTypeId(Integer fileTypeId) {
+        this.fileTypeId = fileTypeId;
     }
 
     public String getFileExtension() {
@@ -89,30 +74,6 @@ public class AgentDoc {
         this.base64File = base64File;
     }
 
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public Integer getFileTypeId() {
-        return fileTypeId;
-    }
-
-    public void setFileTypeId(Integer fileTypeId) {
-        this.fileTypeId = fileTypeId;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Boolean getIsActive() {
         return isActive;
     }
@@ -135,22 +96,6 @@ public class AgentDoc {
 
     public void setModifiedBy(String modifiedBy) {
         this.modifiedBy = modifiedBy;
-    }
-
-    public String getCreated() {
-        return created;
-    }
-
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
-    public String getModified() {
-        return modified;
-    }
-
-    public void setModified(String modified) {
-        this.modified = modified;
     }
 
 }

@@ -40,7 +40,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyHolder> {
 
     @Override
     public void onBindViewHolder(final MyHolder holder, int position) {
-        holder.imageView.setImageBitmap(bitmapArrayList.get(holder.getAdapterPosition()));
+        if(bitmapArrayList.get(holder.getAdapterPosition())!=null){
+            holder.imageView.setImageBitmap(bitmapArrayList.get(holder.getAdapterPosition()));
+        }else {
+            holder.imageView.setImageResource(R.drawable.ic_birthday);
+        }
+
         holder.deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,7 +55,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyHolder> {
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteImageListiner.onAdapterClickListiner(holder.getAdapterPosition(),true);
+                if(bitmapArrayList.get(holder.getAdapterPosition())!=null){
+                    deleteImageListiner.onAdapterClickListiner(holder.getAdapterPosition(),true);
+                }
             }
         });
     }

@@ -117,7 +117,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     Location lastLocation;
     int intAgentRequestId;
     private int mYear, mMonth, mDay;
-    private boolean is_exisisting_user = true;
+    private boolean is_exisisting_user = false;
 
     private String strfirstname, strusername, strpass, strmobile, stremail, straddress1, straddress2, strlandmark, strpin, currentDatetime, strlastname, strmiddlename = " ",strbundleMobile,strCreatedBy;
     private int agentRequestId;
@@ -312,7 +312,6 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 //                    Fragment fragment = new BankDetailFragment();
 //                    fragment.setArguments(bundle);
                     //  replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, BankDetailFragment.TAG);
-
 
                 }
 

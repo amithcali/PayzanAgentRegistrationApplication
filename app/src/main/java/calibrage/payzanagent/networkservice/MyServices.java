@@ -23,6 +23,7 @@ import calibrage.payzanagent.model.ProvinceModel;
 import calibrage.payzanagent.model.StatesModel;
 import calibrage.payzanagent.model.StatusCountModel;
 import calibrage.payzanagent.model.UpdateAgentRequestResponceModel;
+import calibrage.payzanagent.model.UploadDocumentResponseModel;
 import calibrage.payzanagent.model.VillageModel;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -103,6 +104,8 @@ public interface MyServices {
 
     @POST(ApiConstants.UPDATE_PERSONAL_INFO)
     Observable<AddAgentResponseModel> update(@Body JsonObject data);
+    @POST(ApiConstants.UPLOAD_DOCUMENTS)
+    Observable<UploadDocumentResponseModel> uploadDocument(@Body JsonObject data);
 
 
     @GET

@@ -6,6 +6,10 @@
     android:background="@color/white"
     android:layout_height="match_parent"
     tools:context="calibrage.payzanagent.fragments.BankDetailFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -187,4 +191,5 @@
                 android:textAllCaps="false"
                 android:textColor="@color/White"/>
         </LinearLayout>
+    </ScrollView>
 </LinearLayout>

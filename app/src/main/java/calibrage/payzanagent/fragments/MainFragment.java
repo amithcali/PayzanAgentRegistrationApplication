@@ -154,16 +154,16 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                         Log.d("response", homeModel.getIsSuccess().toString());
                        // int status = homeModel.getResult().get(0).getStatusTypeId();
 
-                        for (int i = 0; i <homeModel.getResult().size() ; i++) {
+                        for (int i = 0; i <homeModel.getResult().getStatusCounts().size() ; i++) {
 
-                            if(homeModel.getResult().get(i).getStatusTypeId()== Integer.parseInt(CommonConstants.STATUSTYPE_ID_NEW)){
-                                txtCount1.setText(""+homeModel.getResult().get(i).getCount());
-                            }else if(homeModel.getResult().get(i).getStatusTypeId()== Integer.parseInt(CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW)){
-                                txtCount3.setText(""+homeModel.getResult().get(i).getCount());
-                            }else if(homeModel.getResult().get(i).getStatusTypeId()== Integer.parseInt(CommonConstants.STATUSTYPE_ID_IN_PROGRESS)){
-                                txtCount2.setText(""+homeModel.getResult().get(i).getCount());
-                            }else if(homeModel.getResult().get(i).getStatusTypeId()== Integer.parseInt(CommonConstants.STATUSTYPE_ID_APPROVED)){
-                                txtCount4.setText(""+homeModel.getResult().get(i).getCount());
+                            if(homeModel.getResult().getStatusCounts().get(i).getStatusTypeId()== Integer.parseInt(CommonConstants.STATUSTYPE_ID_NEW)){
+                                txtCount1.setText(""+homeModel.getResult().getStatusCounts().get(i).getCount());
+                            }else if(homeModel.getResult().getStatusCounts().get(i).getStatusTypeId()== Integer.parseInt(CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW)){
+                                txtCount2.setText(""+homeModel.getResult().getStatusCounts().get(i).getCount());
+                            }else if(homeModel.getResult().getStatusCounts().get(i).getStatusTypeId()== Integer.parseInt(CommonConstants.STATUSTYPE_ID_IN_PROGRESS)){
+                                txtCount3.setText(""+homeModel.getResult().getStatusCounts().get(i).getCount());
+                            }else if(homeModel.getResult().getStatusCounts().get(i).getStatusTypeId()== Integer.parseInt(CommonConstants.STATUSTYPE_ID_APPROVED)){
+                                txtCount4.setText(""+homeModel.getResult().getStatusCounts().get(i).getCount());
                             }
 
                         }

@@ -13,7 +13,7 @@ public class HomeModel {
 
     @SerializedName("Result")
     @Expose
-    private List<Result> result = null;
+    private Result result;
     @SerializedName("IsSuccess")
     @Expose
     private Boolean isSuccess;
@@ -30,11 +30,11 @@ public class HomeModel {
     @Expose
     private Object exception;
 
-    public List<Result> getResult() {
+    public Result getResult() {
         return result;
     }
 
-    public void setResult(List<Result> result) {
+    public void setResult(Result result) {
         this.result = result;
     }
 
@@ -79,39 +79,80 @@ public class HomeModel {
     }
     public class Result {
 
-        @SerializedName("StatusTypeId")
+        @SerializedName("StatusCounts")
         @Expose
-        private Integer statusTypeId;
-        @SerializedName("StatusType")
+        private List<StatusCount> statusCounts = null;
+        @SerializedName("Agents")
         @Expose
-        private String statusType;
-        @SerializedName("Count")
+        private Integer agents;
+        @SerializedName("Consumers")
         @Expose
-        private Integer count;
+        private Integer consumers;
 
-        public Integer getStatusTypeId() {
-            return statusTypeId;
+        public List<StatusCount> getStatusCounts() {
+            return statusCounts;
         }
 
-        public void setStatusTypeId(Integer statusTypeId) {
-            this.statusTypeId = statusTypeId;
+        public void setStatusCounts(List<StatusCount> statusCounts) {
+            this.statusCounts = statusCounts;
         }
 
-        public String getStatusType() {
-            return statusType;
+        public Integer getAgents() {
+            return agents;
         }
 
-        public void setStatusType(String statusType) {
-            this.statusType = statusType;
+        public void setAgents(Integer agents) {
+            this.agents = agents;
         }
 
-        public Integer getCount() {
-            return count;
+        public Integer getConsumers() {
+            return consumers;
         }
 
-        public void setCount(Integer count) {
-            this.count = count;
+        public void setConsumers(Integer consumers) {
+            this.consumers = consumers;
         }
 
-    }
+
+        public class StatusCount {
+
+            @SerializedName("StatusTypeId")
+            @Expose
+            private Integer statusTypeId;
+            @SerializedName("StatusType")
+            @Expose
+            private String statusType;
+            @SerializedName("Count")
+            @Expose
+            private Integer count;
+
+            public Integer getStatusTypeId() {
+                return statusTypeId;
+            }
+
+            public void setStatusTypeId(Integer statusTypeId) {
+                this.statusTypeId = statusTypeId;
+            }
+
+            public String getStatusType() {
+                return statusType;
+            }
+
+            public void setStatusType(String statusType) {
+                this.statusType = statusType;
+            }
+
+            public Integer getCount() {
+                return count;
+            }
+
+            public void setCount(Integer count) {
+                this.count = count;
+            }
+
+        }
 }
+
+
+}
+

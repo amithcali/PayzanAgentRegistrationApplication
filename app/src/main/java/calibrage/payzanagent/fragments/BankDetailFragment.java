@@ -73,7 +73,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
     private String straccountname, straccountno, strshiftcode, currentDatetime;
     private AgentBankInfo agentBankInfo;
     BankDetailFragment.CustomSpinnerAdapter customSpinnerAdapter;
-    private boolean isUpdate;
+    private boolean isUpdate =false;
     private int id;
 
 
@@ -262,7 +262,10 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                         hideDialog();
                         if (bankInfoResponseModel.getIsSuccess()) {
                             showToast(context, bankInfoResponseModel.getEndUserMessage());
+                            isUpdate =true;
+                            btnContinue.setText("Update");
                             replaceFragment(getActivity(), MAIN_CONTAINER, new IdProofFragment(), TAG, IdProofFragment.TAG);
+
 
                         } else {
                             showToast(context, bankInfoResponseModel.getEndUserMessage());
@@ -537,24 +540,17 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                 break;
             case R.id.btn_id:
                 //   showToast(getActivity(),"Please Fill The Personal Details");
-                if (isValidateUi()) {
-                    //    login();
-                    //  agentBankDetails();
 
-                    postBankInfo();
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-                   /* Bundle bundle = new Bundle();
-                    bundle.putParcelable("bankinfo", addAgent);
-                    Fragment fragment = new IdProofFragment();
-                    fragment.setArguments(bundle);
-                 //   ReplcaFragment(fragment);
-                   *//* fragmentManager.beginTransaction()
-                            .replace(R.id.content_frame,  fragment,"IdTag")
-                            .commit();*//*
-                    replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, IdProofFragment.TAG);*/
+                    if (isUpdate) {
+                        replaceFragment(getActivity(), MAIN_CONTAINER, new IdProofFragment(), TAG, IdProofFragment.TAG);
+                }else {
+                        if (isValidateUi()) {
+                            postBankInfo();
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                        }
 
-                }
+                    }
 
 
                 // replaceFragment(getActivity(),MAIN_CONTAINER,new InProgressFragment(),TAG,InProgressFragment.TAG);

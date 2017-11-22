@@ -104,14 +104,12 @@ public class LoginFragment extends BaseFragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             // replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
+              replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
               //  AgentUpdateRequest();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-           //    startActivity(new Intent(LoginActivity.this,AgentRequestsFragment.class));
-             //   login();
-              // ReplcaFragment(new AgentRequestsFragment());
-                if (isOnline(getActivity())) {
+
+             /*   if (isOnline(getActivity())) {
 
                     if (isValidateUi()) {
                         login();
@@ -124,7 +122,7 @@ public class LoginFragment extends BaseFragment {
                 } else {
                     showToast(getActivity(), getString(R.string.no_internet));
                 }
-
+*/
 
 
             }

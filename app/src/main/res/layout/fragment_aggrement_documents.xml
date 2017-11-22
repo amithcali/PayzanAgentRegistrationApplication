@@ -159,13 +159,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-       <!-- <TextView
+        <TextView
             android:id="@+id/txtPath"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/btn_margin_top"
             android:textColor="@color/Black"
-            />-->
+            />
         <calibrage.payzanagent.controls.CommonButton
             android:id="@+id/btn_finish"
             android:layout_width="fill_parent"

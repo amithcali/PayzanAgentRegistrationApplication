@@ -97,7 +97,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
     public ContentValues values;
     public Uri imageUri;
     public Bitmap thumbnail;
-    public String imageurl, currentDatetime;
+    public String imageurl, currentDatetime,pdfPath;
     public int photoCount;
     private AgentDoc agentDoc;
     ImageAdapter imageAdapter;
@@ -122,7 +122,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         btnAddDocuments = (Button) view.findViewById(R.id.btn_add_documents);
-        //  textView = (TextView)view.findViewById(R.id.txtPath);
+        textView = (TextView)view.findViewById(R.id.txtPath);
         btnFinish = (Button) view.findViewById(R.id.btn_finish);
         imageView = (ImageView) view.findViewById(R.id.view_image);
         lnrImages = (LinearLayout) view.findViewById(R.id.lnrImages);
@@ -296,8 +296,12 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
 
             }else if(requestCode ==3){
 
-                data.getData();
+             /*   pdfPath =  data.getData().getPath();
+                textView.setText(pdfPath);*/
 
+                Uri filePath = data.getData();
+                File file = new File(filePath.getPath());
+                textView.setText(filePath.toString());
             }
 
         }

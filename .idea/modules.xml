@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/PayzanAgent.iml" filepath="$PROJECT_DIR$/PayzanAgent.iml" />
       <module fileurl="file://D:\Amith\PayzanAgentRegistrationApplication\PayzanAgent.iml" filepath="D:\Amith\PayzanAgentRegistrationApplication\PayzanAgent.iml" />
-      <module fileurl="file://$PROJECT_DIR$/PayzanAgentRegistrationApplication.iml" filepath="$PROJECT_DIR$/PayzanAgentRegistrationApplication.iml" />
       <module fileurl="file://E:\PayzanAgent\PayzanAgentRegistrationApplication.iml" filepath="E:\PayzanAgent\PayzanAgentRegistrationApplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

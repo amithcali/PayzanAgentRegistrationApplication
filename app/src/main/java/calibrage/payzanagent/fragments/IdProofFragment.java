@@ -209,6 +209,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                             e.printStackTrace();
                         }
                         Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                        replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
                     }
 
                     @Override
@@ -650,7 +651,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                         hideDialog();
                         if (idProofDeleteModel.getIsSuccess()) {
                             showToast(context, idProofDeleteModel.getEndUserMessage());
-                           // replaceFragment(getActivity(), MAIN_CONTAINER, new IdProofFragment(), TAG, IdProofFragment.TAG);
+                         //   replaceFragment(getActivity(), MAIN_CONTAINER, new IdProofFragment(), TAG, IdProofFragment.TAG);
                             getAgentIdproofInfo(CommonConstants.AGENT_ID);
                         } else {
                             showToast(context, idProofDeleteModel.getEndUserMessage());

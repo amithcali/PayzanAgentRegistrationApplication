@@ -30,9 +30,11 @@ public interface ApiConstants {
    String REGISTER_AGENT_PERSONAL_INFO= "api/Agent/RegisterAgent";
    String REGISTER_AGENT_BANK_INFO= "api/AgentBank/insert";
    String DELETE_ID_INFO= "api/AgentIdProof/delete/";
+   String DELETE_ID_DOC= "api/AgentFileRepository/DeleteAgentDocument/";
    String UPDATE_AGENT_BANK_INFO= "api/AgentBank/UpdateAgentBank";
    String REGISTER_AGENT_ID_INFO= "api/AgentIdProof/AddAgentIdProofs";
    String UPDATE_AGENT_ID_INFO= "api/AgentIdProof/UpdateAgentIdProofs";
+   String GET_AGENT_DOCUMENTS= "api/AgentFileRepository/GetAgentFileRepository/";
    String GET_AGENT_BANK_INFO= "api/AgentBank/GetAgentBankByAgentId/";
    String GET_AGENT_IDPROOF= "api/AgentIdProof/GetAgentIdProofsByAgentId/";
    String UPLOAD_DOCUMENTS= "api/AgentFileRepository/AddAgentDocuments";

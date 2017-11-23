@@ -59,11 +59,17 @@ import calibrage.payzanagent.Calib.ui.IScreen;
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.CustomPhotoGalleryActivity;
 import calibrage.payzanagent.activity.HomeActivity;
+import calibrage.payzanagent.adapter.DocsAdapter;
 import calibrage.payzanagent.adapter.ImageAdapter;
+import calibrage.payzanagent.interfaces.DeleteIdproofListiner;
 import calibrage.payzanagent.interfaces.DeleteImageListiner;
 import calibrage.payzanagent.model.AddAgent;
 import calibrage.payzanagent.model.AddAgentResponseModel;
 import calibrage.payzanagent.model.AgentDoc;
+import calibrage.payzanagent.model.DocDeleteModel;
+import calibrage.payzanagent.model.GetBankInfoModel;
+import calibrage.payzanagent.model.GetDocumentsResponseModel;
+import calibrage.payzanagent.model.IdProofDeleteModel;
 import calibrage.payzanagent.model.LoginResponseModel;
 import calibrage.payzanagent.model.UpdateAgentRequestModel;
 import calibrage.payzanagent.model.UpdateAgentRequestResponceModel;
@@ -86,7 +92,7 @@ import static android.app.Activity.RESULT_OK;
 import static calibrage.payzanagent.utils.CommonConstants.AGENT_REQUEST_ID;
 
 
-public class AggrementDocumentsFragment extends BaseFragment implements DeleteImageListiner, View.OnClickListener {
+public class AggrementDocumentsFragment extends BaseFragment implements DeleteImageListiner, View.OnClickListener,DeleteIdproofListiner {
 
     public static final String TAG = AggrementDocumentsFragment.class.getSimpleName();
 
@@ -109,7 +115,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
     private AlertDialog alertDialog;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     ImageView imageView;
-    private RecyclerView imagesRecylerView;
+    private RecyclerView imagesRecylerView,docsRecyclerview;
     private ArrayList<Bitmap> imagesArrayList = new ArrayList<>();
     public static final String IMAGE_UNSPECIFIED = "image/*";
     public ContentValues values;
@@ -122,7 +128,10 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
     ProgressBar progressBar;
     private Button personalButton, bankButton, idButton, documentButton, uploadDoc;
     private ArrayList<Pair<String, String>> filePathArray;
+    private ArrayList<GetDocumentsResponseModel.ListResult> docIdproofList = new ArrayList<>();
     private int count = 0;
+    private boolean isUpdate =false;
+    private Subscription operatorSubscription;
 
     public AggrementDocumentsFragment() {
         // Required empty public constructor
@@ -147,6 +156,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         uploadDoc = (Button) view.findViewById(R.id.uploadDoc);
         imageView = (ImageView) view.findViewById(R.id.view_image);
         lnrImages = (LinearLayout) view.findViewById(R.id.lnrImages);
+        docsRecyclerview = (RecyclerView)view.findViewById(R.id.recylerview_documnets);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         personalButton = (Button) view.findViewById(R.id.btn_personal);
         bankButton = (Button) view.findViewById(R.id.btn_bank);
@@ -159,7 +169,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         idButton.setOnClickListener(this);*/
         documentButton.setOnClickListener(this);
 
-
+        getDocuments(CommonConstants.AGENT_ID);
         imagesRecylerView = (RecyclerView) view.findViewById(R.id.imagesRecylerView);
         context = this.getActivity();
         fragmentManager = getActivity().getSupportFragmentManager();
@@ -178,6 +188,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 submitRequest();
             }
         });
@@ -204,6 +215,56 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         }
 
         return view;
+    }
+
+
+    private void getDocuments(String agentId) {
+        MyServices service = ServiceFactory.createRetrofitService(context, MyServices.class);
+        operatorSubscription = service.getAgentDocuments(ApiConstants.GET_AGENT_DOCUMENTS + agentId)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<GetDocumentsResponseModel>() {
+                    @Override
+                    public void onCompleted() {
+                        //   Toast.makeText(context, "check", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof HttpException) {
+                            hideDialog();
+                            ((HttpException) e).code();
+                            ((HttpException) e).message();
+                            ((HttpException) e).response().errorBody();
+                            try {
+                                ((HttpException) e).response().errorBody().string();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(context, "fail", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(GetDocumentsResponseModel getDocumentsResponseModel) {
+                        if (!getDocumentsResponseModel.getListResult().isEmpty()) {
+                            isUpdate = true;
+                            docIdproofList = (ArrayList<GetDocumentsResponseModel.ListResult>) getDocumentsResponseModel.getListResult();
+                            DocsAdapter docsAdapter = new DocsAdapter(context,getDocumentsResponseModel.getListResult()) ;
+                            docsAdapter.setOnAdapterListener(AggrementDocumentsFragment.this);
+                            docsRecyclerview.setLayoutManager(new LinearLayoutManager(context));
+                            docsRecyclerview.setAdapter(docsAdapter);
+
+                            showToast(getActivity(),getDocumentsResponseModel.getListResult().get(0).getFileLocation());
+                        } else {
+                            isUpdate = false;
+                           // btnContinue.setText("Continue");
+                        }
+
+                    }
+
+                });
     }
 
     private void postDocuments() {
@@ -849,6 +910,81 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
      */
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
+
+    @Override
+    public void onAdapterClickListiner(int pos) {
+       // showToast(getActivity(),"delete image");
+       showConformationDialogDelete( pos);
+    }
+
+    private void showConformationDialogDelete(final int pos) {
+        android.app.AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new android.app.AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new android.app.AlertDialog.Builder(context);
+        }
+        builder.setTitle("Delete entry")
+                .setMessage("Are you sure you want to delete this entry?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        deleteId(pos);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+    private void deleteId(int pos) {
+        showDialog(getActivity(), "Authenticating...");
+        MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
+        operatorSubscription = service.deletedoc(BuildConfig.LOCAL_URL+ApiConstants.DELETE_ID_DOC + docIdproofList.get(pos).getId())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<DocDeleteModel>() {
+                    @Override
+                    public void onCompleted() {
+                        // Toast.makeText(getActivity(), "check", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                        if (e instanceof HttpException) {
+                            ((HttpException) e).code();
+                            ((HttpException) e).message();
+                            ((HttpException) e).response().errorBody();
+                            try {
+                                ((HttpException) e).response().errorBody().string();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(DocDeleteModel docDeleteModel) {
+                        hideDialog();
+                        if (docDeleteModel.getIsSuccess()) {
+                            showToast(context, docDeleteModel.getEndUserMessage());
+                            //   replaceFragment(getActivity(), MAIN_CONTAINER, new IdProofFragment(), TAG, IdProofFragment.TAG);
+                            getDocuments(CommonConstants.AGENT_ID);
+                        } else {
+                            showToast(context, docDeleteModel.getEndUserMessage());
+                        }
+
+                    }
+                });
+
     }
 }
 

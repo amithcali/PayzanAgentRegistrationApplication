@@ -10,7 +10,9 @@ import calibrage.payzanagent.model.BankInfoResponseModel;
 import calibrage.payzanagent.model.Branch;
 import calibrage.payzanagent.model.BusinessCategoryModel;
 import calibrage.payzanagent.model.DistrictModel;
+import calibrage.payzanagent.model.DocDeleteModel;
 import calibrage.payzanagent.model.GetBankInfoModel;
+import calibrage.payzanagent.model.GetDocumentsResponseModel;
 import calibrage.payzanagent.model.GetIdproofModel;
 import calibrage.payzanagent.model.GetPersonalInfoModel;
 import calibrage.payzanagent.model.HomeModel;
@@ -93,6 +95,10 @@ public interface MyServices {
     @DELETE
     Observable<IdProofDeleteModel> deleteidInfo(@Url String data);
 
+
+    @GET
+    Observable<DocDeleteModel> deletedoc(@Url String data);
+
     @POST(ApiConstants.UPDATE_AGENT_BANK_INFO)
     Observable<BankInfoResponseModel> updateBankInfo(@Body JsonObject data);
 
@@ -113,6 +119,11 @@ public interface MyServices {
 
     @GET
     Observable<GetBankInfoModel> GetAgentBankInfo(@Url String url);
+
+    @GET
+    Observable<GetDocumentsResponseModel> getAgentDocuments(@Url String url);
+
+
     @GET
     Observable<GetIdproofModel> GetAgentIdproofInfo(@Url String url);
 

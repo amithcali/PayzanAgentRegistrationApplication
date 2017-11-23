@@ -301,7 +301,10 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                         hideDialog();
                         count++;
                         if (count == filePathArray.size()) {
-                            Toast.makeText(context, "Upload all Done", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Files  Uploading Finished Sucessfully", Toast.LENGTH_SHORT).show();
+                            getDocuments(CommonConstants.AGENT_ID);
+                            imagesArrayList.clear();
+                            imageAdapter.notifyDataSetChanged();
                         } else {
                             postDocuments();
                         }

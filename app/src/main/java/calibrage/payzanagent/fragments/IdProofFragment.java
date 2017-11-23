@@ -1,25 +1,19 @@
 package calibrage.payzanagent.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,20 +33,18 @@ import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import calibrage.payzanagent.BuildConfig;
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.HomeActivity;
 import calibrage.payzanagent.adapter.IdproofAdapter;
+import calibrage.payzanagent.adapter.IdproofLocalAdapter;
 import calibrage.payzanagent.interfaces.DeleteIdproofListiner;
-import calibrage.payzanagent.model.AddAgent;
+import calibrage.payzanagent.interfaces.DeleteLocalIdproofListiner;
 import calibrage.payzanagent.model.AgentIdProof;
 import calibrage.payzanagent.model.AgentRequestModel;
-import calibrage.payzanagent.model.BankInfoResponseModel;
 import calibrage.payzanagent.model.BusinessCategoryModel;
-import calibrage.payzanagent.model.GetBankInfoModel;
 import calibrage.payzanagent.model.GetIdproofModel;
 import calibrage.payzanagent.model.IdProofDeleteModel;
 import calibrage.payzanagent.model.IdProofModel;
@@ -68,7 +60,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class IdProofFragment extends BaseFragment implements View.OnClickListener,DeleteIdproofListiner {
+public class IdProofFragment extends BaseFragment implements View.OnClickListener,DeleteIdproofListiner,DeleteLocalIdproofListiner {
 
     public static final String TAG = IdProofFragment.class.getSimpleName();
 
@@ -81,9 +73,12 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
     EditText numberpersonal,numberfinancial;
     Spinner spinnerCustom_personalId,spinnerCustom_finacialId;
     private Subscription operatorSubscription;
-    private Button personalButton,bankButton,idButton,documentButton;
+    private Button personalButton,bankButton,idButton,documentButton,addPersonalInfo,addFinancialInfo;
     private ArrayList<AgentRequestModel.ListResult> listResults;
     ArrayList<String> businessArrayList = new ArrayList<String>();
+    ArrayList<String> addIdproofs = new ArrayList<String>();
+    ArrayList<Integer> totalIdTypeId = new ArrayList<>();
+    ArrayList<String> totalIdTypeValue = new ArrayList<>();
     private ArrayList<GetIdproofModel.ListResult> agentIdproofList = new ArrayList<>();
 
     ArrayList<String> financiaStringArrayList = new ArrayList<String>();
@@ -94,8 +89,12 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
     private IdProofModel agentIdProof,agentFinancialProof;
     private ArrayList<BusinessCategoryModel.ListResult> businessListResults =new ArrayList<>();
     private ArrayList<BusinessCategoryModel.ListResult> financialListResults =new ArrayList<>();
-    private RecyclerView  recylerView;
+    private ArrayList<ArrayList<BusinessCategoryModel.ListResult>> totalIdListResults =new ArrayList<ArrayList<BusinessCategoryModel.ListResult>>();
+    private RecyclerView recylerView,financialRecylerview,personalRecylerview;
     private boolean isUpdate=false;
+    private ArrayList<Pair<String, String>> addIdproof;
+    private IdproofLocalAdapter  idproofLocalAdapter;
+
 
     public IdProofFragment() {
         // Required empty public constructor
@@ -112,12 +111,15 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                 return true;
             }
         });
+        addIdproof = new ArrayList<>();
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         btnContinue = (Button)view.findViewById(R.id.btn_continue);
         numberpersonal = (EditText)view.findViewById(R.id.txt_number);
         numberfinancial = (EditText)view.findViewById(R.id.txt_number_financial);
         recylerView = (RecyclerView) view.findViewById(R.id.recylerview);
+        financialRecylerview = (RecyclerView) view.findViewById(R.id.financialRecylerview);
+       // personalRecylerview = (RecyclerView) view.findViewById(R.id.personalRecylerview);
         context = this.getActivity();
         HomeActivity.toolbar.setTitle(getResources().getString(R.string.agentrequest_sname));
         HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
@@ -126,7 +128,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
         listResults =new  ArrayList();
         idProofArrayList = new ArrayList<>();
         agentFinancialProof = new IdProofModel();
-        agentIdProof = new IdProofModel();
+
         idProof = new AgentIdProof();
         initCustomSpinner_personalId();
         getRequest(CommonConstants.PERSONALID_CATEGORY_ID);
@@ -134,6 +136,8 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
         bankButton = (Button)view.findViewById(R.id.btn_bank);
         idButton = (Button)view.findViewById(R.id.btn_id);
         documentButton = (Button)view.findViewById(R.id.btn_doc);
+        addPersonalInfo = (Button)view.findViewById(R.id.addPersonalInfo);
+        addFinancialInfo = (Button)view.findViewById(R.id.addFinancialInfo);
 
        /* personalButton.setOnClickListener(this);
         bankButton.setOnClickListener(this);*/
@@ -144,6 +148,69 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
         getRequestFinacial(CommonConstants.FINANCIALID_CATEGORY_ID);
 
         getAgentIdproofInfo(CommonConstants.AGENT_ID);
+        
+        addFinancialInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!addIdproofs.isEmpty())
+                {
+                   if(addIdproofs.contains(spinnerCustom_finacialId.getSelectedItem().toString())){
+                       Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
+                   }else{
+                       if(!addIdproof.isEmpty()){
+                           for (int i = 0; i <addIdproof.size() ; i++) {
+                               if(!addIdproof.get(i).first.equalsIgnoreCase(spinnerCustom_finacialId.getSelectedItem().toString())){
+                                   addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()),numberpersonal.getText().toString()));
+                                   break;
+                               }
+                           }
+                       }
+                       else{
+                           addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
+                       }
+                   }
+                }else{
+                    addIdproof.add(Pair.create(financiaStringArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()),numberfinancial.getText().toString()));
+                }
+
+                  idproofLocalAdapter = new IdproofLocalAdapter(context,addIdproof);
+                idproofLocalAdapter.setOnAdapterListener(IdProofFragment.this);
+                financialRecylerview.setAdapter(idproofLocalAdapter);
+                financialRecylerview.setLayoutManager(new LinearLayoutManager(context));
+
+            }
+        });
+        addPersonalInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!addIdproofs.isEmpty())
+                {
+                    if(addIdproofs.contains(spinnerCustom_personalId.getSelectedItem().toString())){
+                        Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
+                    }else{
+                        if(!addIdproof.isEmpty()){
+                            for (int i = 0; i <addIdproof.size() ; i++) {
+                                if(!addIdproof.get(i).first.equalsIgnoreCase(spinnerCustom_personalId.getSelectedItem().toString())){
+                                    addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
+                                    break;
+                                }
+                            }
+                        }
+                        else{
+                            addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
+                        }
+                    }
+                }else{
+                    addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
+                }
+
+                 idproofLocalAdapter = new IdproofLocalAdapter(context,addIdproof);
+                idproofLocalAdapter.setOnAdapterListener(IdProofFragment.this);
+                financialRecylerview.setAdapter(idproofLocalAdapter);
+                financialRecylerview.setLayoutManager(new LinearLayoutManager(context));
+
+            }
+        });
 
         fragmentManager = getActivity().getSupportFragmentManager();
         btnContinue.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +221,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                     imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                   //  addIdProofDetails();
                     if (isUpdate) {
-                        updateIdInfo();
+                        postIdInfo();
                     } else {
                         postIdInfo();
                     }
@@ -270,12 +337,18 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 
     }*/
     private JsonObject addIdProofDetails() {
-       agentIdProof.setIdProofNumber(personalIdNumber);
-       agentIdProof.setIdProofTypeId(businessListResults.get(spinnerCustom_personalId.getSelectedItemPosition()-1).getId());
-        agentFinancialProof.setIdProofTypeId(financialListResults.get(spinnerCustom_finacialId.getSelectedItemPosition()-1).getId());
-       agentFinancialProof.setIdProofNumber(financialIdNumber);
-        idProofArrayList.add(agentFinancialProof);
-        idProofArrayList.add(agentIdProof);
+
+        for (int i = 0; i <addIdproof.size() ; i++) {
+            agentIdProof = new IdProofModel();
+            agentIdProof.setIdProofNumber(addIdproof.get(i).second);
+            agentIdProof.setIdProofTypeId(totalIdTypeId.get(totalIdTypeValue.indexOf(addIdproof.get(i).first)));
+            idProofArrayList.add(agentIdProof);
+        }
+
+//        agentFinancialProof.setIdProofTypeId(financialListResults.get(spinnerCustom_finacialId.getSelectedItemPosition()-1).getId());
+//       agentFinancialProof.setIdProofNumber(financialIdNumber);
+//        idProofArrayList.add(agentFinancialProof);
+
         idProof.setIdProofs((List<IdProofModel>) idProofArrayList);
         idProof.setAgentId(CommonConstants.AGENT_ID);
         idProof.setCreatedBy(CommonConstants.USERID);
@@ -322,6 +395,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                         hideDialog();
                         if(idProofResponseModel.getIsSuccess())
                         {
+                            getAgentIdproofInfo(CommonConstants.AGENT_ID);
                             showToast(context,idProofResponseModel.getEndUserMessage());
                             isUpdate = true;
                             btnContinue.setText("Update");
@@ -374,6 +448,9 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                             recylerView.setLayoutManager(new LinearLayoutManager(context));
                             recylerView.setAdapter(idproofAdapter);
                             btnContinue.setText("Update");
+                            for (int i = 0; i <agentIdproofList.size() ; i++) {
+                                addIdproofs.add(agentIdproofList.get(i).getIdProofType());
+                            }
                         } else {
                             isUpdate = false;
                             btnContinue.setText("Continue");
@@ -445,8 +522,11 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                         hideDialog();
                         Log.d("response", businessCategoryModel.getIsSuccess().toString());
                         financialListResults = (ArrayList<BusinessCategoryModel.ListResult>) businessCategoryModel.getListResult();
+                       // totalIdListResults.add(financialListResults);
                         for (int i = 0; i <businessCategoryModel.getListResult().size() ; i++) {
                             financiaStringArrayList.add(businessCategoryModel.getListResult().get(i).getDescription());
+                            totalIdTypeId.add(businessCategoryModel.getListResult().get(i).getId());
+                            totalIdTypeValue.add(businessCategoryModel.getListResult().get(i).getDescription());
                         }
                         IdProofFragment.CustomSpinnerAdapter customSpinnerAdapter =new IdProofFragment.CustomSpinnerAdapter(getActivity(), financiaStringArrayList);
                         financiaStringArrayList.add(0,"--Select Financial Id Proof--");
@@ -489,9 +569,12 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                     public void onNext(BusinessCategoryModel businessCategoryModel) {
                         Log.d("response", businessCategoryModel.getIsSuccess().toString());
                         businessListResults = (ArrayList<BusinessCategoryModel.ListResult>) businessCategoryModel.getListResult();
+                       // totalIdListResults.add(businessListResults);
                         businessArrayList.add(0,"--Select Personal Id Proof--");
                         for (int i = 0; i <businessCategoryModel.getListResult().size() ; i++) {
                             businessArrayList.add(businessCategoryModel.getListResult().get(i).getDescription());
+                            totalIdTypeId.add(businessCategoryModel.getListResult().get(i).getId());
+                            totalIdTypeValue.add(businessCategoryModel.getListResult().get(i).getDescription());
 
                         }
 
@@ -589,11 +672,11 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
     public void onAdapterClickListiner(int pos) {
 
         //showToast(getActivity(),"jxbfdjgdbvdhgbjdfg");
-        showConformationDialog( pos);
+        showConformationDialog( pos,false);
 
     }
 
-    private void showConformationDialog(final int pos){
+    private void showConformationDialog(final int pos, final boolean isLocal){
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
@@ -605,7 +688,14 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
-                        deleteId(pos);
+                        if(isLocal){
+                            addIdproof.remove(pos);
+                            idproofLocalAdapter.notifyDataSetChanged();
+                        }else {
+                            deleteId(pos);
+                        }
+
+
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -660,6 +750,13 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                     }
                 });
 
+    }
+
+    @Override
+    public void onAdapterDeleteClickListiner(int pos) {
+        if(!addIdproof.isEmpty()){
+            showConformationDialog(pos,true);
+        }
     }
 
     class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {

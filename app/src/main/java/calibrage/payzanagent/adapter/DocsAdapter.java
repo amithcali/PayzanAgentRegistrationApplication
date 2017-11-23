@@ -13,6 +13,7 @@ import java.util.List;
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.fragments.AggrementDocumentsFragment;
 import calibrage.payzanagent.interfaces.DeleteIdproofListiner;
+import calibrage.payzanagent.interfaces.DocListiner;
 import calibrage.payzanagent.model.GetDocumentsResponseModel;
 
 /**
@@ -21,7 +22,7 @@ import calibrage.payzanagent.model.GetDocumentsResponseModel;
 
 public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.Myholder>{
     private Context context;
-    private DeleteIdproofListiner deleteIdproofListiner;
+    private DocListiner docListiner;
     private List<GetDocumentsResponseModel.ListResult> listResultList;
 
 
@@ -57,7 +58,18 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.Myholder>{
         holder.deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteIdproofListiner.onAdapterClickListiner(holder.getAdapterPosition());
+                docListiner.onDocAdapterClickListiner(holder.getAdapterPosition(),true,true);
+            }
+        });
+        holder.name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(listResultList.get(holder.getAdapterPosition()).getFileExtension().equalsIgnoreCase(".pdf")){
+                    docListiner.onDocAdapterClickListiner(holder.getAdapterPosition(),false,true);
+                }else{
+                    docListiner.onDocAdapterClickListiner(holder.getAdapterPosition(),false,false);
+                }
+
             }
         });
     }
@@ -84,8 +96,8 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.Myholder>{
 
     }
 
-    public void setOnAdapterListener(DeleteIdproofListiner onAdapterListener) {
-        this.deleteIdproofListiner = onAdapterListener;
+    public void setOnAdapterListener(DocListiner onAdapterListener) {
+        this.docListiner = onAdapterListener;
     }
 
 

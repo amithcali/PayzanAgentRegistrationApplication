@@ -148,7 +148,8 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     private ArrayList<VillageModel.ListResult> villageListResults = new ArrayList<>();
 
     ArrayList<String> updateArrayList = new ArrayList<String>();
-    private ArrayList<GetPersonalInfoModel.ListResult> updateListResults = new ArrayList<>();
+   // private ArrayList<GetPersonalInfoModel.RE> updateListResults = new ArrayList<>();
+    private GetPersonalInfoModel.Result updateListResults;
 
     RegistrationViewFragment.CustomSpinnerAdapter customSpinnerAdapter;
     private Subscription mRegisterSubscription;
@@ -433,46 +434,46 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                     public void onNext(GetPersonalInfoModel getPersonalInfoModel) {
                         hideDialog();
                         Log.d("response", getPersonalInfoModel.getIsSuccess().toString());
-                        updateListResults = (ArrayList<GetPersonalInfoModel.ListResult>) getPersonalInfoModel.getListResult();
-                        if(!updateListResults.isEmpty()){
+                        updateListResults = getPersonalInfoModel.getResult();
+                        if(updateListResults!=null){
                             is_exisisting_user = true;
-                            spinnerTitleType.setSelection(titleArrayList.indexOf(getPersonalInfoModel.getListResult().get(0).getTitleTypeName()));
-                            edtFirstName.setText(getPersonalInfoModel.getListResult().get(0).getFirstName());
-                            if(getPersonalInfoModel.getListResult().get(0).getMiddleName() == null){
+                            spinnerTitleType.setSelection(titleArrayList.indexOf(getPersonalInfoModel.getResult().getTitleTypeName()));
+                            edtFirstName.setText(getPersonalInfoModel.getResult().getFirstName());
+                            if(getPersonalInfoModel.getResult().getMiddleName() == null){
                                 edtMiddleName.setText(" ");
                             }else {
-                                edtMiddleName.setText(getPersonalInfoModel.getListResult().get(0).getMiddleName());
+                                edtMiddleName.setText(getPersonalInfoModel.getResult().getMiddleName());
                             }
-                            edtLastName.setText(getPersonalInfoModel.getListResult().get(0).getLastName());
-                            spinnerBusinessCat.setSelection(businessArrayList.indexOf(getPersonalInfoModel.getListResult().get(0).getBusinessCategoryName()));
-                            edtMobile.setText(getPersonalInfoModel.getListResult().get(0).getPhone());
+                            edtLastName.setText(getPersonalInfoModel.getResult().getLastName());
+                            spinnerBusinessCat.setSelection(businessArrayList.indexOf(getPersonalInfoModel.getResult().getBusinessCategoryName()));
+                            edtMobile.setText(getPersonalInfoModel.getResult().getPhone());
                           //  edtPassWord.setVisibility(View.GONE);
                             il_passqword.setVisibility(View.GONE);
-                           // edtPassWord.setText(getPersonalInfoModel.getListResult().get(0).getPhone());
-                            spinnerGender.setSelection(genderArrayList.indexOf(getPersonalInfoModel.getListResult().get(0).getGenderType()));
-                            edtEmail.setText(getPersonalInfoModel.getListResult().get(0).getEmail());
+                           // edtPassWord.setText(getPersonalInfoModel.getResult().getPhone());
+                            spinnerGender.setSelection(genderArrayList.indexOf(getPersonalInfoModel.getResult().getGenderType()));
+                            edtEmail.setText(getPersonalInfoModel.getResult().getEmail());
 
-                            dateOfBirth = getPersonalInfoModel.getListResult().get(0).getDOB();
+                            dateOfBirth = getPersonalInfoModel.getResult().getDOB();
                             edtDOB.setText(formatDateTimeUi());
-                            edtAddress1.setText(getPersonalInfoModel.getListResult().get(0).getAddress1());
-                            edtAddress2.setText(getPersonalInfoModel.getListResult().get(0).getAddress2());
-                            edtLandMark.setText(getPersonalInfoModel.getListResult().get(0).getLandmark());
-                            spinnerProivne.setSelection(provinceArrayList.indexOf(getPersonalInfoModel.getListResult().get(0).getProvinceName()));
-                            spinnerDistrict.setSelection(districtArrayList.indexOf(getPersonalInfoModel.getListResult().get(0).getDistrictName()));
-                            spinnerMandal.setSelection(mandalArrayList.indexOf(getPersonalInfoModel.getListResult().get(0).getMandalName()));
-                            spinnerVillage.setSelection(villageArrayList.indexOf(getPersonalInfoModel.getListResult().get(0).getVillageName()));
-                            edtPincode.setText(""+getPersonalInfoModel.getListResult().get(0).getPostCode());
-                            strCreatedBy = getPersonalInfoModel.getListResult().get(0).getCreatedBy();
-                            agentRequestId = getPersonalInfoModel.getListResult().get(0).getAgentRequestId();
-                            if(getPersonalInfoModel.getListResult().get(0).getAspNetUserId()!=null){
-                                aspNetId = getPersonalInfoModel.getListResult().get(0).getAspNetUserId();
+                            edtAddress1.setText(getPersonalInfoModel.getResult().getAddress1());
+                            edtAddress2.setText(getPersonalInfoModel.getResult().getAddress2());
+                            edtLandMark.setText(getPersonalInfoModel.getResult().getLandmark());
+                            spinnerProivne.setSelection(provinceArrayList.indexOf(getPersonalInfoModel.getResult().getProvinceName()));
+                            spinnerDistrict.setSelection(districtArrayList.indexOf(getPersonalInfoModel.getResult().getDistrictName()));
+                            spinnerMandal.setSelection(mandalArrayList.indexOf(getPersonalInfoModel.getResult().getMandalName()));
+                            spinnerVillage.setSelection(villageArrayList.indexOf(getPersonalInfoModel.getResult().getVillageName()));
+                            edtPincode.setText(""+getPersonalInfoModel.getResult().getPostCode());
+                            strCreatedBy = getPersonalInfoModel.getResult().getCreatedBy();
+                            agentRequestId = getPersonalInfoModel.getResult().getAgentRequestId();
+                            if(getPersonalInfoModel.getResult().getAspNetUserId()!=null){
+                                aspNetId = getPersonalInfoModel.getResult().getAspNetUserId();
                             }
-//                            if(getPersonalInfoModel.getListResult().get(0).getParentAspNetUserId()!=null){
-//                                parentAspNetId = getPersonalInfoModel.getListResult().get(0).getParentAspNetUserId();
+//                            if(getPersonalInfoModel.getResult().getParentAspNetUserId()!=null){
+//                                parentAspNetId = getPersonalInfoModel.getResult().getParentAspNetUserId();
 //                            }
-                            createdBy = getPersonalInfoModel.getListResult().get(0).getCreated().toString();
-                            CommonConstants.AGENT_ID = getPersonalInfoModel.getListResult().get(0).getAspNetUserId();
-                            id = getPersonalInfoModel.getListResult().get(0).getId();
+                            createdBy = getPersonalInfoModel.getResult().getCreated().toString();
+                            CommonConstants.AGENT_ID = getPersonalInfoModel.getResult().getAspNetUserId();
+                            id = getPersonalInfoModel.getResult().getId();
                             btnContinue.setText("Update");
                         }
                         else {

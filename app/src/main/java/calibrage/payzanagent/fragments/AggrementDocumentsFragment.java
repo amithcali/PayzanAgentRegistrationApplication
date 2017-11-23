@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -46,8 +47,14 @@ import com.google.gson.JsonObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +70,7 @@ import calibrage.payzanagent.adapter.DocsAdapter;
 import calibrage.payzanagent.adapter.ImageAdapter;
 import calibrage.payzanagent.interfaces.DeleteIdproofListiner;
 import calibrage.payzanagent.interfaces.DeleteImageListiner;
+import calibrage.payzanagent.interfaces.DocListiner;
 import calibrage.payzanagent.model.AddAgent;
 import calibrage.payzanagent.model.AddAgentResponseModel;
 import calibrage.payzanagent.model.AgentDoc;
@@ -80,6 +88,7 @@ import calibrage.payzanagent.networkservice.ServiceFactory;
 import calibrage.payzanagent.utils.CommonConstants;
 import calibrage.payzanagent.utils.CommonUtil;
 import calibrage.payzanagent.utils.Event;
+import calibrage.payzanagent.utils.FileDownloader;
 import calibrage.payzanagent.utils.SharedPrefsData;
 import calibrage.payzanagent.utils.VolleyErrorListener;
 import retrofit2.adapter.rxjava.HttpException;
@@ -92,10 +101,10 @@ import static android.app.Activity.RESULT_OK;
 import static calibrage.payzanagent.utils.CommonConstants.AGENT_REQUEST_ID;
 
 
-public class AggrementDocumentsFragment extends BaseFragment implements DeleteImageListiner, View.OnClickListener,DeleteIdproofListiner {
+public class AggrementDocumentsFragment extends BaseFragment implements DeleteImageListiner, View.OnClickListener, DocListiner {
 
     public static final String TAG = AggrementDocumentsFragment.class.getSimpleName();
-
+    private static final int MEGABYTE = 1024 * 1024;
     View view;
     private int PICK_IMAGE = 100;
     protected static final int CAMERA_REQUEST = 1;
@@ -115,7 +124,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
     private AlertDialog alertDialog;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     ImageView imageView;
-    private RecyclerView imagesRecylerView,docsRecyclerview;
+    private RecyclerView imagesRecylerView, docsRecyclerview;
     private ArrayList<Bitmap> imagesArrayList = new ArrayList<>();
     public static final String IMAGE_UNSPECIFIED = "image/*";
     public ContentValues values;
@@ -126,11 +135,11 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
     private AgentDoc agentDoc;
     ImageAdapter imageAdapter;
     ProgressBar progressBar;
-    private Button personalButton, bankButton, idButton, documentButton, uploadDoc,btnCancel;
+    private Button personalButton, bankButton, idButton, documentButton, uploadDoc, btnCancel;
     private ArrayList<Pair<String, String>> filePathArray;
     private ArrayList<GetDocumentsResponseModel.ListResult> docIdproofList = new ArrayList<>();
     private int count = 0;
-    private boolean isUpdate =false;
+    private boolean isUpdate = false;
     private Subscription operatorSubscription;
 
     public AggrementDocumentsFragment() {
@@ -156,11 +165,11 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         uploadDoc = (Button) view.findViewById(R.id.uploadDoc);
         imageView = (ImageView) view.findViewById(R.id.view_image);
         lnrImages = (LinearLayout) view.findViewById(R.id.lnrImages);
-        docsRecyclerview = (RecyclerView)view.findViewById(R.id.recylerview_documnets);
+        docsRecyclerview = (RecyclerView) view.findViewById(R.id.recylerview_documnets);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         personalButton = (Button) view.findViewById(R.id.btn_personal);
         bankButton = (Button) view.findViewById(R.id.btn_bank);
-        btnCancel = (Button)view.findViewById(R.id.btn_cancel);
+        btnCancel = (Button) view.findViewById(R.id.btn_cancel);
         btnCancel.setOnClickListener(this);
         idButton = (Button) view.findViewById(R.id.btn_id);
         documentButton = (Button) view.findViewById(R.id.btn_doc);
@@ -250,18 +259,19 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
 
                     @Override
                     public void onNext(GetDocumentsResponseModel getDocumentsResponseModel) {
+                        hideDialog();
                         if (!getDocumentsResponseModel.getListResult().isEmpty()) {
                             isUpdate = true;
                             docIdproofList = (ArrayList<GetDocumentsResponseModel.ListResult>) getDocumentsResponseModel.getListResult();
-                            DocsAdapter docsAdapter = new DocsAdapter(context,getDocumentsResponseModel.getListResult()) ;
+                            DocsAdapter docsAdapter = new DocsAdapter(context, getDocumentsResponseModel.getListResult());
                             docsAdapter.setOnAdapterListener(AggrementDocumentsFragment.this);
                             docsRecyclerview.setLayoutManager(new LinearLayoutManager(context));
                             docsRecyclerview.setAdapter(docsAdapter);
 
-                            showToast(getActivity(),getDocumentsResponseModel.getListResult().get(0).getFileLocation());
+                            showToast(getActivity(), getDocumentsResponseModel.getListResult().get(0).getFileLocation());
                         } else {
                             isUpdate = false;
-                           // btnContinue.setText("Continue");
+                            // btnContinue.setText("Continue");
                         }
 
                     }
@@ -284,6 +294,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -352,7 +363,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
 
     }
 
-    private void showConformationDialog(final int pos){
+    private void showConformationDialog(final int pos) {
         android.app.AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder = new android.app.AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
@@ -369,7 +380,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                             filePathArray.remove(pos);
                             imageAdapter.notifyDataSetChanged();
                         }
-                       ;
+                        ;
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -417,13 +428,13 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                         if (updateAgentRequestResponceModel.getIsSuccess()) {
                             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-                            CommonUtil.displayDialogWindow(updateAgentRequestResponceModel.getEndUserMessage(),alertDialog,context);
+                            CommonUtil.displayDialogWindow(updateAgentRequestResponceModel.getEndUserMessage(), alertDialog, context);
                             replaceFinal(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);
 
 
                         } else {
                             Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
-                            CommonUtil.displayDialogWindow(updateAgentRequestResponceModel.getEndUserMessage(),alertDialog,context);
+                            CommonUtil.displayDialogWindow(updateAgentRequestResponceModel.getEndUserMessage(), alertDialog, context);
                         }
 
                     }
@@ -778,7 +789,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                 break;*/
             case R.id.btn_cancel:
                 //  showToast(getActivity(),"Please Fill The Personal Details");
-                replaceFinal(getActivity(),MAIN_CONTAINER,new MainFragment(),TAG,MainFragment.TAG);
+                replaceFinal(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);
                 break;
             case R.id.btn_doc:
                 showToast(getActivity(), "Please Add Documents");
@@ -921,11 +932,6 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
-    @Override
-    public void onAdapterClickListiner(int pos) {
-       // showToast(getActivity(),"delete image");
-       showConformationDialogDelete( pos);
-    }
 
     private void showConformationDialogDelete(final int pos) {
         android.app.AlertDialog.Builder builder;
@@ -951,10 +957,11 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
+
     private void deleteId(int pos) {
         showDialog(getActivity(), "Authenticating...");
         MyServices service = ServiceFactory.createRetrofitService(getActivity(), MyServices.class);
-        operatorSubscription = service.deletedoc(BuildConfig.LOCAL_URL+ApiConstants.DELETE_ID_DOC + docIdproofList.get(pos).getId())
+        operatorSubscription = service.deletedoc(BuildConfig.LOCAL_URL + ApiConstants.DELETE_ID_DOC + docIdproofList.get(pos).getId())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<DocDeleteModel>() {
@@ -995,6 +1002,156 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                 });
 
     }
+
+    @Override
+    public void onDocAdapterClickListiner(int pos, boolean isDelete, boolean isPdf) {
+        if (isDelete)
+            showConformationDialogDelete(pos);
+        else if (isPdf)
+            new DownloadPdfFile(context, docIdproofList.get(pos).getFileUrl(), docIdproofList.get(pos).getFileName(),docIdproofList.get(pos).getFileExtension()).execute();
+          else if(!isPdf)
+              new DownloadImageFile(context, docIdproofList.get(pos).getFileUrl(), docIdproofList.get(pos).getFileName(),docIdproofList.get(pos).getFileExtension()).execute();
+    }
+
+
+    private class DownloadPdfFile extends AsyncTask<String, Void, Void> {
+
+        private Context context;
+        private String path;
+        private String fileName;
+        private String extension;
+
+        private DownloadPdfFile(Context context, String path, String fileName,String extension) {
+            this.context = context;
+            this.path = path;
+            this.fileName = fileName;
+            this.extension = extension;
+
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            showDialogAsk(getActivity(), "downloading file");
+            String fileUrl = path.replace("\\","/");
+            String fileName = this.fileName;  // -> maven.pdf
+            String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
+            File folder = new File(extStorageDirectory, "payZanSalesExecutive");
+            if(!folder.exists()){
+                folder.mkdir();
+            }
+
+            File pdfFile = new File(folder, fileName+extension);
+
+            try {
+                pdfFile.createNewFile();
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            downloadFile(fileUrl, pdfFile);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            hideDialogAsk();
+        }
+
+        public void downloadFile(String fileUrl, File directory) {
+            try {
+
+                URL url = new URL(fileUrl);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                //urlConnection.setRequestMethod("GET");
+                //urlConnection.setDoOutput(true);
+                urlConnection.connect();
+
+                InputStream inputStream = urlConnection.getInputStream();
+                FileOutputStream fileOutputStream = new FileOutputStream(directory);
+                int totalSize = urlConnection.getContentLength();
+
+                byte[] buffer = new byte[MEGABYTE];
+                int bufferLength = 0;
+                while ((bufferLength = inputStream.read(buffer)) > 0) {
+                    fileOutputStream.write(buffer, 0, bufferLength);
+                }
+                fileOutputStream.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }    private class DownloadImageFile extends AsyncTask<String, Void, Void> {
+
+        private Context context;
+        private String path;
+        private String fileName;
+        private String extension;
+
+        private DownloadImageFile(Context context, String path, String fileName,String extension) {
+            this.context = context;
+            this.path = path;
+            this.fileName = fileName;
+            this.extension = extension;
+
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            showDialogAsk(getActivity(), "downloading file");
+            String fileUrl = path;   // -> http://maven.apache.org/maven-1.x/maven.pdf
+            String fileName = this.fileName;  // -> maven.pdf
+            String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
+            File folder = new File(extStorageDirectory, "payZanSalesExecutive");
+            if(!folder.exists()){
+                folder.mkdir();
+            }
+
+            File pdfFile = new File(folder, fileName+extension);
+
+            try {
+                pdfFile.createNewFile();
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            downloadFile(fileUrl, pdfFile);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            hideDialogAsk();
+        }
+
+        public void downloadFile(String fileUrl, File directory) {
+            try {
+                URL url = new URL(fileUrl);
+                URLConnection connection = url.openConnection();
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                try {
+                    FileOutputStream out = new FileOutputStream( directory);
+                    myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.flush();
+                    out.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                Log.e("Error: ", e.getMessage());
+            }
+        }
+    }
+
 }
 
 

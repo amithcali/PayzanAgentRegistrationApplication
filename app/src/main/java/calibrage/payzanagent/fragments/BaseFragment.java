@@ -121,6 +121,32 @@ public class BaseFragment extends Fragment {
 //        });
 
 
+    } public void showDialogAsk(final FragmentActivity activity, final String message) {
+
+
+
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (mProgressDialog == null) {
+                        mProgressDialog = new ProgressDialog(activity);
+                        mProgressDialog.setIndeterminate(true);
+                        mProgressDialog.setMessage(message);
+                        mProgressDialog.setCancelable(false);
+                        mProgressDialog.setCanceledOnTouchOutside(false);
+                    }
+                    if (mProgressDialog != null && !mProgressDialog.isShowing())
+                        mProgressDialog.show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
     }
 
 
@@ -139,6 +165,23 @@ public class BaseFragment extends Fragment {
 //                }
 //            }
 //        });
+
+    }  public void hideDialogAsk() {
+
+
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (mProgressDialog != null && mProgressDialog.isShowing())
+                        mProgressDialog.dismiss();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
     public boolean isOnline(Context context) {

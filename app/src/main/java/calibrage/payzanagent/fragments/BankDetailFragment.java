@@ -62,7 +62,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
     Spinner spinnerCustom_bank;
     Spinner spinnerCustom_brach;
     int bankId;
-    private Button personalButton, bankButton, idButton, documentButton;
+    private Button personalButton, bankButton, idButton, documentButton,btnCancel;
     EditText accountName, accountNo, shiftCode;
     ArrayList<String> bankArrayList = new ArrayList<String>();
     ArrayList<String> branchArrayList = new ArrayList<String>();
@@ -70,7 +70,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
     private ArrayList<BusinessCategoryModel.ListResult> bankListResults = new ArrayList<>();
     public static Toolbar toolbar;
     private AddAgent addAgent;
-    private String straccountname, straccountno, strshiftcode, currentDatetime;
+    private String straccountname, straccountno, strshiftcode, currentDatetime,strCreatedby;
     private AgentBankInfo agentBankInfo;
     BankDetailFragment.CustomSpinnerAdapter customSpinnerAdapter;
     private boolean isUpdate =false;
@@ -100,6 +100,8 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
         agentBankInfo = new AgentBankInfo();
         initCustomSpinner_bank();
         personalButton = (Button) view.findViewById(R.id.btn_personal);
+        btnCancel = (Button)view.findViewById(R.id.btn_cancel);
+        btnCancel.setOnClickListener(this);
         bankButton = (Button) view.findViewById(R.id.btn_bank);
         idButton = (Button) view.findViewById(R.id.btn_id);
         documentButton = (Button) view.findViewById(R.id.btn_doc);
@@ -163,7 +165,6 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
     private JsonObject agentBankDetails(boolean isUpdate) {
         agentBankInfo.setModifiedBy(CommonConstants.USERID);
         agentBankInfo.setModified(currentDatetime);
-        agentBankInfo.setCreatedBy(CommonConstants.USERID);
         agentBankInfo.setCreated(currentDatetime);
         agentBankInfo.setIsActive(true);
         agentBankInfo.setAccountHolderName(straccountname);
@@ -172,8 +173,10 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
         agentBankInfo.setAgentId("" + CommonConstants.AGENT_ID);
         if(isUpdate){
             agentBankInfo.setId(id);
+            agentBankInfo.setCreatedBy(strCreatedby);
         }else {
             agentBankInfo.setId(0);
+            agentBankInfo.setCreatedBy(CommonConstants.USERID);
         }
 
         return new Gson().toJsonTree(agentBankInfo)
@@ -463,6 +466,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                             id = getBankInfoModel.getListResult().get(0).getId();
                             spinnerCustom_bank.setSelection(bankArrayList.indexOf(getBankInfoModel.getListResult().get(0).getBankName()));
                             spinnerCustom_brach.setSelection(branchArrayList.indexOf(getBankInfoModel.getListResult().get(0).getBranchName()));
+                            strCreatedby = getBankInfoModel.getListResult().get(0).getCreatedBy();
                             btnContinue.setText("Update");
                         } else {
                             isUpdate = false;
@@ -554,6 +558,10 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
 
                 // replaceFragment(getActivity(),MAIN_CONTAINER,new InProgressFragment(),TAG,InProgressFragment.TAG);
+                break;
+            case R.id.btn_cancel:
+                //  showToast(getActivity(),"Please Fill The Personal Details");
+                replaceFinal(getActivity(),MAIN_CONTAINER,new MainFragment(),TAG,MainFragment.TAG);
                 break;
           /*  case R.id.btn_doc:
                 showToast(getActivity(),"Please Fill The Personal Details");

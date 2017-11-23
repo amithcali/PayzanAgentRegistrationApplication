@@ -179,16 +179,39 @@
             android:paddingTop="@dimen/btn_margin_top"
             android:textColor="@color/Black"
             />
-        <calibrage.payzanagent.controls.CommonButton
-            android:id="@+id/btn_finish"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/btn_height"
-            android:layout_marginBottom="@dimen/btn_margin_bottom"
-            android:layout_marginTop="@dimen/btn_margin_top"
-            android:background="@drawable/roundbutton"
-            android:text="Finish"
-            android:textAllCaps="false"
-            android:textColor="@color/White" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <calibrage.payzanagent.controls.CommonButton
+                android:id="@+id/btn_cancel"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/btn_height"
+                android:layout_marginRight="@dimen/fiveDp"
+                android:layout_weight="0.75"
+                android:layout_marginBottom="@dimen/btn_margin_bottom"
+                android:layout_marginTop="@dimen/btn_margin_top"
+                android:background="@drawable/roundbutton"
+                android:text="@string/cancel_btn"
+                android:textAllCaps="false"
+                android:textColor="@color/White" />
+
+            <calibrage.payzanagent.controls.CommonButton
+                android:id="@+id/btn_finish"
+                android:layout_width="fill_parent"
+                android:layout_weight="0.5"
+                android:layout_height="@dimen/btn_height"
+                android:layout_marginBottom="@dimen/btn_margin_bottom"
+                android:layout_marginTop="@dimen/btn_margin_top"
+                android:background="@drawable/roundbutton"
+                android:text="Finish"
+                android:textAllCaps="false"
+                android:textColor="@color/White" />
+
+        </LinearLayout>
+
         </LinearLayout>
 
 

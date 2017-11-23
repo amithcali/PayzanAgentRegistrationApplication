@@ -68,10 +68,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
+                    android:paddingLeft="@dimen/fourDp"
+                    android:paddingRight="@dimen/fourDp"
                     android:text="@string/convert_btn"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:background="@color/Maroon"
+                    android:background="@drawable/border_maroon_button"
                     />
                 <TextView
                     android:visibility="visible"

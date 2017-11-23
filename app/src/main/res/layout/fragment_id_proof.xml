@@ -88,146 +88,168 @@
         </android.support.v7.widget.RecyclerView>
 
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
 
-        <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Bank">
+            <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Bank">
 
-            <calibrage.payzanagent.controls.CommonTextView
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/spinnertext_height"
-                android:text="@string/personal_identity_proof"
-                android:textColor="@color/DarkRed"
-                android:textSize="@dimen/edt_FontSize" />
+                <calibrage.payzanagent.controls.CommonTextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/spinnertext_height"
+                    android:text="@string/personal_identity_proof"
+                    android:textColor="@color/DarkRed"
+                    android:textSize="@dimen/edt_FontSize" />
 
-            <Spinner
+                <Spinner
 
-                android:id="@+id/spinner_personalId"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/edt_height"
-                android:layout_marginBottom="@dimen/edt_bottom_margin"
-                android:background="@drawable/roundededittext"
-                android:prompt="@string/spinner_title"
-                android:textAlignment="textStart" />
-            <!--<Spinner
+                    android:id="@+id/spinner_personalId"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/edt_height"
+                    android:layout_marginBottom="@dimen/edt_bottom_margin"
+                    android:background="@drawable/roundededittext"
+                    android:prompt="@string/spinner_title"
+                    android:textAlignment="textStart" />
+                <!--<Spinner
                 android:id="@+id/spinner_bank"
                 style="@style/Spinner"
                 android:padding="5dp"
                 android:layout_width="394dp" />-->
-        </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
+            </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
 
 
-        <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
-            android:id="@+id/Number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <calibrage.payzanagent.controls.CommonEditText
-                android:id="@+id/txt_number"
+            <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
+                android:id="@+id/Number"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/edt_height"
-                android:layout_marginBottom="@dimen/edt_bottom_margin"
-                android:background="@drawable/roundededittext"
-                android:gravity="center_vertical"
-                android:hint="Number"
-                android:maxLength="40"
-                android:imeOptions="actionNext"
-                android:paddingLeft="@dimen/edt_text_pading_left"
-                android:textSize="@dimen/edt_FontSize"
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "/>
-        </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
+                android:layout_height="wrap_content">
+
+                <calibrage.payzanagent.controls.CommonEditText
+                    android:id="@+id/txt_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edt_height"
+                    android:layout_marginBottom="@dimen/edt_bottom_margin"
+                    android:background="@drawable/roundededittext"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "
+                    android:gravity="center_vertical"
+                    android:hint="Number"
+                    android:imeOptions="actionNext"
+                    android:maxLength="40"
+                    android:paddingLeft="@dimen/edt_text_pading_left"
+                    android:textSize="@dimen/edt_FontSize" />
+            </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
 
             <calibrage.payzanagent.controls.CommonButton
+                android:id="@+id/addPersonalInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/addPersonalInfo"
-                android:layout_gravity="center"
-                android:text="Add"/>
+                android:layout_gravity="end"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:background="@drawable/border_maroon_button"
+                android:text="Add" />
 
-        <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Branch">
+            <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Branch">
 
-            <calibrage.payzanagent.controls.CommonTextView
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/spinnertext_height"
-                android:text="@string/financial_identity_proof"
-                android:textColor="@color/DarkRed"
-                android:textSize="@dimen/edt_FontSize" />
+                <calibrage.payzanagent.controls.CommonTextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/spinnertext_height"
+                    android:text="@string/financial_identity_proof"
+                    android:textColor="@color/DarkRed"
+                    android:textSize="@dimen/edt_FontSize" />
 
-            <Spinner
+                <Spinner
 
-                android:id="@+id/spinner_financialId"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/edt_height"
-                android:layout_marginBottom="@dimen/edt_bottom_margin"
-                android:background="@drawable/roundededittext"
-                android:prompt="@string/spinner_title"
-                android:textAlignment="textStart" />
-            <!-- <Spinner
+                    android:id="@+id/spinner_financialId"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/edt_height"
+                    android:layout_marginBottom="@dimen/edt_bottom_margin"
+                    android:background="@drawable/roundededittext"
+                    android:prompt="@string/spinner_title"
+                    android:textAlignment="textStart" />
+                <!-- <Spinner
                  android:id="@+id/spinner_branch"
                  style="@style/Spinner"
                  android:padding="5dp" />-->
-        </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
+            </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
 
 
-        <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
-            android:id="@+id/Number_financial"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <calibrage.payzanagent.controls.CommonEditText
-                android:id="@+id/txt_number_financial"
+            <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
+                android:id="@+id/Number_financial"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/edt_height"
-                android:layout_marginBottom="@dimen/edt_bottom_margin"
-                android:background="@drawable/roundededittext"
-                android:gravity="center_vertical"
-                android:hint="Number"
-                android:maxLength="40"
-                android:imeOptions="actionDone"
-                android:paddingLeft="@dimen/edt_text_pading_left"
-                android:textSize="@dimen/edt_FontSize"
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "/>
-        </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
+                android:layout_height="wrap_content">
+
+                <calibrage.payzanagent.controls.CommonEditText
+                    android:id="@+id/txt_number_financial"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edt_height"
+                    android:layout_marginBottom="@dimen/edt_bottom_margin"
+                    android:background="@drawable/roundededittext"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "
+                    android:gravity="center_vertical"
+                    android:hint="Number"
+                    android:imeOptions="actionDone"
+                    android:maxLength="40"
+                    android:paddingLeft="@dimen/edt_text_pading_left"
+                    android:textSize="@dimen/edt_FontSize" />
+            </calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout>
 
 
             <calibrage.payzanagent.controls.CommonButton
+                android:id="@+id/addFinancialInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/addFinancialInfo"
-                android:layout_gravity="center"
-                android:text="Add"/>
+                android:layout_gravity="end"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:background="@drawable/border_maroon_button"
+                android:text="Add" />
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/financialRecylerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/financialRecylerview"
-                android:nestedScrollingEnabled="false">
-            </android.support.v7.widget.RecyclerView>
+                android:nestedScrollingEnabled="false" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <calibrage.payzanagent.controls.CommonButton
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_marginRight="@dimen/fiveDp"
+                    android:layout_weight="0.75"
+                    android:layout_marginBottom="@dimen/btn_margin_bottom"
+                    android:layout_marginTop="@dimen/btn_margin_top"
+                    android:background="@drawable/roundbutton"
+                    android:text="@string/cancel_btn"
+                    android:textAllCaps="false"
+                    android:textColor="@color/White" />
 
-        <calibrage.payzanagent.controls.CommonButton
-            android:id="@+id/btn_continue"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/btn_height"
-            android:layout_marginBottom="@dimen/btn_margin_bottom"
-            android:layout_marginTop="@dimen/btn_margin_top"
-            android:background="@drawable/roundbutton"
-            android:text="Continue"
-            android:textAllCaps="false"
-            android:textColor="@color/White" />
+            <calibrage.payzanagent.controls.CommonButton
+                android:id="@+id/btn_continue"
+                android:layout_width="fill_parent"
+                android:layout_weight="0.5"
+                android:layout_height="@dimen/btn_height"
+                android:layout_marginBottom="@dimen/btn_margin_bottom"
+                android:layout_marginTop="@dimen/btn_margin_top"
+                android:background="@drawable/roundbutton"
+                android:text="Continue"
+                android:textAllCaps="false"
+                android:textColor="@color/White" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
     </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

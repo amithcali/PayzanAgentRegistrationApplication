@@ -105,7 +105,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     private GoogleMap googleMap;
     private CommonTextView latlog;
     private GPSTracker gpsTracker;
-    private Button personalButton, bankButton, idButton, documentButton;
+    private Button personalButton, bankButton, idButton, documentButton,btnCancel;
     private boolean isNewAgent;
     private Double lat = 0.0, log = 0.0;
     LocationManager locationManager;
@@ -230,6 +230,8 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         edtLandMark = (EditText) view.findViewById(R.id.edt_land_mark);
         edtPincode = (EditText) view.findViewById(R.id.edt_pincode);
         edtDOB = (EditText) view.findViewById(R.id.edt_DOB);
+        btnCancel = (Button)view.findViewById(R.id.btn_cancel);
+        btnCancel.setOnClickListener(this);
         personalButton = (Button) view.findViewById(R.id.btn_personal);
         bankButton = (Button) view.findViewById(R.id.btn_bank);
         idButton = (Button) view.findViewById(R.id.btn_id);
@@ -449,6 +451,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                            // edtPassWord.setText(getPersonalInfoModel.getListResult().get(0).getPhone());
                             spinnerGender.setSelection(genderArrayList.indexOf(getPersonalInfoModel.getListResult().get(0).getGenderType()));
                             edtEmail.setText(getPersonalInfoModel.getListResult().get(0).getEmail());
+
                             dateOfBirth = getPersonalInfoModel.getListResult().get(0).getDOB();
                             edtDOB.setText(formatDateTimeUi());
                             edtAddress1.setText(getPersonalInfoModel.getListResult().get(0).getAddress1());
@@ -1517,11 +1520,11 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
                 //replaceFragment(getActivity(),MAIN_CONTAINER,new AgentRequestsFragment(),TAG,AgentRequestsFragment.TAG);
                 break;
-           /* case R.id.btn_id:
-                showToast(getActivity(),"Please Fill The Personal Details");
-                // replaceFragment(getActivity(),MAIN_CONTAINER,new InProgressFragment(),TAG,InProgressFragment.TAG);
+            case R.id.btn_cancel:
+              //  showToast(getActivity(),"Please Fill The Personal Details");
+                 replaceFinal(getActivity(),MAIN_CONTAINER,new MainFragment(),TAG,MainFragment.TAG);
                 break;
-            case R.id.btn_doc:
+          /*  case R.id.btn_doc:
                 showToast(getActivity(),"Please Fill The Personal Details");
                 //replaceFragment(getActivity(),MAIN_CONTAINER,new ApprovedAgentsFragment(),TAG,ApprovedAgentsFragment.TAG);
                 break;*/
@@ -1599,7 +1602,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     public String formatDateTimeUi() {
         String date = null;
        /* String strCurrentDate = edtDOB.getText().toString();*/
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         try {
             Date newDate = format.parse(dateOfBirth);
             format = new SimpleDateFormat("dd/MM/yyyy");

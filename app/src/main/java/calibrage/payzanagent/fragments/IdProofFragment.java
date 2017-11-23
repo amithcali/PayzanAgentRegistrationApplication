@@ -65,7 +65,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
     public static final String TAG = IdProofFragment.class.getSimpleName();
 
     View view;
-    private Button btnContinue;
+    private Button btnContinue,btnCancel;
     FragmentManager fragmentManager;
     public  static Toolbar toolbar;
     private Context context;
@@ -137,6 +137,8 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
         idButton = (Button)view.findViewById(R.id.btn_id);
         documentButton = (Button)view.findViewById(R.id.btn_doc);
         addPersonalInfo = (Button)view.findViewById(R.id.addPersonalInfo);
+        btnCancel = (Button)view.findViewById(R.id.btn_cancel);
+        btnCancel.setOnClickListener(this);
         addFinancialInfo = (Button)view.findViewById(R.id.addFinancialInfo);
 
        /* personalButton.setOnClickListener(this);
@@ -152,62 +154,68 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
         addFinancialInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!addIdproofs.isEmpty())
-                {
-                   if(addIdproofs.contains(spinnerCustom_finacialId.getSelectedItem().toString())){
-                       Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
-                   }else{
-                       if(!addIdproof.isEmpty()){
-                           for (int i = 0; i <addIdproof.size() ; i++) {
-                               if(!addIdproof.get(i).first.equalsIgnoreCase(spinnerCustom_finacialId.getSelectedItem().toString())){
-                                   addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()),numberpersonal.getText().toString()));
-                                   break;
-                               }
-                           }
-                       }
-                       else{
-                           addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
-                       }
-                   }
-                }else{
-                    addIdproof.add(Pair.create(financiaStringArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()),numberfinancial.getText().toString()));
+                if (isValidateUiFinancial()){
+                    if(!addIdproofs.isEmpty())
+                    {
+                        if(addIdproofs.contains(spinnerCustom_finacialId.getSelectedItem().toString())){
+                            Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
+                        }else{
+                            if(!addIdproof.isEmpty()){
+                                for (int i = 0; i <addIdproof.size() ; i++) {
+                                    if(!addIdproof.get(i).first.equalsIgnoreCase(spinnerCustom_finacialId.getSelectedItem().toString())){
+                                        addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()),numberpersonal.getText().toString()));
+                                        break;
+                                    }
+                                }
+                            }
+                            else{
+                                addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
+                            }
+                        }
+                    }else{
+                        addIdproof.add(Pair.create(financiaStringArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()),numberfinancial.getText().toString()));
+                    }
+
+                    idproofLocalAdapter = new IdproofLocalAdapter(context,addIdproof);
+                    idproofLocalAdapter.setOnAdapterListener(IdProofFragment.this);
+                    financialRecylerview.setAdapter(idproofLocalAdapter);
+                    financialRecylerview.setLayoutManager(new LinearLayoutManager(context));
                 }
 
-                  idproofLocalAdapter = new IdproofLocalAdapter(context,addIdproof);
-                idproofLocalAdapter.setOnAdapterListener(IdProofFragment.this);
-                financialRecylerview.setAdapter(idproofLocalAdapter);
-                financialRecylerview.setLayoutManager(new LinearLayoutManager(context));
 
             }
         });
         addPersonalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!addIdproofs.isEmpty())
-                {
-                    if(addIdproofs.contains(spinnerCustom_personalId.getSelectedItem().toString())){
-                        Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
-                    }else{
-                        if(!addIdproof.isEmpty()){
-                            for (int i = 0; i <addIdproof.size() ; i++) {
-                                if(!addIdproof.get(i).first.equalsIgnoreCase(spinnerCustom_personalId.getSelectedItem().toString())){
-                                    addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
-                                    break;
+                if(isValidateUiPersonal()){
+                    if(!addIdproofs.isEmpty())
+                    {
+                        if(addIdproofs.contains(spinnerCustom_personalId.getSelectedItem().toString())){
+                            Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
+                        }else{
+                            if(!addIdproof.isEmpty()){
+                                for (int i = 0; i <addIdproof.size() ; i++) {
+                                    if(!addIdproof.get(i).first.equalsIgnoreCase(spinnerCustom_personalId.getSelectedItem().toString())){
+                                        addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
+                                        break;
+                                    }
                                 }
                             }
+                            else{
+                                addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
+                            }
                         }
-                        else{
-                            addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
-                        }
+                    }else{
+                        addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
                     }
-                }else{
-                    addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
+
+                    idproofLocalAdapter = new IdproofLocalAdapter(context,addIdproof);
+                    idproofLocalAdapter.setOnAdapterListener(IdProofFragment.this);
+                    financialRecylerview.setAdapter(idproofLocalAdapter);
+                    financialRecylerview.setLayoutManager(new LinearLayoutManager(context));
                 }
 
-                 idproofLocalAdapter = new IdproofLocalAdapter(context,addIdproof);
-                idproofLocalAdapter.setOnAdapterListener(IdProofFragment.this);
-                financialRecylerview.setAdapter(idproofLocalAdapter);
-                financialRecylerview.setLayoutManager(new LinearLayoutManager(context));
 
             }
         });
@@ -216,7 +224,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isValidateUi()) {
+
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                   //  addIdProofDetails();
@@ -233,7 +241,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                     fragment.setArguments(bundle);
                     replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, AggrementDocumentsFragment.TAG);*/
 
-                }
+
 
                 //startActivity(new Intent(BankDetailsActivity.this,IdProofActivity.class));
             }
@@ -461,9 +469,35 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                 }
 
 
+    private boolean isValidateUiPersonal() {
+        boolean status = true;
+        personalIdNumber = numberpersonal.getText().toString().trim();
+        if (spinnerCustom_personalId.getSelectedItemPosition() == 0) {
+            status = false;
+            Toast.makeText(context, "Select personal id type", Toast.LENGTH_SHORT).show();
+        }else if (personalIdNumber.isEmpty()) {
+            status = false;
+            numberpersonal.setError("Id number is required");
+            numberpersonal.requestFocusFromTouch();
+            // Toast.makeText(context, "Id number is required", Toast.LENGTH_SHORT).show();
+        }
+        return status;
+    }
 
-
-
+    private boolean isValidateUiFinancial() {
+        boolean status = true;
+        financialIdNumber = numberfinancial.getText().toString();
+         if (spinnerCustom_finacialId.getSelectedItemPosition() == 0) {
+            status = false;
+            Toast.makeText(context, "Select financial id type", Toast.LENGTH_SHORT).show();
+        }else if (financialIdNumber.isEmpty()) {
+            status = false;
+            numberfinancial.setError("Id number is required");
+            numberfinancial.requestFocusFromTouch();
+            //  Toast.makeText(context, "Id number is required", Toast.LENGTH_SHORT).show();
+        }
+        return status;
+    }
     private boolean isValidateUi() {
         boolean status = true;
         personalIdNumber = numberpersonal.getText().toString().trim();
@@ -630,13 +664,11 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-          /*  case R.id.btn_personal:
-                showToast(getActivity(),"Please Fill The Personal Details");
-
-                // replaceFragment(getActivity(), MAIN_CONTAINER, new RegistrationViewFragment(), TAG, RegistrationViewFragment.TAG);
-
+            case R.id.btn_cancel:
+                //  showToast(getActivity(),"Please Fill The Personal Details");
+                replaceFinal(getActivity(),MAIN_CONTAINER,new MainFragment(),TAG,MainFragment.TAG);
                 break;
-            case R.id.btn_bank:
+         /*   case R.id.btn_bank:
                 showToast(getActivity(),"Please Fill The Personal Details");
                 //replaceFragment(getActivity(),MAIN_CONTAINER,new AgentRequestsFragment(),TAG,AgentRequestsFragment.TAG);
                 break;*/
@@ -650,7 +682,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                 if (isUpdate) {
                     replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
                 }else{
-                    if (isValidateUi()) {
+
                         //  addIdProofDetails();
                         postIdInfo();
                         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -660,7 +692,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                     Fragment fragment = new AggrementDocumentsFragment();
                     fragment.setArguments(bundle);
                     replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, AggrementDocumentsFragment.TAG);*/
-                    }
+
                 }
 
 

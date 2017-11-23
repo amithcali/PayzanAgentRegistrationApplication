@@ -126,7 +126,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
     private AgentDoc agentDoc;
     ImageAdapter imageAdapter;
     ProgressBar progressBar;
-    private Button personalButton, bankButton, idButton, documentButton, uploadDoc;
+    private Button personalButton, bankButton, idButton, documentButton, uploadDoc,btnCancel;
     private ArrayList<Pair<String, String>> filePathArray;
     private ArrayList<GetDocumentsResponseModel.ListResult> docIdproofList = new ArrayList<>();
     private int count = 0;
@@ -160,6 +160,8 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         personalButton = (Button) view.findViewById(R.id.btn_personal);
         bankButton = (Button) view.findViewById(R.id.btn_bank);
+        btnCancel = (Button)view.findViewById(R.id.btn_cancel);
+        btnCancel.setOnClickListener(this);
         idButton = (Button) view.findViewById(R.id.btn_id);
         documentButton = (Button) view.findViewById(R.id.btn_doc);
         filePathArray = new ArrayList<>();
@@ -774,6 +776,10 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                 showToast(getActivity(),"Please Fill The Personal Details");
                 // replaceFragment(getActivity(),MAIN_CONTAINER,new InProgressFragment(),TAG,InProgressFragment.TAG);
                 break;*/
+            case R.id.btn_cancel:
+                //  showToast(getActivity(),"Please Fill The Personal Details");
+                replaceFinal(getActivity(),MAIN_CONTAINER,new MainFragment(),TAG,MainFragment.TAG);
+                break;
             case R.id.btn_doc:
                 showToast(getActivity(), "Please Add Documents");
                 //replaceFragment(getActivity(),MAIN_CONTAINER,new ApprovedAgentsFragment(),TAG,ApprovedAgentsFragment.TAG);

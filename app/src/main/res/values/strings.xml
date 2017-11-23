@@ -46,6 +46,7 @@
     <string name="postal_code">Postal Code</string>
     <string name="location_on_map">Location on Map</string>
     <string name="continue_btn">Continue</string>
+    <string name="cancel_btn">Cancel</string>
     <string name="business_category">Business Category</string>
     <string name="Gender_category">Gender</string>
     <string name="title_type">Title Type</string>

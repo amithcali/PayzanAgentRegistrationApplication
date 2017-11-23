@@ -1161,6 +1161,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                         hideDialog();
                         if (personalInfoResponseModel.getIsSuccess()) {
                             showToast(context, personalInfoResponseModel.getEndUserMessage());
+                            CommonConstants.AGENT_REQUEST_ID = String.valueOf(personalInfoResponseModel.getResult().getAgentRequestId());
                             CommonConstants.AGENT_ID = personalInfoResponseModel.getResult().getAgentId();
                             replaceFragment(getActivity(), MAIN_CONTAINER, new BankDetailFragment(), TAG, BankDetailFragment.TAG);
 

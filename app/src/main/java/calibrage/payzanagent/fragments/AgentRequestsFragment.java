@@ -224,6 +224,7 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -245,7 +246,8 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
                         {
                            /* Toast.makeText(getActivity(), "sucess", Toast.LENGTH_SHORT).show();
                             Log.d(TAG, "onNext: Result :"+updateAgentRequestResponceModel.toString());*/
-                            showToast(getActivity(), "Updated Successfully.....!");
+                            //showToast(getActivity(), "Updated Successfully.....!");
+                            showToast(getActivity(),updateAgentRequestResponceModel.getEndUserMessage());
                             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                             getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_NEW+","+CommonConstants.STATUSTYPE_ID_REJECTED+","+CommonConstants.STATUSTYPE_ID_HOLD);

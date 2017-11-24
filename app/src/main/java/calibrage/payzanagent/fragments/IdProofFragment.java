@@ -159,13 +159,13 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                     if(!addIdproofs.isEmpty())
                     {
                         if(addIdproofs.contains(spinnerCustom_finacialId.getSelectedItem().toString())){
-                            Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Is already added", Toast.LENGTH_SHORT).show();
                         }else{
                             if(!addIdproofTypeValidte.contains(financiaStringArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()))){
                                 addIdproofTypeValidte.add(financiaStringArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()));
                                 addIdproof.add(Pair.create(financiaStringArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()),numberfinancial.getText().toString()));
                             }else{
-                                Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Is already added", Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -174,7 +174,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                             addIdproofTypeValidte.add(financiaStringArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()));
                             addIdproof.add(Pair.create(financiaStringArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()),numberfinancial.getText().toString()));
                         }else{
-                            Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Is already added", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -182,6 +182,8 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                     idproofLocalAdapter.setOnAdapterListener(IdProofFragment.this);
                     financialRecylerview.setAdapter(idproofLocalAdapter);
                     financialRecylerview.setLayoutManager(new LinearLayoutManager(context));
+                    spinnerCustom_finacialId.setSelection(0);
+                    numberfinancial.setText(" ");
                 }
 
 
@@ -191,16 +193,17 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void onClick(View view) {
                 if(isValidateUiPersonal()){
+
                     if(!addIdproofs.isEmpty())
                     {
                         if(addIdproofs.contains(spinnerCustom_personalId.getSelectedItem().toString())){
-                            Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Is already added", Toast.LENGTH_SHORT).show();
                         }else{
                             if(!addIdproofTypeValidte.contains(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()))){
                                 addIdproofTypeValidte.add(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()));
                                 addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
                             }else{
-                                Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Is already added", Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -210,7 +213,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                             addIdproofTypeValidte.add(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()));
                             addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
                         }else{
-                            Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Is already added", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -218,6 +221,8 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                     idproofLocalAdapter.setOnAdapterListener(IdProofFragment.this);
                     financialRecylerview.setAdapter(idproofLocalAdapter);
                     financialRecylerview.setLayoutManager(new LinearLayoutManager(context));
+                    spinnerCustom_personalId.setSelection(0);
+                    numberpersonal.setText(" ");
                 }
 
 

@@ -37,7 +37,13 @@
                 android:layout_gravity="center"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/txt_FontSize"/>-->
-
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_weight="0.1"
+                android:layout_gravity="center"
+                android:src="@drawable/download_button"
+                android:id="@+id/dowmload_img"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

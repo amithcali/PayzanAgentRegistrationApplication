@@ -179,8 +179,12 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         bankButton.setOnClickListener(this);
         idButton.setOnClickListener(this);*/
         documentButton.setOnClickListener(this);
+       if(isOnline(getActivity())){
+           getDocuments(CommonConstants.AGENT_ID);
+       }else {
+           showToast(getActivity(),getString(R.string.no_internet));
+       }
 
-        getDocuments(CommonConstants.AGENT_ID);
         imagesRecylerView = (RecyclerView) view.findViewById(R.id.imagesRecylerView);
         context = this.getActivity();
         fragmentManager = getActivity().getSupportFragmentManager();
@@ -199,11 +203,16 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isUpdate){
-                    submitRequest();
-                }else{
-                    showToast(context,"Upload files is manditory");
+                if (isOnline(getActivity())){
+                    if (isUpdate){
+                        submitRequest();
+                    }else{
+                        showToast(context,"Upload files is manditory");
+                    }
+                }else {
+                    showToast(getActivity(),getString(R.string.no_internet));
                 }
+
 
             }
         });
@@ -246,6 +255,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             hideDialog();
                             ((HttpException) e).code();
@@ -412,6 +422,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();

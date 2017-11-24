@@ -110,12 +110,13 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
         idButton.setOnClickListener(this);
        /* personalButton.setOnClickListener(this);
         documentButton.setOnClickListener(this);*/
+        if (isOnline(getActivity())){
+            getRequestBank(CommonConstants.BANK_CATEGORY_ID);
+        }else {
+            showToast(getActivity(),getString(R.string.no_internet));
+        }
 
-
-        getRequestBank(CommonConstants.BANK_CATEGORY_ID);
         initCustomSpinner_branch();
-
-
         btnContinue = (Button) view.findViewById(R.id.btn_continue);
         accountName = (EditText) view.findViewById(R.id.txt_accountholdername);
         accountNo = (EditText) view.findViewById(R.id.txt_accountno);
@@ -125,17 +126,18 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isValidateUi()) {
-                    //    login();
-                    //  agentBankDetails();
-                    if (isUpdate) {
-                        updateBankInfo();
-                    } else {
-                        postBankInfo();
-                    }
+                if (isOnline(getActivity())){
+                    if (isValidateUi()) {
+                        //    login();
+                        //  agentBankDetails();
+                        if (isUpdate) {
+                            updateBankInfo();
+                        } else {
+                            postBankInfo();
+                        }
 
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                    /* Bundle bundle = new Bundle();
                     bundle.putParcelable("bankinfo", addAgent);
                     Fragment fragment = new IdProofFragment();
@@ -146,8 +148,10 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                             .commit();*//*
                     replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, IdProofFragment.TAG);*/
 
+                    }
+                }else {
+                    showToast(getActivity(),getString(R.string.no_internet));
                 }
-
                 //startActivity(new Intent(BankDetailsActivity.this,IdProofActivity.class));
             }
         });
@@ -200,6 +204,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -396,6 +401,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -412,6 +418,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
                     @Override
                     public void onNext(BusinessCategoryModel businessCategoryModel) {
+                        hideDialog();
                         Log.d("response", businessCategoryModel.getIsSuccess().toString());
                         bankListResults = (ArrayList<BusinessCategoryModel.ListResult>) businessCategoryModel.getListResult();
                         //   bankArrayList.add(0,"--Select Bank--");
@@ -442,6 +449,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             hideDialog();
                             ((HttpException) e).code();
@@ -459,6 +467,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
                     @Override
                     public void onNext(GetBankInfoModel getBankInfoModel) {
+                        hideDialog();
                         if (!getBankInfoModel.getListResult().isEmpty()) {
                             isUpdate = true;
                             accountName.setText(getBankInfoModel.getListResult().get(0).getAccountHolderName());
@@ -514,7 +523,12 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                 // int i = 12;
                 Log.d(TAG, "onItemSelected: " + bankId);
                 bankId = bankListResults.get((int) parent.getSelectedItemId()).getId();
-                getRequestBranch(String.valueOf(bankId));
+                if (isOnline(getActivity())){
+                    getRequestBranch(String.valueOf(bankId));
+                }else {
+                    showToast(getActivity(),getString(R.string.no_internet));
+                }
+
                 // getRequestBranch(String.valueOf(i));
                 //    Toast.makeText(parent.getContext(), "bankkkkkkk" +bankId, Toast.LENGTH_LONG).show();
 

@@ -182,6 +182,7 @@ public class LoginFragment extends BaseFragment {
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();

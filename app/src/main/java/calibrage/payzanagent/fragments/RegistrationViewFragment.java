@@ -300,23 +300,28 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
             @Override
             public void onClick(View v) {
                 //         replaceFragment(getActivity(), MAIN_CONTAINER, new BankDetailFragment(), TAG, BankDetailFragment.TAG);
-                if (isValidateUi()) {
-                    if(is_exisisting_user){
-                      updatePersonalInfo();
-                    }else {
-                        postPersonalInfo();
-                    }
+                if(isOnline(getActivity())){
+                    if (isValidateUi()) {
+                        if(is_exisisting_user){
+                            updatePersonalInfo();
+                        }else {
+                            postPersonalInfo();
+                        }
 
-                    // addAgentPersonalInfo();
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                        // addAgentPersonalInfo();
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
 //                    Bundle bundle = new Bundle();
 //                    bundle.putParcelable("personalinfo", addAgent);
 //                    Fragment fragment = new BankDetailFragment();
 //                    fragment.setArguments(bundle);
-                    //  replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, BankDetailFragment.TAG);
+                        //  replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, BankDetailFragment.TAG);
 
+                    }
+                }else {
+                    showToast(getActivity(), getString(R.string.no_internet));
                 }
+
 
                 // startActivity(new Intent(RegistrationView.this, BankDetailsActivity.class));
             }
@@ -542,8 +547,14 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                 //    Toast.makeText(parent.getContext(), "bankkkkkkk" +bankId, Toast.LENGTH_LONG).show();
                 if (!mandalListResults.isEmpty()) {
                     mandalId = mandalListResults.get((int) parent.getSelectedItemId()).getId();
+                    if (isOnline(getActivity())) {
+                        getRequestVillage(String.valueOf(mandalId));
 
-                    getRequestVillage(String.valueOf(mandalId));
+                    }else {
+                        showToast(getActivity(),getString(R.string.no_internet));
+                    }
+
+
                 } else {
                     Toast.makeText(parent.getContext(), "Input Not Valid", Toast.LENGTH_LONG).show();
                 }
@@ -570,6 +581,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -586,10 +598,9 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
                     @Override
                     public void onNext(VillageModel villageModel) {
+                        hideDialog();
                         Log.d("response", villageModel.getIsSuccess().toString());
                         villageListResults = (ArrayList<VillageModel.ListResult>) villageModel.getListResult();
-
-
                         villageArrayList = new ArrayList();
                         if (villageModel.getListResult().size() > 0) {
 
@@ -650,8 +661,12 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                 //    Toast.makeText(parent.getContext(), "bankkkkkkk" +bankId, Toast.LENGTH_LONG).show();
                 if (!districtListResults.isEmpty()) {
                     districtId = districtListResults.get((int) parent.getSelectedItemId()).getId();
+                    if (isOnline(getActivity())){
+                        getRequestMandal(String.valueOf(districtId));
+                    }else {
+                        showToast(getActivity(),getString(R.string.no_internet));
+                    }
 
-                    getRequestMandal(String.valueOf(districtId));
                 } else {
                     Toast.makeText(parent.getContext(), "Input Not Valid", Toast.LENGTH_LONG).show();
                 }
@@ -679,6 +694,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -695,6 +711,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
                     @Override
                     public void onNext(MandalModel mandalModel) {
+                        hideDialog();
                         Log.d("response", mandalModel.getIsSuccess().toString());
                         mandalListResults = (ArrayList<MandalModel.ListResult>) mandalModel.getListResult();
 
@@ -734,6 +751,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -750,6 +768,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
                     @Override
                     public void onNext(ProvinceModel provinceModel) {
+                        hideDialog();
                         Log.d("response", provinceModel.getIsSuccess().toString());
                         provinceListResults = (ArrayList<ProvinceModel.ListResult>) provinceModel.getListResult();
                         //  provinceArrayList.add(0,"--Select Proviance--");
@@ -776,8 +795,12 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                 String item = parent.getItemAtPosition(position).toString();
                 if (!provinceListResults.isEmpty()) {
                     provinceId = provinceListResults.get((int) (parent.getSelectedItemId())).getId();
+                    if (isOnline(getActivity())){
+                        getRequestDistrict(String.valueOf(provinceId));
+                    }else {
+                        showToast(getActivity(),getString(R.string.no_internet));
+                    }
 
-                    getRequestDistrict(String.valueOf(provinceId));
                 } else {
                     Toast.makeText(parent.getContext(), "Input Not Valid", Toast.LENGTH_LONG).show();
                 }
@@ -808,6 +831,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -824,6 +848,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
                     @Override
                     public void onNext(DistrictModel districtModel) {
+                        hideDialog();
                         Log.d("response", districtModel.getIsSuccess().toString());
                         districtListResults = (ArrayList<DistrictModel.ListResult>) districtModel.getListResult();
                         //   bankArrayList.add(0,"--Select Bank--");
@@ -1146,6 +1171,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();

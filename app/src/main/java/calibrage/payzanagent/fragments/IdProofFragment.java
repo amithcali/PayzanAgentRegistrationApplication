@@ -129,10 +129,15 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
         listResults =new  ArrayList();
         idProofArrayList = new ArrayList<>();
         agentFinancialProof = new IdProofModel();
-
+        if (isOnline(getActivity())){
+            getRequest(CommonConstants.PERSONALID_CATEGORY_ID);
+            getRequestFinacial(CommonConstants.FINANCIALID_CATEGORY_ID);
+            getAgentIdproofInfo(CommonConstants.AGENT_ID);
+        }else {
+            showToast(getActivity(),getString(R.string.no_internet));
+        }
         idProof = new AgentIdProof();
         initCustomSpinner_personalId();
-        getRequest(CommonConstants.PERSONALID_CATEGORY_ID);
         personalButton = (Button)view.findViewById(R.id.btn_personal);
         bankButton = (Button)view.findViewById(R.id.btn_bank);
         idButton = (Button)view.findViewById(R.id.btn_id);
@@ -146,11 +151,8 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
         bankButton.setOnClickListener(this);*/
         idButton.setOnClickListener(this);
         documentButton.setOnClickListener(this);
-
         initCustomSpinner_financialId();
-        getRequestFinacial(CommonConstants.FINANCIALID_CATEGORY_ID);
 
-        getAgentIdproofInfo(CommonConstants.AGENT_ID);
         
         addFinancialInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,6 +239,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                   //  addIdProofDetails();
+                if (isOnline(getActivity())){
                     if (isUpdate) {
                         postIdInfo();
                     } else {
@@ -252,7 +255,11 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 
 
 
-                //startActivity(new Intent(BankDetailsActivity.this,IdProofActivity.class));
+                    //startActivity(new Intent(BankDetailsActivity.this,IdProofActivity.class));
+                }else {
+                    showToast(getActivity(),getString(R.string.no_internet));
+                }
+
             }
         });
        /* Bundle bundle = getArguments();
@@ -393,6 +400,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -441,6 +449,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -457,6 +466,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 
                     @Override
                     public void onNext(GetIdproofModel idproofModel) {
+                        hideDialog();
                         if (!idproofModel.getListResult().isEmpty()) {
                             isUpdate = true;
                             agentIdproofList = (ArrayList<GetIdproofModel.ListResult>) idproofModel.getListResult();
@@ -594,6 +604,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -610,6 +621,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 
                     @Override
                     public void onNext(BusinessCategoryModel businessCategoryModel) {
+                        hideDialog();
                         Log.d("response", businessCategoryModel.getIsSuccess().toString());
                         businessListResults = (ArrayList<BusinessCategoryModel.ListResult>) businessCategoryModel.getListResult();
                        // totalIdListResults.add(businessListResults);
@@ -763,6 +775,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();

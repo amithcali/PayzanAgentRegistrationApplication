@@ -199,8 +199,12 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isUpdate){
+                    submitRequest();
+                }else{
+                    showToast(context,"Upload files is manditory");
+                }
 
-                submitRequest();
             }
         });
         uploadDoc.setOnClickListener(new View.OnClickListener() {
@@ -444,7 +448,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
     private JsonObject updateAgentStatus() {
         UpdateAgentRequestModel updateAgentRequestModel = new UpdateAgentRequestModel();
         updateAgentRequestModel.setAgentRequestId(Integer.parseInt(AGENT_REQUEST_ID));
-        updateAgentRequestModel.setStatusTypeId(Integer.valueOf(CommonConstants.STATUSTYPE_ID_IN_PROGRESS));
+        updateAgentRequestModel.setStatusTypeId(Integer.valueOf(CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW));
         updateAgentRequestModel.setAssignToUserId(SharedPrefsData.getInstance(context).getStringFromSharedPrefs("userid"));
         updateAgentRequestModel.setComments("");
         updateAgentRequestModel.setId(null);
@@ -1008,9 +1012,9 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         if (isDelete)
             showConformationDialogDelete(pos);
         else if (isPdf)
-            new DownloadPdfFile(context, docIdproofList.get(pos).getFileUrl(), docIdproofList.get(pos).getFileName(),docIdproofList.get(pos).getFileExtension()).execute();
-          else if(!isPdf)
-              new DownloadImageFile(context, docIdproofList.get(pos).getFileUrl(), docIdproofList.get(pos).getFileName(),docIdproofList.get(pos).getFileExtension()).execute();
+            new DownloadPdfFile(context, docIdproofList.get(pos).getFileUrl(), docIdproofList.get(pos).getFileName(), docIdproofList.get(pos).getFileExtension()).execute();
+        else if (!isPdf)
+            new DownloadImageFile(context, docIdproofList.get(pos).getFileUrl(), docIdproofList.get(pos).getFileName(), docIdproofList.get(pos).getFileExtension()).execute();
     }
 
 
@@ -1021,7 +1025,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         private String fileName;
         private String extension;
 
-        private DownloadPdfFile(Context context, String path, String fileName,String extension) {
+        private DownloadPdfFile(Context context, String path, String fileName, String extension) {
             this.context = context;
             this.path = path;
             this.fileName = fileName;
@@ -1032,15 +1036,15 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         @Override
         protected Void doInBackground(String... strings) {
             showDialogAsk(getActivity(), "downloading file");
-            String fileUrl = path.replace("\\","/");
+            String fileUrl = path.replace("\\", "/");
             String fileName = this.fileName;  // -> maven.pdf
             String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
             File folder = new File(extStorageDirectory, "payZanSalesExecutive");
-            if(!folder.exists()){
+            if (!folder.exists()) {
                 folder.mkdir();
             }
 
-            File pdfFile = new File(folder, fileName+extension);
+            File pdfFile = new File(folder, fileName + extension);
 
             try {
                 pdfFile.createNewFile();
@@ -1049,7 +1053,21 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            downloadFile(fileUrl, pdfFile);
+            if (!pdfFile.exists()) {
+                downloadFile(fileUrl, pdfFile);
+            } else {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Toast.makeText(context, "File exists in Folder", Toast.LENGTH_SHORT).show();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
             return null;
         }
 
@@ -1086,14 +1104,16 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                 e.printStackTrace();
             }
         }
-    }    private class DownloadImageFile extends AsyncTask<String, Void, Void> {
+    }
+
+    private class DownloadImageFile extends AsyncTask<String, Void, Void> {
 
         private Context context;
         private String path;
         private String fileName;
         private String extension;
 
-        private DownloadImageFile(Context context, String path, String fileName,String extension) {
+        private DownloadImageFile(Context context, String path, String fileName, String extension) {
             this.context = context;
             this.path = path;
             this.fileName = fileName;
@@ -1108,11 +1128,11 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
             String fileName = this.fileName;  // -> maven.pdf
             String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
             File folder = new File(extStorageDirectory, "payZanSalesExecutive");
-            if(!folder.exists()){
+            if (!folder.exists()) {
                 folder.mkdir();
             }
 
-            File pdfFile = new File(folder, fileName+extension);
+            File pdfFile = new File(folder, fileName + extension);
 
             try {
                 pdfFile.createNewFile();
@@ -1121,7 +1141,22 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            downloadFile(fileUrl, pdfFile);
+            if (!pdfFile.exists()) {
+                downloadFile(fileUrl, pdfFile);
+            } else {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Toast.makeText(context, "File exists in Folder", Toast.LENGTH_SHORT).show();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+
             return null;
         }
 
@@ -1139,7 +1174,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                 InputStream input = connection.getInputStream();
                 Bitmap myBitmap = BitmapFactory.decodeStream(input);
                 try {
-                    FileOutputStream out = new FileOutputStream( directory);
+                    FileOutputStream out = new FileOutputStream(directory);
                     myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
                     out.flush();
                     out.close();

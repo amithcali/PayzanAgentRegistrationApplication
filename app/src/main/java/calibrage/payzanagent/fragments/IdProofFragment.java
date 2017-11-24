@@ -77,6 +77,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
     private ArrayList<AgentRequestModel.ListResult> listResults;
     ArrayList<String> businessArrayList = new ArrayList<String>();
     ArrayList<String> addIdproofs = new ArrayList<String>();
+    ArrayList<String> addIdproofTypeValidte = new ArrayList<String>();
     ArrayList<Integer> totalIdTypeId = new ArrayList<>();
     ArrayList<String> totalIdTypeValue = new ArrayList<>();
     private ArrayList<GetIdproofModel.ListResult> agentIdproofList = new ArrayList<>();
@@ -160,20 +161,21 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                         if(addIdproofs.contains(spinnerCustom_finacialId.getSelectedItem().toString())){
                             Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
                         }else{
-                            if(!addIdproof.isEmpty()){
-                                for (int i = 0; i <addIdproof.size() ; i++) {
-                                    if(!addIdproof.get(i).first.equalsIgnoreCase(spinnerCustom_finacialId.getSelectedItem().toString())){
-                                        addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()),numberpersonal.getText().toString()));
-                                        break;
-                                    }
-                                }
+                            if(!addIdproofTypeValidte.contains(financiaStringArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()))){
+                                addIdproofTypeValidte.add(financiaStringArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()));
+                                addIdproof.add(Pair.create(financiaStringArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()),numberfinancial.getText().toString()));
+                            }else{
+                                Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
                             }
-                            else{
-                                addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
-                            }
+
                         }
                     }else{
-                        addIdproof.add(Pair.create(financiaStringArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()),numberfinancial.getText().toString()));
+                        if(!addIdproofTypeValidte.contains(financiaStringArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()))){
+                            addIdproofTypeValidte.add(financiaStringArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()));
+                            addIdproof.add(Pair.create(financiaStringArrayList.get(spinnerCustom_finacialId.getSelectedItemPosition()),numberfinancial.getText().toString()));
+                        }else{
+                            Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     idproofLocalAdapter = new IdproofLocalAdapter(context,addIdproof);
@@ -194,20 +196,22 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                         if(addIdproofs.contains(spinnerCustom_personalId.getSelectedItem().toString())){
                             Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
                         }else{
-                            if(!addIdproof.isEmpty()){
-                                for (int i = 0; i <addIdproof.size() ; i++) {
-                                    if(!addIdproof.get(i).first.equalsIgnoreCase(spinnerCustom_personalId.getSelectedItem().toString())){
-                                        addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
-                                        break;
-                                    }
-                                }
-                            }
-                            else{
+                            if(!addIdproofTypeValidte.contains(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()))){
+                                addIdproofTypeValidte.add(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()));
                                 addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
+                            }else{
+                                Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
                             }
+
                         }
+
                     }else{
-                        addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
+                        if(!addIdproofTypeValidte.contains(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()))){
+                            addIdproofTypeValidte.add(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()));
+                            addIdproof.add(Pair.create(businessArrayList.get(spinnerCustom_personalId.getSelectedItemPosition()),numberpersonal.getText().toString()));
+                        }else{
+                            Toast.makeText(context, "Is already add", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     idproofLocalAdapter = new IdproofLocalAdapter(context,addIdproof);

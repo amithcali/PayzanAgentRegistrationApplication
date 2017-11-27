@@ -9,6 +9,7 @@ import calibrage.payzanagent.model.AgentRequestModel;
 import calibrage.payzanagent.model.BankInfoResponseModel;
 import calibrage.payzanagent.model.Branch;
 import calibrage.payzanagent.model.BusinessCategoryModel;
+import calibrage.payzanagent.model.CommentsModel;
 import calibrage.payzanagent.model.DistrictModel;
 import calibrage.payzanagent.model.DocDeleteModel;
 import calibrage.payzanagent.model.GetBankInfoModel;
@@ -126,5 +127,7 @@ public interface MyServices {
 
     @GET
     Observable<GetIdproofModel> GetAgentIdproofInfo(@Url String url);
+    @GET
+    Observable<CommentsModel> GetStatusHistory(@Url String url);
 
 }

@@ -39,6 +39,7 @@ public interface ApiConstants {
    String GET_AGENT_IDPROOF= "api/AgentIdProof/GetAgentIdProofsByAgentId/";
    String UPLOAD_DOCUMENTS= "api/AgentFileRepository/AddAgentDocuments";
    String UPDATE_PERSONAL_INFO= "api/Agent/UpdateAgentPersonalInfo";
+   String STATUS_HISTORY= "api/AgentRequestInfo/GetAgentRequestStatusHistory/";
 
     //  String LOGIN = "API
 }

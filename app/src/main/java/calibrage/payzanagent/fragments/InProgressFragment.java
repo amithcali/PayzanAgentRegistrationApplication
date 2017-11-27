@@ -30,6 +30,7 @@ import java.util.List;
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.HomeActivity;
 import calibrage.payzanagent.adapter.AgentRequetAdapter;
+import calibrage.payzanagent.adapter.CommentAdapter;
 import calibrage.payzanagent.adapter.InProgressRequetAdapter;
 import calibrage.payzanagent.interfaces.RequestClickListiner;
 import calibrage.payzanagent.model.AgentRequestModel;
@@ -180,15 +181,19 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
 
     @Override
     public void onAdapterClickListiner(int pos,boolean b) {
-             Bundle bundle = new Bundle();
-        bundle.putParcelable("request", agentRequestModelBundle);
-        bundle.putInt("position",pos);
-        Fragment fragment = new RegistrationViewFragment();
-        fragment.setArguments(bundle);
-        CommonConstants.Is_New_Agent_Request = false;
-        CommonConstants.AGENT_REQUEST_ID = listResults.get(pos).getId().toString();
+
+
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("request", agentRequestModelBundle);
+            bundle.putInt("position",pos);
+            Fragment fragment = new RegistrationViewFragment();
+            fragment.setArguments(bundle);
+            CommonConstants.Is_New_Agent_Request = false;
+            CommonConstants.AGENT_REQUEST_ID = listResults.get(pos).getId().toString();
 //        ReplcaFragment(fragment);
-        replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, RegistrationViewFragment.TAG);
+            replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, RegistrationViewFragment.TAG);
+
+
        // fragmentManager.beginTransaction().replace(R.id.content_frame, fragment,"AgentTag").commit();
       //  replaceFragment(getActivity(), MAIN_CONTAINER, new RegistrationViewFragment(), TAG, RegistrationViewFragment.TAG);
 

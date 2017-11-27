@@ -10,6 +10,11 @@
         android:layout_height="wrap_content"
         app:cardUseCompatPadding="true"
         app:cardBackgroundColor="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -98,6 +103,21 @@
 
 
             </LinearLayout>
+        </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comments"
+                android:background="@drawable/border_accentcolor_button"
+                android:drawableRight="@android:drawable/arrow_down_float"
+                android:id="@+id/openComment"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/commentRecylerview">
+            </android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
 

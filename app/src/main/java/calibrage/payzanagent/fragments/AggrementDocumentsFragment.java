@@ -237,7 +237,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         if (bundle != null) {
             addAgent = bundle.getParcelable("idproof");
         }
-        openFolder();
+        //openFolder();
         return view;
     }
 
@@ -331,6 +331,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                             Toast.makeText(context, "Files  Uploading Finished Sucessfully", Toast.LENGTH_SHORT).show();
                             getDocuments(CommonConstants.AGENT_ID);
                             imagesArrayList.clear();
+                            filePathArray.clear();
                             imageAdapter.notifyDataSetChanged();
                         } else {
                             postDocuments();
@@ -1134,7 +1135,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
 
         @Override
         protected Void doInBackground(String... strings) {
-            showDialogAsk(getActivity(), "downloading file");
+            showDialogAsk(getActivity(), "Downloading File");
             String fileUrl = path;   // -> http://maven.apache.org/maven-1.x/maven.pdf
             String fileName = this.fileName;  // -> maven.pdf
             String extStorageDirectory = Environment.getExternalStorageDirectory().toString();

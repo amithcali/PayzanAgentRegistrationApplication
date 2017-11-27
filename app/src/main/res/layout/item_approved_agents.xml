@@ -12,6 +12,10 @@
         app:cardUseCompatPadding="true"
         app:cardBackgroundColor="@color/white">
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -99,6 +103,23 @@
 
         </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" Comments"
+                android:layout_margin="@dimen/fiveDp"
+                android:textColor="@color/Black"
+                android:background="@drawable/border_comment_box"
+                android:drawableRight="@drawable/down24"
+                android:id="@+id/openComment"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fiveDp"
+                android:id="@+id/commentRecylerview">
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
         <!-- <View
              android:layout_width="match_parent"
              android:layout_height="0.5dp"

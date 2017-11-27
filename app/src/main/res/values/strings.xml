@@ -76,4 +76,5 @@
     <string name="select_shift_code"><font size="20">Select Shift Code</font></string>
     <string name="new_agent_registration">New Agent Registration</string>
     <string name="bank_details">Bank Details</string>
+    <string name="comments_box"> Comments</string>
 </resources>

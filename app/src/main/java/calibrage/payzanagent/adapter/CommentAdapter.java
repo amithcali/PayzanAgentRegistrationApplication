@@ -36,13 +36,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Myholder
     @Override
     public void onBindViewHolder(Myholder holder, int position) {
        if(listResultList.get(holder.getAdapterPosition()).getAssignToUser()!=null)
-       holder.assignTo.setText(listResultList.get(holder.getAdapterPosition()).getAssignToUser().toString());
+       holder.assignTo.setText("Assign To"+" "+":"+" "+listResultList.get(holder.getAdapterPosition()).getAssignToUser().toString());
         if(listResultList.get(holder.getAdapterPosition()).getStatusType()!=null)
-       holder.statusType.setText(listResultList.get(holder.getAdapterPosition()).getStatusType().toString());
+       holder.statusType.setText("Status"+" "+":"+" "+listResultList.get(holder.getAdapterPosition()).getStatusType().toString());
         if(listResultList.get(holder.getAdapterPosition()).getComments()!=null)
-       holder.commentsTxt.setText(listResultList.get(holder.getAdapterPosition()).getComments().toString());
+       holder.commentsTxt.setText("Comments"+" "+":"+" "+listResultList.get(holder.getAdapterPosition()).getComments().toString());
         if(listResultList.get(holder.getAdapterPosition()).getCreated()!=null)
-       holder.created.setText(listResultList.get(holder.getAdapterPosition()).getCreated().toString());
+       holder.created.setText("Created Date"+" "+":"+" "+listResultList.get(holder.getAdapterPosition()).getCreated().toString());
 
     }
 

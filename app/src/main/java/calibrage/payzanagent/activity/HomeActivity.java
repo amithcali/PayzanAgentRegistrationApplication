@@ -49,6 +49,7 @@ public class HomeActivity extends BaseActivity {
     private void setupToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_stat_arrow_back);
        // toolbar.setTitleTextColor(ContextCompat.getColor(HomeActivity.this,R.color.new_accent));
       //  toolbar.setTitle("f");
      //   toolbar.setNavigationIcon(R.drawable.right_arrow);

@@ -112,10 +112,12 @@ public class ApprovedAgentsAdapter extends RecyclerView.Adapter<ApprovedAgentsAd
                 // requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition(),true,true);
                 if(isOpen[0]){
                     holder.commentRecylerview.setVisibility(View.VISIBLE);
+                    holder.openComment.setCompoundDrawablesWithIntrinsicBounds(0, 0,  R.drawable.ic_keyboard_arrow_up_black_24dp, 0);
                     getRequestComments(data.get(holder.getAdapterPosition()).getId(), holder);
                     isOpen[0] = false;
                 }else{
                     holder.commentRecylerview.setVisibility(View.GONE);
+                    holder.openComment.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.ic_keyboard_arrow_down_black_24dp, 0);
                     isOpen[0] = true;
                 }
 

@@ -2,15 +2,20 @@ package calibrage.payzanagent.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.model.CommentsModel;
+
+import static calibrage.payzanagent.fragments.MainFragment.TAG;
 
 /**
  * Created by Calibrage11 on 11/27/2017.
@@ -18,6 +23,7 @@ import calibrage.payzanagent.model.CommentsModel;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Myholder> {
     private Context context;
+    private String createdDate;
     private List<CommentsModel.ListResult> listResultList;
 
    public CommentAdapter(Context context,List<CommentsModel.ListResult> listResultList){
@@ -42,7 +48,23 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Myholder
         if(listResultList.get(holder.getAdapterPosition()).getComments()!=null)
        holder.commentsTxt.setText("Comments"+" "+":"+" "+listResultList.get(holder.getAdapterPosition()).getComments().toString());
         if(listResultList.get(holder.getAdapterPosition()).getCreated()!=null)
-       holder.created.setText("Created Date"+" "+":"+" "+listResultList.get(holder.getAdapterPosition()).getCreated().toString());
+        createdDate = listResultList.get(holder.getAdapterPosition()).getCreated().toString();
+        holder.created.setText("Created Date"+" "+":"+" "+formatDateTimeUi());
+
+    }
+
+    public String formatDateTimeUi() {
+        String date = null;
+       /* String strCurrentDate = edtDOB.getText().toString();*/
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        try {
+            Date newDate = format.parse(createdDate);
+            format = new SimpleDateFormat("dd/MM/yyyy");
+            date = format.format(newDate);
+            return date;
+        } catch (Exception e) {
+            return date;
+        }
 
     }
 

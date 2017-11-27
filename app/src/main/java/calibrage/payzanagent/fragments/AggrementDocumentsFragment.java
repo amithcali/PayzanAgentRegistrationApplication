@@ -283,7 +283,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                             docsRecyclerview.setLayoutManager(new LinearLayoutManager(context));
                             docsRecyclerview.setAdapter(docsAdapter);
 
-                            showToast(getActivity(), getDocumentsResponseModel.getListResult().get(0).getFileLocation());
+                          //  showToast(getActivity(), getDocumentsResponseModel.getListResult().get(0).getFileLocation());
                         } else {
                             isUpdate = false;
                             // btnContinue.setText("Continue");

@@ -80,8 +80,8 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         view = inflater.inflate(R.layout.fragment_agent_request, container, false);
         context = this.getActivity();
-        HomeActivity.toolbar.setTitle(getResources().getString(R.string.agentrequest_sname));
-        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
+//        HomeActivity.toolbar.setTitle(getResources().getString(R.string.agentrequest_sname));
+//        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
         currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
         recyclerView = (RecyclerView) view.findViewById(R.id.recylerview_card);
         noRecords = (TextView)view.findViewById(R.id.no_records);

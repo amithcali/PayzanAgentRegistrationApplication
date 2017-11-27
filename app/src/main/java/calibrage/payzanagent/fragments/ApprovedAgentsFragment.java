@@ -59,8 +59,8 @@ public class ApprovedAgentsFragment extends BaseFragment {
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
        view = inflater.inflate(R.layout.fragment_approved_agents, container, false) ;
         context = this.getActivity();
-        HomeActivity.toolbar.setTitle(getResources().getString(R.string.approvedagents_sname));
-        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
+//        HomeActivity.toolbar.setTitle(getResources().getString(R.string.approvedagents_sname));
+//        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
         recyclerView = (RecyclerView) view.findViewById(R.id.recylerview_card_approved);
         noRecords = (TextView)view.findViewById(R.id.no_records);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());

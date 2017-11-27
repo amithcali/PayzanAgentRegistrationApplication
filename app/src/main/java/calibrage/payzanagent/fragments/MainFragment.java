@@ -97,10 +97,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
 
 
         stUsername = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("username");
-        HomeActivity.toolbar.setTitle(getResources().getString(R.string.main_sname));
-        HomeActivity.toolbar.setSubtitle(stUsername);
-        HomeActivity.toolbar.setSubtitleTextColor(ContextCompat.getColor(context,R.color.white_new));
-        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
+//        HomeActivity.toolbar.setTitle(getResources().getString(R.string.main_sname));
+//        HomeActivity.toolbar.setSubtitle(stUsername);
+//        HomeActivity.toolbar.setSubtitleTextColor(ContextCompat.getColor(context,R.color.white_new));
+//        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
         btnNewAgent = (Button)view.findViewById(R.id.btn_newAgent);
         btnAgentRequest=  (Button)view.findViewById(R.id.btn_agentRequests);
       //  btnSettings  = (Button)view.findViewById(R.id.btn_settings);

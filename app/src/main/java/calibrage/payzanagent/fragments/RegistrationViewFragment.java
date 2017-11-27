@@ -176,8 +176,8 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
 
         context = this.getActivity();
         initMap(savedInstanceState);
-        HomeActivity.toolbar.setTitle(getResources().getString(R.string.register_sname));
-        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
+//        HomeActivity.toolbar.setTitle(getResources().getString(R.string.register_sname));
+//        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);
         checkLocationPermission(context);

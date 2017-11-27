@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Patterns;
@@ -53,7 +54,7 @@ public class LoginFragment extends BaseFragment {
     private Subscription mRegisterSubscription;
     FragmentManager fragmentManager;
     View view;
-    public static Toolbar toolbar;
+    public  Toolbar toolbar;
     private Context context;
     private String mobileOrEmail, passCode,dateandtime;
 
@@ -70,6 +71,8 @@ public class LoginFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        //toolbar = ((AppCompatActivity)getActivity()).HomeActivity.
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
         view = inflater.inflate(R.layout.login_fragment, container, false);
         view.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
@@ -87,9 +90,9 @@ public class LoginFragment extends BaseFragment {
         }
 
         context = this.getActivity();
-        HomeActivity.toolbar.setTitle(getResources().getString(R.string.login_sname));
-
-        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
+//        HomeActivity.toolbar.setTitle(getResources().getString(R.string.login_sname));
+//
+//        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
        /* HomeActivity.toolbar.setNavigationIcon(R.drawable.ic_stat_arrow_back);
        HomeActivity.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

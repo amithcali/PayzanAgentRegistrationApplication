@@ -30,7 +30,7 @@ public class HomeActivity extends BaseActivity {
     Fragment fragment;
     FragmentManager fragmentManager;
     private int isLogin = 1;
-    public  static Toolbar toolbar;
+    public static   Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +49,13 @@ public class HomeActivity extends BaseActivity {
     private void setupToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(ContextCompat.getColor(HomeActivity.this,R.color.new_accent));
-        toolbar.setTitle("f");
-   //     toolbar.setLogo(R.drawable.ic_tick_mark);
-    //    toolbar.setNavigationIcon(R.drawable.right_arrow);
+       // toolbar.setTitleTextColor(ContextCompat.getColor(HomeActivity.this,R.color.new_accent));
+      //  toolbar.setTitle("f");
+     //   toolbar.setNavigationIcon(R.drawable.right_arrow);
+
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -77,6 +78,11 @@ public class HomeActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(BaseFragment.MAIN_CONTAINER, new LoginFragment ()).commit();
 
+        }else if(item.getItemId() == android.R.id.home){
+            if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+                getSupportFragmentManager().popBackStackImmediate();
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -94,9 +100,9 @@ public class HomeActivity extends BaseActivity {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStackImmediate();
           //  HomeActivity.toolbar.setTitle(getResources().getString(R.string.main_sname));
-            HomeActivity.toolbar.setTitle(" ");
-            HomeActivity.toolbar.setSubtitle(" ");
-            HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white_new));
+            toolbar.setTitle(" ");
+           toolbar.setSubtitle(" ");
+           toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white_new));
         } else {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             final Dialog dialog = new Dialog(HomeActivity.this);

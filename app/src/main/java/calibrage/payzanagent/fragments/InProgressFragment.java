@@ -71,8 +71,8 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         view = inflater.inflate(R.layout.fragment_in_progress, container, false) ;
         context = this.getActivity();
-        HomeActivity.toolbar.setTitle(getResources().getString(R.string.inprogressrequest_sname));
-        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
+//        HomeActivity.toolbar.setTitle(getResources().getString(R.string.inprogressrequest_sname));
+//        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
         recyclerView = (RecyclerView) view.findViewById(R.id.recylerview_card_inprogress);
         noRecords = (TextView)view.findViewById(R.id.no_records);
         search = (EditText)view.findViewById(R.id.search);

@@ -24,7 +24,8 @@
         app:layout_scrollFlags="enterAlways"
         app:titleTextAppearance="@style/ToolbarTitleAppearance"
         app:subtitleTextAppearance="@style/ToolbarSubtitleAppearance"
-        app:title="123456">
+        app:titleTextColor="@color/white"
+        app:title="">
 
         <!--<TextView-->
         <!--android:layout_width="wrap_content"-->

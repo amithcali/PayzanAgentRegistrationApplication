@@ -188,8 +188,8 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         imagesRecylerView = (RecyclerView) view.findViewById(R.id.imagesRecylerView);
         context = this.getActivity();
         fragmentManager = getActivity().getSupportFragmentManager();
-        HomeActivity.toolbar.setTitle(getResources().getString(R.string.register_sname));
-        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
+//        HomeActivity.toolbar.setTitle(getResources().getString(R.string.register_sname));
+//        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
         currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
 //        RequestManager.initializeWith(context, new RequestManager.Config("data/data/predento/pics",
 //                5242880, 4));
@@ -237,7 +237,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         if (bundle != null) {
             addAgent = bundle.getParcelable("idproof");
         }
-
+        openFolder();
         return view;
     }
 
@@ -1196,6 +1196,14 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                 Log.e("Error: ", e.getMessage());
             }
         }
+    }
+
+    public void openFolder(){
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
+        Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath()
+                +  File.separator + "payZanSalesExecutive" + File.separator);
+        intent.setDataAndType(uri, ".png");
+        startActivity(Intent.createChooser(intent, "Open folder"));
     }
 
 }

@@ -5,10 +5,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -26,6 +31,8 @@ import calibrage.payzanagent.R;
 public class BaseFragment extends Fragment {
 
     public static final int MAIN_CONTAINER = R.id.content_frame;
+  //  private View view;
+
 
     public static void showToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
@@ -34,6 +41,13 @@ public class BaseFragment extends Fragment {
     protected void popUpFromBackStack(FragmentActivity activity) {
         activity.getSupportFragmentManager().popBackStack();
     }
+
+//    @Nullable
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        view = inflater.inflate(R.layout.fragment_agent_request, container, false);
+//        return view;
+//    }
 
     public static void addFragment(FragmentActivity activity, int container, Fragment fragment,
                                    String cuurentFragmentTag, String newFragmentTag) {
@@ -122,10 +136,6 @@ public class BaseFragment extends Fragment {
 
 
     } public void showDialogAsk(final FragmentActivity activity, final String message) {
-
-
-
-
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -145,13 +155,10 @@ public class BaseFragment extends Fragment {
                 }
             }
         });
-
-
     }
 
 
     public void hideDialog() {
-
         if (mProgressDialog != null && mProgressDialog.isShowing())
             mProgressDialog.dismiss();
 
@@ -166,10 +173,8 @@ public class BaseFragment extends Fragment {
 //            }
 //        });
 
-    }  public void hideDialogAsk() {
-
-
-
+    }
+    public void hideDialogAsk() {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

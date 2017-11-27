@@ -94,8 +94,8 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         context = this.getActivity();
-        HomeActivity.toolbar.setTitle(getResources().getString(R.string.bankdetail_sname));
-        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
+//        HomeActivity.toolbar.setTitle(getResources().getString(R.string.bankdetail_sname));
+//        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
         currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
         agentBankInfo = new AgentBankInfo();
         initCustomSpinner_bank();

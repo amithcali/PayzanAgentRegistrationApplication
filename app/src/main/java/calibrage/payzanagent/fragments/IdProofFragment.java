@@ -122,8 +122,8 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
         financialRecylerview = (RecyclerView) view.findViewById(R.id.financialRecylerview);
        // personalRecylerview = (RecyclerView) view.findViewById(R.id.personalRecylerview);
         context = this.getActivity();
-        HomeActivity.toolbar.setTitle(getResources().getString(R.string.agentrequest_sname));
-        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
+//        HomeActivity.toolbar.setTitle(getResources().getString(R.string.agentrequest_sname));
+//        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
         currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
       //  agentIdProofArrayList = new ArrayList<>();
         listResults =new  ArrayList();
@@ -744,6 +744,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                         if(isLocal){
                             addIdproof.remove(pos);
                             idproofLocalAdapter.notifyDataSetChanged();
+                            addIdproofTypeValidte.remove(pos);
                         }else {
                             deleteId(pos);
                         }

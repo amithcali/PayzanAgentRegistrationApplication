@@ -30,8 +30,8 @@ public class UserProfileHomeFragment extends BaseFragment {
                              Bundle savedInstanceState) {
        view = inflater.inflate(R.layout.fragment_user_profile_home, container, false);
         context = this.getActivity();
-        HomeActivity.toolbar.setTitle(getResources().getString(R.string.userprofile_sname));
-        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
+//        HomeActivity.toolbar.setTitle(getResources().getString(R.string.userprofile_sname));
+//        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
        btnSignOut = (Button)view.findViewById(R.id.btn_sign_out);
        btnSignOut.setOnClickListener(new View.OnClickListener() {
            @Override

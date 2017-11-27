@@ -25,6 +25,7 @@
         app:titleTextAppearance="@style/ToolbarTitleAppearance"
         app:subtitleTextAppearance="@style/ToolbarSubtitleAppearance"
         app:titleTextColor="@color/white"
+        app:navigationIcon="@drawable/ic_stat_arrow_back"
         app:title="">
 
         <!--<TextView-->

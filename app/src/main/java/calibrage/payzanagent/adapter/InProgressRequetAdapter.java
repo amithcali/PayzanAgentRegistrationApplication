@@ -118,10 +118,12 @@ public class InProgressRequetAdapter extends RecyclerView.Adapter<InProgressRequ
                 // requestClickListiner.onAdapterClickListiner(holder.getAdapterPosition(),true,true);
                 if(isOpen[0]){
                     holder.commentRecylerview.setVisibility(View.VISIBLE);
+                    holder.openComment.setCompoundDrawablesWithIntrinsicBounds(0, 0,  R.drawable.ic_keyboard_arrow_up_black_24dp, 0);
                     getRequestComments(data.get(holder.getAdapterPosition()).getId(), holder);
                     isOpen[0] = false;
                 }else{
                     holder.commentRecylerview.setVisibility(View.GONE);
+                    holder.openComment.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.ic_keyboard_arrow_down_black_24dp, 0);
                     isOpen[0] = true;
                 }
 
@@ -202,12 +204,12 @@ public class InProgressRequetAdapter extends RecyclerView.Adapter<InProgressRequ
                     @Override
                     public void onNext(CommentsModel commentsModel) {
 
-                        if (!commentsModel.getListResult().isEmpty()) {
+
                             CommentAdapter commentAdapter = new CommentAdapter(context, commentsModel.getListResult());
                             holder.commentRecylerview.setLayoutManager(new LinearLayoutManager(context));
                             holder.commentRecylerview.setAdapter(commentAdapter);
 
-                        }
+
 
                     }
                 });

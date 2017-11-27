@@ -53,6 +53,14 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.Myholder>{
             holder.sourceImage.setImageResource(R.drawable.jpeg_sbi);
         }else if(listResultList.get(holder.getAdapterPosition()).getFileExtension().equalsIgnoreCase(".pdf")){
             holder.sourceImage.setImageResource(R.drawable.pdf_sbi);
+        }else if(listResultList.get(holder.getAdapterPosition()).getFileExtension().equalsIgnoreCase(".docx")){
+            holder.sourceImage.setImageResource(R.drawable.docx_sbi);
+        }else if(listResultList.get(holder.getAdapterPosition()).getFileExtension().equalsIgnoreCase(".doc")){
+            holder.sourceImage.setImageResource(R.drawable.doc_sbi);
+        }else if(listResultList.get(holder.getAdapterPosition()).getFileExtension().equalsIgnoreCase("txt")){
+            holder.sourceImage.setImageResource(R.drawable.exe_sbi);
+        }else if(listResultList.get(holder.getAdapterPosition()).getFileExtension().equalsIgnoreCase(".rtf")){
+            holder.sourceImage.setImageResource(R.drawable.exe_sbi);
         }
       //  holder.value.setText(listResultList.get(holder.getAdapterPosition()).getFileLocation());
         holder.deleteIcon.setOnClickListener(new View.OnClickListener() {

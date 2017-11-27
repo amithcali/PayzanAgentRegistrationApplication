@@ -222,6 +222,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                 //showDialog(getActivity(), "Adding Agent...");
                 // progressBar.setVisibility(View.VISIBLE);
                 if (filePathArray.size() > 0) {
+                    count =0 ;
                     postDocuments();
                 } else {
                     showToast(context, "Please add Documents");
@@ -491,7 +492,11 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                     startActivityForResult(intent, 2);
                 } else if (options[item].equals("Select File")) {
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.setType("application/pdf");
+                  //   Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                   // intent.setType("application/pdf");
+                    intent.setType("*/*");
+                    String[] mimetypes = {"application/pdf","text/*","text/plain","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/rtf"};
+                    intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
                     startActivityForResult(intent, 3);
 
                     //Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

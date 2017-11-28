@@ -2,7 +2,9 @@ package calibrage.payzanagent.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +33,7 @@ import java.util.regex.Pattern;
 
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.HomeActivity;
+import calibrage.payzanagent.commonUtil.CommonUtil;
 import calibrage.payzanagent.model.LoginModel;
 import calibrage.payzanagent.model.LoginResponseModel;
 import calibrage.payzanagent.model.UpdateAgentRequestModel;
@@ -100,6 +103,9 @@ public class LoginFragment extends BaseFragment {
                 closeTab();
             }
         });*/
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !CommonUtil.areAllPermissionsAllowed(context, CommonUtil.PERMISSIONS_REQUIRED)) {
+            ActivityCompat.requestPermissions(getActivity(), CommonUtil.PERMISSIONS_REQUIRED, CommonUtil.PERMISSION_CODE);
+        }
         btnLogin = (Button) view.findViewById(R.id.btnLogin);
         txt_password = (EditText) view.findViewById(R.id.txt_password);
         txt_Email = (EditText) view.findViewById(R.id.txt_Email);

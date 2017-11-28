@@ -300,7 +300,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                             e.printStackTrace();
                         }
                         Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
-                        replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
+                      //  replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
                     }
 
                     @Override
@@ -703,7 +703,6 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                 if (isUpdate) {
                     replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
                 }else{
-
                         //  addIdProofDetails();
                         postIdInfo();
                         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -713,7 +712,6 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                     Fragment fragment = new AggrementDocumentsFragment();
                     fragment.setArguments(bundle);
                     replaceFragment(getActivity(), MAIN_CONTAINER, fragment, TAG, AggrementDocumentsFragment.TAG);*/
-
                 }
 
 

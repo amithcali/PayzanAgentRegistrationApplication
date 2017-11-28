@@ -2,10 +2,12 @@ package calibrage.payzanagent.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -41,16 +43,43 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Myholder
 
     @Override
     public void onBindViewHolder(Myholder holder, int position) {
-       if(listResultList.get(holder.getAdapterPosition()).getAssignToUser()!=null)
-       holder.assignTo.setText("Assign To"+" "+":"+" "+listResultList.get(holder.getAdapterPosition()).getAssignToUser().toString());
-        if(listResultList.get(holder.getAdapterPosition()).getStatusType()!=null)
-       holder.statusType.setText("Status"+" "+":"+" "+listResultList.get(holder.getAdapterPosition()).getStatusType().toString());
-        if(listResultList.get(holder.getAdapterPosition()).getComments()!=null)
-       holder.commentsTxt.setText("Comments"+" "+":"+" "+listResultList.get(holder.getAdapterPosition()).getComments().toString());
-        if(listResultList.get(holder.getAdapterPosition()).getCreated()!=null)
-        createdDate = listResultList.get(holder.getAdapterPosition()).getCreated().toString();
-        holder.created.setText("Created Date"+" "+":"+" "+formatDateTimeUi());
-
+       if(listResultList.get(holder.getAdapterPosition()).getAssignToUser()!=null){
+           String Response = listResultList.get(holder.getAdapterPosition()).getAssignToUser().toString();
+           String first = "<font color='#9C27B0'>Assign To : </font> <font color='#000000'>"+Response+"</font>";
+           holder.assignTo.setText(Html.fromHtml(first));
+           //   holder.assignTo.setText("Assign To"+" "+":"+" "+listResultList.get(holder.getAdapterPosition()).getAssignToUser().toString());
+       }else {
+           holder.assignTo.setVisibility(View.GONE);
+       }
+        if(listResultList.get(holder.getAdapterPosition()).getStatusType()!=null){
+            String Response = listResultList.get(holder.getAdapterPosition()).getStatusType().toString();
+            String first = "<font color='#9C27B0'>Status : </font> <font color='#000000'>"+Response+"</font>";
+            holder.statusType.setText(Html.fromHtml(first));
+           // holder.statusType.setText("Status"+" "+":"+" "+listResultList.get(holder.getAdapterPosition()).getStatusType().toString());
+        }else {
+            holder.statusType.setVisibility(View.GONE);
+        }
+        if(listResultList.get(holder.getAdapterPosition()).getComments()!=null){
+            String Response = listResultList.get(holder.getAdapterPosition()).getComments().toString();
+            String first = "<font color='#9C27B0'>Comments: </font> <font color='#000000'>"+Response+"</font>";
+            holder.commentsTxt.setText(Html.fromHtml(first));
+            //  holder.commentsTxt.setText("Comments"+" "+":"+" "+listResultList.get(holder.getAdapterPosition()).getComments().toString());
+        }else {
+            holder.commentsTxt.setVisibility(View.GONE);
+        }
+        if(listResultList.get(holder.getAdapterPosition()).getCreated()!=null){
+            createdDate = listResultList.get(holder.getAdapterPosition()).getCreated().toString();
+            String first = "<font color='#9C27B0'> Created Date:</font> <font color='#000000'>"+formatDateTimeUi()+"</font>";
+            holder.created.setText(Html.fromHtml(first));
+          //  holder.created.setText("Created Date"+" "+":"+" "+formatDateTimeUi());
+        }else {
+            holder.created.setVisibility(View.GONE);
+        }
+        if(listResultList.get(holder.getAdapterPosition()).getIsActive()){
+            holder.tickMark.setVisibility(View.VISIBLE);
+        }else {
+            holder.tickMark.setVisibility(View.GONE);
+        }
     }
 
     public String formatDateTimeUi() {
@@ -76,11 +105,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Myholder
     public class Myholder extends RecyclerView.ViewHolder {
 
        private TextView statusType,assignTo,commentsTxt,created;
+       ImageView tickMark;
         public Myholder(View itemView) {
             super(itemView);
             statusType=(TextView) itemView.findViewById(R.id.statusType);
             assignTo=(TextView) itemView.findViewById(R.id.assignTo);
             commentsTxt=(TextView) itemView.findViewById(R.id.commentsTxt);
+            tickMark = (ImageView)itemView.findViewById(R.id.tick_mark);
             created=(TextView) itemView.findViewById(R.id.created);
         }
     }

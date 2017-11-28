@@ -24,4 +24,5 @@
     <color name="new_green">#FB4EDF6D</color>
     <color name="new_yellow">#FFECBE09</color>
     <color name="btnPressedColor">#F34130</color>
+    <color name="light_green">#00FF7F</color>
 </resources>

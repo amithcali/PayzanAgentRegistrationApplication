@@ -45,7 +45,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Myholder
     public void onBindViewHolder(Myholder holder, int position) {
        if(listResultList.get(holder.getAdapterPosition()).getAssignToUser()!=null){
            String Response = listResultList.get(holder.getAdapterPosition()).getAssignToUser().toString();
-           String first = "<font color='#9C27B0'>Assign To : </font> <font color='#000000'>"+Response+"</font>";
+           String first = "<font color='#3549F1'>Assign To : </font> <font color='#000000'>"+Response+"</font>";
            holder.assignTo.setText(Html.fromHtml(first));
            //   holder.assignTo.setText("Assign To"+" "+":"+" "+listResultList.get(holder.getAdapterPosition()).getAssignToUser().toString());
        }else {
@@ -53,7 +53,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Myholder
        }
         if(listResultList.get(holder.getAdapterPosition()).getStatusType()!=null){
             String Response = listResultList.get(holder.getAdapterPosition()).getStatusType().toString();
-            String first = "<font color='#9C27B0'>Status : </font> <font color='#000000'>"+Response+"</font>";
+            String first = "<font color='#BD2EE0'>Status : </font> <font color='#000000'>"+Response+"</font>";
             holder.statusType.setText(Html.fromHtml(first));
            // holder.statusType.setText("Status"+" "+":"+" "+listResultList.get(holder.getAdapterPosition()).getStatusType().toString());
         }else {
@@ -61,7 +61,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Myholder
         }
         if(listResultList.get(holder.getAdapterPosition()).getComments()!=null){
             String Response = listResultList.get(holder.getAdapterPosition()).getComments().toString();
-            String first = "<font color='#9C27B0'>Comments: </font> <font color='#000000'>"+Response+"</font>";
+            String first = "<font color='#CEE10F'>Comments: </font> <font color='#000000'>"+Response+"</font>";
             holder.commentsTxt.setText(Html.fromHtml(first));
             //  holder.commentsTxt.setText("Comments"+" "+":"+" "+listResultList.get(holder.getAdapterPosition()).getComments().toString());
         }else {
@@ -69,7 +69,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Myholder
         }
         if(listResultList.get(holder.getAdapterPosition()).getCreated()!=null){
             createdDate = listResultList.get(holder.getAdapterPosition()).getCreated().toString();
-            String first = "<font color='#9C27B0'> Created Date:</font> <font color='#000000'>"+formatDateTimeUi()+"</font>";
+            String first = "<font color='#148D89'> Created Date:</font> <font color='#000000'>"+formatDateTimeUi()+"</font>";
             holder.created.setText(Html.fromHtml(first));
           //  holder.created.setText("Created Date"+" "+":"+" "+formatDateTimeUi());
         }else {

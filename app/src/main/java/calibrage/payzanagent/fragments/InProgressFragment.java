@@ -13,13 +13,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,8 +61,11 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
     private AgentRequestModel agentRequestModelBundle;
     public  static Toolbar toolbar;
     private EditText search;
+    ImageView imageView;
     private   InProgressRequetAdapter inProgressRequetAdapter;
     private List<String> list = new ArrayList<String>();
+    private String searchStr = null;
+
 
     public InProgressFragment() {
         // Required empty public constructor
@@ -76,25 +82,32 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
 //        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
         recyclerView = (RecyclerView) view.findViewById(R.id.recylerview_card_inprogress);
         noRecords = (TextView)view.findViewById(R.id.no_records);
+        imageView = (ImageView)view.findViewById(R.id.iv_clear);
         search = (EditText)view.findViewById(R.id.search);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         fragmentManager = getActivity().getSupportFragmentManager();
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search.setText(" ");
+            }
+        });
         if (isOnline(getActivity())) {
-            getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_IN_PROGRESS+","+CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW);
+            getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_IN_PROGRESS+","+CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW,searchStr);
         } else {
             showToast(getActivity(), getString(R.string.no_internet));
         }
-      //  addTextListener();
+        addTextListener();
 
 
         return view;
     }
 
-    private void getRequest(String providerType) {
+    private void getRequest(String providerType,String searchStr) {
         showDialog(getActivity(), "Authenticating...");
         MyServices service = ServiceFactory.createRetrofitService(context, MyServices.class);
-        operatorSubscription = service.getRequest(ApiConstants.AGENT_REQUESTS + providerType)
+        operatorSubscription = service.getRequest(ApiConstants.AGENT_REQUESTS + providerType+"/"+searchStr)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<AgentRequestModel>() {
@@ -146,31 +159,14 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
     }
 
     public void addTextListener(){
-
-        search.addTextChangedListener(new TextWatcher() {
-
-            public void afterTextChanged(Editable s) {}
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            public void onTextChanged(CharSequence query, int start, int before, int count) {
-
-                query = query.toString().toLowerCase();
-
-                final List<String> filteredList = new ArrayList<>();
-
-                for (int i = 0; i < list.size(); i++) {
-
-                    final String text = list.get(i).toLowerCase();
-                    if (text.contains(query)) {
-                        filteredList.add(list.get(i));
-                    }
+        search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_IN_PROGRESS+","+CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW,v.getText().toString());;
+                    return true;
                 }
-
-                inProgressRequetAdapter = new InProgressRequetAdapter(context, listResults);
-                recyclerView.setAdapter(inProgressRequetAdapter);
-                inProgressRequetAdapter.setOnAdapterListener(InProgressFragment.this);
-                inProgressRequetAdapter.notifyDataSetChanged();  // data set changed
+                return false;
             }
         });
     }

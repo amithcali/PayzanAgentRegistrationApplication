@@ -21,9 +21,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +68,9 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
     private String stComment,currentDatetime;
     private int position;
     TextView noRecords;
+    private EditText search;
+    ImageView imageView;
+    private String searchStr = null;
     private boolean isPickorHold;
     private ArrayList<AgentRequestModel.ListResult> listResults;
     private AgentRequestModel agentRequestModelBundle;
@@ -80,6 +85,8 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
         imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         view = inflater.inflate(R.layout.fragment_agent_request, container, false);
         context = this.getActivity();
+        imageView = (ImageView)view.findViewById(R.id.iv_clear);
+        search = (EditText)view.findViewById(R.id.search);
 //        HomeActivity.toolbar.setTitle(getResources().getString(R.string.agentrequest_sname));
 //        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
         currentDatetime = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("datetime");
@@ -88,27 +95,44 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         fragmentManager = getActivity().getSupportFragmentManager();
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search.setText(" ");
+            }
+        });
         String val= SharedPrefsData.getInstance(context).getStringFromSharedPrefs("mahesh");
        /* showToast(context, "Value :"+val);
         Log.d(TAG, "onCreateView: "+val);*/
         if (isOnline(getActivity())) {
-            getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_NEW+","+CommonConstants.STATUSTYPE_ID_REJECTED+","+CommonConstants.STATUSTYPE_ID_HOLD);
+            getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_NEW+","+CommonConstants.STATUSTYPE_ID_REJECTED+","+CommonConstants.STATUSTYPE_ID_HOLD,searchStr);
         } else {
             showToast(getActivity(), getString(R.string.no_internet));
         }
 
-
+        addTextListener();
         return view;
 
     }
 
+    private void addTextListener() {
+        search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_NEW+","+CommonConstants.STATUSTYPE_ID_REJECTED+","+CommonConstants.STATUSTYPE_ID_HOLD,v.getText().toString());;
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
 
 
-
-    private void getRequest(String providerType) {
+    private void getRequest(String providerType,String searchStr) {
         showDialog(getActivity(), "Authenticating...");
         MyServices service = ServiceFactory.createRetrofitService(context, MyServices.class);
-        operatorSubscription = service.getRequest(ApiConstants.AGENT_REQUESTS + providerType)
+        operatorSubscription = service.getRequest(ApiConstants.AGENT_REQUESTS + providerType+"/"+searchStr)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<AgentRequestModel>() {
@@ -250,7 +274,7 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
                             showToast(getActivity(),updateAgentRequestResponceModel.getEndUserMessage());
                             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-                            getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_NEW+","+CommonConstants.STATUSTYPE_ID_REJECTED+","+CommonConstants.STATUSTYPE_ID_HOLD);
+                            getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_NEW+","+CommonConstants.STATUSTYPE_ID_REJECTED+","+CommonConstants.STATUSTYPE_ID_HOLD,searchStr);
 
                         }else {
                             Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();

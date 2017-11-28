@@ -9,10 +9,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +51,9 @@ public class ApprovedAgentsFragment extends BaseFragment {
     private ArrayList<AgentRequestModel.ListResult> listResults;
     private AgentRequestModel agentRequestModelBundle;
     public  static Toolbar toolbar;
+    private EditText search;
+    ImageView imageView;
+    private String searchStr = null;
 
     public ApprovedAgentsFragment() {
         // Required empty public constructor
@@ -63,23 +70,44 @@ public class ApprovedAgentsFragment extends BaseFragment {
 //        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
         recyclerView = (RecyclerView) view.findViewById(R.id.recylerview_card_approved);
         noRecords = (TextView)view.findViewById(R.id.no_records);
+        imageView = (ImageView)view.findViewById(R.id.iv_clear);
+        search = (EditText)view.findViewById(R.id.search);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search.setText(" ");
+            }
+        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         fragmentManager = getActivity().getSupportFragmentManager();
         if (isOnline(getActivity())) {
-            getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_APPROVED);
+            getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_APPROVED,searchStr);
         } else {
             showToast(getActivity(), getString(R.string.no_internet));
         }
-
+        addTextListener();
 
         return view ;
     }
 
-    private void getRequest(String providerType) {
+    private void addTextListener() {
+        search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_APPROVED,v.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void getRequest(String providerType,String searchStr) {
         showDialog(getActivity(), "Authenticating...");
         MyServices service = ServiceFactory.createRetrofitService(context, MyServices.class);
-        operatorSubscription = service.getRequest(ApiConstants.AGENT_REQUESTS + providerType)
+        operatorSubscription = service.getRequest(ApiConstants.AGENT_REQUESTS + providerType+"/"+searchStr)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<AgentRequestModel>() {

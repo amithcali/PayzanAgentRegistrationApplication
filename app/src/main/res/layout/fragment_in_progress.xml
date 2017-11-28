@@ -23,6 +23,7 @@
             android:hint="Search by name "
             android:inputType="textNoSuggestions|textVisiblePassword"
             android:padding="6dp"
+            android:imeOptions="actionSearch"
             android:textColor="@color/action_color"
             android:textSize="16sp" />
 
@@ -44,7 +45,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="6dp"
             android:src="@mipmap/close_icon"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
     </RelativeLayout>
 

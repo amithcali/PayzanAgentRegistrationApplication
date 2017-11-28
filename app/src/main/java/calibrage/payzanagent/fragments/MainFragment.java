@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,7 +49,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     private Context context;
     private String stUsername;
     private Subscription operatorSubscription;
-
     String userid;
     TextView txtCount1,txtCount2,txtCount3,txtCount4,txtStatusType1,txtStatusType2,txtStatusType3,txtStatusType4;
     Button btnNewAgent,btnAgentRequest,btnToverify,btnApprovedAgents;
@@ -87,14 +87,21 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         txtStatusType3 = (TextView)view.findViewById(R.id.txt_status_type3);
         txtStatusType4 = (TextView)view.findViewById(R.id.txt_status_type4);
         refresh = (ImageView) view.findViewById(R.id.refresh);
-
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                RotateAnimation rotate = new RotateAnimation(0,360,
+                        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                rotate.setDuration(1000);
+                rotate.setRepeatCount(Animation.INFINITE);
+                rotate.setRepeatMode(Animation.INFINITE);
+                rotate.setInterpolator(new LinearInterpolator());
+                refresh.startAnimation(rotate);
                 if (isOnline(getActivity())) {
                     getRequestCount(userid);
                 } else {
                     showToast(getActivity(), getString(R.string.no_internet));
+                    refresh.clearAnimation();
                 }
             }
         });
@@ -115,14 +122,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         btnToverify.setOnClickListener(this);
         btnApprovedAgents.setOnClickListener(this);
        // btnSettings.setOnClickListener(this);
-
-
-
-
         return view;
     }
-
-
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.action_logout);
@@ -144,6 +145,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                     @Override
                     public void onError(Throwable e) {
                         hideDialog();
+                        refresh.clearAnimation();
                         if (e instanceof HttpException) {
                             ((HttpException) e).code();
                             ((HttpException) e).message();
@@ -161,7 +163,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                     @Override
                     public void onNext(HomeModel homeModel) {
                         hideDialog();
-
+                        refresh.clearAnimation();
                         Log.d("response", homeModel.getIsSuccess().toString());
                        // int status = homeModel.getResult().get(0).getStatusTypeId();
 
@@ -176,7 +178,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                             }else if(homeModel.getResult().getStatusCounts().get(i).getStatusTypeId()== Integer.parseInt(CommonConstants.STATUSTYPE_ID_APPROVED)){
                                 txtCount4.setText(""+homeModel.getResult().getStatusCounts().get(i).getCount());
                             }
-
 
                         }
 

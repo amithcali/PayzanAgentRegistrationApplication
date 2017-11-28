@@ -141,6 +141,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
     private int count = 0;
     private boolean isUpdate = false;
     private Subscription operatorSubscription;
+    private static  long MAX_FILE_SIZE = 5;
 
     public AggrementDocumentsFragment() {
         // Required empty public constructor
@@ -447,8 +448,6 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
                             CommonUtil.displayDialogWindow(updateAgentRequestResponceModel.getEndUserMessage(), alertDialog, context);
                             replaceFinal(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);
-
-
                         } else {
                             Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
                             CommonUtil.displayDialogWindow(updateAgentRequestResponceModel.getEndUserMessage(), alertDialog, context);
@@ -537,6 +536,8 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                         //imgView.setImageBitmap(thumbnail);
                         imageurl = getRealPathFromURI(imageUri);
 
+
+
                         filePathArray.add(Pair.create(imageurl, CommonConstants.FILE_TYPE_ID_IMAGES));
                         imagesArrayList.add(thumbnail);
                         //imagesArrayList.add(imageBitmap);
@@ -570,13 +571,25 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                 textView.setText(pdfPath);*/
 
                 Uri filePath = data.getData();
-                //  File file = new File(filePath.getPath());
+
 
                 //textView.setText(filePath.toString());
 
                 String pathis = getPath2(context, filePath);
-                filePathArray.add(Pair.create(pathis, CommonConstants.FILE_TYPE_ID_DOCUMENTS));
-                imagesArrayList.add(null);
+                File file = new File(filePath.getPath());
+                long fileSizeInBytes = file.length();
+// Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
+                long fileSizeInKB = fileSizeInBytes / 1024;
+// Convert the KB to MegaBytes (1 MB = 1024 KBytes)
+                long fileSizeInMB = fileSizeInKB / 1024;
+
+                if(fileSizeInMB<MAX_FILE_SIZE){
+                    filePathArray.add(Pair.create(pathis, CommonConstants.FILE_TYPE_ID_DOCUMENTS));
+                    imagesArrayList.add(null);
+                }else{
+                    showToast(context,"file size is must be  less than 5MB");
+                }
+
                 //  convertFileToByteArray(pathis, CommonConstants.FILE_TYPE_ID_DOCUMENTS);
             }
 
@@ -585,6 +598,28 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         imageAdapter.setOnAdapterListener(AggrementDocumentsFragment.this);
         imagesRecylerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         imagesRecylerView.setAdapter(imageAdapter);
+
+    }
+
+    public static String getGDriveDataColumn(Context context, Uri uri, String selection,
+                                             String[] selectionArgs) {
+        Cursor cursor = null;
+        final String column = "_display_name";
+        final String[] projection = {
+                column
+        };
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int column_index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(column_index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
 
     }
 
@@ -674,7 +709,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
 
         return null;
     }*/
-    public static String convertFileToByteArray(String pdfPath, String isImage) {
+    public  String convertFileToByteArray(String pdfPath, String isImage) {
         String val = null;
         if (isImage.equalsIgnoreCase(CommonConstants.FILE_TYPE_ID_DOCUMENTS)) {
 
@@ -683,20 +718,32 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                 File f = new File(pdfPath);
 
                 if (f.exists()) {
-                    InputStream inputStream = new FileInputStream(f);
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    byte[] b = new byte[1024 * 10000];
-                    int bytesRead = 0;
 
-                    while ((bytesRead = inputStream.read(b)) != -1) {
-                        bos.write(b, 0, bytesRead);
+                    long fileSizeInBytes = f.length();
+// Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
+                    long fileSizeInKB = fileSizeInBytes / 1024;
+// Convert the KB to MegaBytes (1 MB = 1024 KBytes)
+                    long fileSizeInMB = fileSizeInKB / 1024;
+
+                    if (fileSizeInMB < 5) {
+                        InputStream inputStream = new FileInputStream(f);
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        byte[] b = new byte[1024 * 10000];
+                        int bytesRead = 0;
+
+                        while ((bytesRead = inputStream.read(b)) != -1) {
+                            bos.write(b, 0, bytesRead);
+                        }
+
+                        byteArray = bos.toByteArray();
+
+                        Log.e("Byte array", ">" + byteArray);
+
+                        val = Base64.encodeToString(byteArray, Base64.NO_WRAP);
+                    }else {
+                        Toast.makeText(context, "file size must be less than 5MB", Toast.LENGTH_SHORT).show();
                     }
 
-                    byteArray = bos.toByteArray();
-
-                    Log.e("Byte array", ">" + byteArray);
-
-                    val = Base64.encodeToString(byteArray, Base64.NO_WRAP);
 
                 }
 

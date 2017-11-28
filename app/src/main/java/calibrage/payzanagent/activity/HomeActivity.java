@@ -76,6 +76,9 @@ public class HomeActivity extends BaseActivity {
             toolbar.setSubtitle(" ");
          //   Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
             SharedPrefsData.getInstance(this).ClearData(this);
+            for(int i = 0; i <getSupportFragmentManager().getBackStackEntryCount(); ++i) {
+                getSupportFragmentManager().popBackStack();
+            }
             getSupportFragmentManager().beginTransaction()
                     .add(BaseFragment.MAIN_CONTAINER, new LoginFragment ()).commit();
 

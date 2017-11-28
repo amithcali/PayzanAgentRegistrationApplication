@@ -337,12 +337,17 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
             //agentRequestModel.getListResult().get(pos).getTitleType() + " " +
             if (agentRequestModel.getListResult().get(pos).getMiddleName() != null) {
 
-                name = agentRequestModel.getListResult().get(pos).getFirstName() + " " + agentRequestModel.getListResult().get(pos).getMiddleName() + " " + agentRequestModel.getListResult().get(pos).getLastName();
+                edtMiddleName.setText(agentRequestModel.getListResult().get(pos).getMiddleName());
+
+               // name =  + " " +  + " " + ;
             } else {
-                name = agentRequestModel.getListResult().get(pos).getFirstName() + " " + agentRequestModel.getListResult().get(pos).getLastName();
+               // name = agentRequestModel.getListResult().get(pos).getFirstName() + " " + agentRequestModel.getListResult().get(pos).getLastName();
+
+                edtMiddleName.setText("");
             }
             // edtIdNo.setText(String.valueOf(agentRequestModel.getListResult().get(pos).getId()));
-            edtFirstName.setText(name);
+            edtFirstName.setText(agentRequestModel.getListResult().get(pos).getFirstName());
+            edtLastName.setText(agentRequestModel.getListResult().get(pos).getLastName());
             edtMobile.setText(agentRequestModel.getListResult().get(pos).getMobileNumber());
             strbundleMobile = agentRequestModel.getListResult().get(pos).getMobileNumber();
             edtEmail.setText(agentRequestModel.getListResult().get(pos).getEmail());
@@ -549,7 +554,6 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                     mandalId = mandalListResults.get((int) parent.getSelectedItemId()).getId();
                     if (isOnline(getActivity())) {
                         getRequestVillage(String.valueOf(mandalId));
-
                     }else {
                         showToast(getActivity(),getString(R.string.no_internet));
                     }

@@ -55,6 +55,12 @@
 
         <service android:name="service.GPSTracker"/>
 
+        <receiver android:name="RefreshToken">
+        <intent-filter>
+            <action android:name="com.payzan.CUSTOM_INTENT" />
+        </intent-filter>
+        </receiver>
+
         <activity android:name=".activity.CustomPhotoGalleryActivity"></activity>
     </application>
 

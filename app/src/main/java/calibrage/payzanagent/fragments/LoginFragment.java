@@ -217,6 +217,7 @@ public class LoginFragment extends BaseFragment {
                             CommonConstants.USER_NAME = loginResponseModel.getResult().getUser().getUserName();
                             SharedPrefsData.getInstance(context).updateStringValue(context,"userid",loginResponseModel.getResult().getUser().getId());
                             SharedPrefsData.getInstance(context).updateStringValue(context,"username",loginResponseModel.getResult().getUser().getUserName());
+                            SharedPrefsData.getInstance(context).updateStringValue(context,"Token",loginResponseModel.getResult().getTokenType()+" "+loginResponseModel.getResult().getAccessToken());
                             //    CommonConstants.WALLETID = String.valueOf(loginResponseModel.getData().getUserWallet().getWalletId());
                             // ReplcaFragment(new AgentRequestsFragment());
                             replaceFragment(getActivity(), MAIN_CONTAINER, new MainFragment(), TAG, MainFragment.TAG);

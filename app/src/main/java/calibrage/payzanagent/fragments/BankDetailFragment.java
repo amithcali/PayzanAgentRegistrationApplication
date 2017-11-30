@@ -167,9 +167,9 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
 
     private JsonObject agentBankDetails(boolean isUpdate) {
-        agentBankInfo.setModifiedBy(CommonConstants.USERID);
-        agentBankInfo.setModified(currentDatetime);
-        agentBankInfo.setCreated(currentDatetime);
+       // agentBankInfo.setModifiedBy(CommonConstants.USERID);
+       // agentBankInfo.setModified(currentDatetime);
+       // agentBankInfo.setCreated(currentDatetime);
         agentBankInfo.setIsActive(true);
         agentBankInfo.setAccountHolderName(straccountname);
         agentBankInfo.setAccountNumber(straccountno);
@@ -177,10 +177,10 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
         agentBankInfo.setAgentId("" + CommonConstants.AGENT_ID);
         if(isUpdate){
             agentBankInfo.setId(id);
-            agentBankInfo.setCreatedBy(strCreatedby);
+          //  agentBankInfo.setCreatedBy(strCreatedby);
         }else {
             agentBankInfo.setId(0);
-            agentBankInfo.setCreatedBy(CommonConstants.USERID);
+            //agentBankInfo.setCreatedBy(CommonConstants.USERID);
         }
 
         return new Gson().toJsonTree(agentBankInfo)

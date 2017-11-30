@@ -5,8 +5,10 @@ package calibrage.payzanagent.networkservice;
  */
 
 public interface ApiConstants {
+    String BASE_URL = "http://192.168.1.160/PayZanAPI/";
+
     String REGISTER = "api/Register/Register";
-    String LOGIN = "api/Register/Login";
+    String LOGIN = "api/Register/UserLogin";
     String STATES = "api/States/GetStates/";
     String DISTRICTS = "api/Districts/GetDistricts/";
     String MANDALS = "api/Mandals/GetMandals/";

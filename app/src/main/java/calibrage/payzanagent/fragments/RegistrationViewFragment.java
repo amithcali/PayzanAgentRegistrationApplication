@@ -159,6 +159,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
     private String createdBy;
     private int id;
     private String dateOfBirth;
+    private boolean isFirstTime = false;
 
     public RegistrationViewFragment() {
         // Required empty public constructor
@@ -623,7 +624,11 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                         if (CommonConstants.Is_New_Agent_Request){
 
                         }else {
-                            getRequestPersonalInfo(strbundleMobile);
+                            if(!isFirstTime){
+                                getRequestPersonalInfo(strbundleMobile);
+                                isFirstTime =true;
+                            }
+
                         }
 
                     }

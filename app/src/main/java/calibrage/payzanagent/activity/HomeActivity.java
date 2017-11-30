@@ -3,6 +3,8 @@ package calibrage.payzanagent.activity;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -36,6 +38,10 @@ public class HomeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.BLACK);
+        }
         setupToolbar();
         fragmentManager = getSupportFragmentManager();
         if (isLogin == 1) {
@@ -43,6 +49,7 @@ public class HomeActivity extends BaseActivity {
         } else {
             ReplcaFragment(new AgentRequestsFragment());
         }
+
 
     }
 

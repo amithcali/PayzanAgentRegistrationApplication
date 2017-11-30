@@ -66,16 +66,16 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.Myholder>{
         holder.deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                docListiner.onDocAdapterClickListiner(holder.getAdapterPosition(),true,true);
+                docListiner.onDocAdapterClickListiner(holder.getAdapterPosition(),"delete");
             }
         });
-        holder.name.setOnClickListener(new View.OnClickListener() {
+        holder.dowmload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(listResultList.get(holder.getAdapterPosition()).getFileExtension().equalsIgnoreCase(".pdf")){
-                    docListiner.onDocAdapterClickListiner(holder.getAdapterPosition(),false,true);
+                    docListiner.onDocAdapterClickListiner(holder.getAdapterPosition(),"downloadPdf");
                 }else{
-                    docListiner.onDocAdapterClickListiner(holder.getAdapterPosition(),false,false);
+                    docListiner.onDocAdapterClickListiner(holder.getAdapterPosition(),"downloadImage");
                 }
 
             }
@@ -91,7 +91,7 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.Myholder>{
 
     public class Myholder extends RecyclerView.ViewHolder{
         TextView name,value;
-        ImageView deleteIcon,sourceImage;
+        ImageView deleteIcon,sourceImage,dowmload;
         public Myholder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.name);
@@ -99,6 +99,7 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.Myholder>{
 
            // value = (TextView) itemView.findViewById(R.id.value);
             deleteIcon = (ImageView) itemView.findViewById(R.id.deleteIcon);
+            dowmload = (ImageView) itemView.findViewById(R.id.dowmload);
         }
 
 

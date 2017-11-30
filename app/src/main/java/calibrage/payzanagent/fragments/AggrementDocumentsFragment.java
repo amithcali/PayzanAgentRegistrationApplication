@@ -576,7 +576,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                 //textView.setText(filePath.toString());
 
                 String pathis = getPath2(context, filePath);
-                File file = new File(filePath.getPath());
+                File file = new File(pathis);
                 long fileSizeInBytes = file.length();
 // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
                 long fileSizeInKB = fileSizeInBytes / 1024;
@@ -1072,12 +1072,12 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
     }
 
     @Override
-    public void onDocAdapterClickListiner(int pos, boolean isDelete, boolean isPdf) {
-        if (isDelete)
+    public void onDocAdapterClickListiner(int pos,String   s) {
+        if (s.equalsIgnoreCase("delete"))
             showConformationDialogDelete(pos);
-        else if (isPdf)
+        else if (s.equalsIgnoreCase("downloadPdf"))
             new DownloadPdfFile(context, docIdproofList.get(pos).getFileUrl(), docIdproofList.get(pos).getFileName(), docIdproofList.get(pos).getFileExtension()).execute();
-        else if (!isPdf)
+        else if (s.equalsIgnoreCase("downloadImage"))
             new DownloadImageFile(context, docIdproofList.get(pos).getFileUrl(), docIdproofList.get(pos).getFileName(), docIdproofList.get(pos).getFileExtension()).execute();
     }
 
@@ -1110,14 +1110,14 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
 
             File pdfFile = new File(folder, fileName + extension);
 
-            try {
-                pdfFile.createNewFile();
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             if (!pdfFile.exists()) {
+                try {
+                    pdfFile.createNewFile();
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 downloadFile(fileUrl, pdfFile);
             } else {
                 getActivity().runOnUiThread(new Runnable() {
@@ -1198,14 +1198,15 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
 
             File pdfFile = new File(folder, fileName + extension);
 
-            try {
-                pdfFile.createNewFile();
 
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             if (!pdfFile.exists()) {
+                try {
+                    pdfFile.createNewFile();
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 downloadFile(fileUrl, pdfFile);
             } else {
                 getActivity().runOnUiThread(new Runnable() {

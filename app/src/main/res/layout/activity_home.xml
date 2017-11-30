@@ -1,38 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:orientation="vertical"
-android:layout_width="match_parent"
-android:layout_height="match_parent">
-
-<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:fitsSystemWindows="false"
+    android:orientation="vertical">
 
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include layout="@layout/main_header"/>
+        android:background="@color/white">
 
 
-        <FrameLayout
-            android:background="@drawable/framelayout_baground"
-            android:id="@+id/content_frame"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/lyt_margin" />
+            android:orientation="vertical">
 
-    </LinearLayout>
-
-
+            <include layout="@layout/main_header" />
 
 
+            <FrameLayout
+                android:id="@+id/content_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/lyt_margin"
+                android:background="@drawable/framelayout_baground" />
+
+        </LinearLayout>
 
 
-</RelativeLayout>
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

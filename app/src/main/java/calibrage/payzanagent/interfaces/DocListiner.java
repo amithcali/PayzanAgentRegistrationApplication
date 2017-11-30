@@ -5,5 +5,5 @@ package calibrage.payzanagent.interfaces;
  */
 
 public interface DocListiner {
-    void onDocAdapterClickListiner(int pos,boolean isDelete,boolean isPdf);
+    void onDocAdapterClickListiner(int pos,String show);
 }

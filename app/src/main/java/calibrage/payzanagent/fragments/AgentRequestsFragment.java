@@ -99,6 +99,8 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
             @Override
             public void onClick(View v) {
                 search.setText(" ");
+                getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_NEW+","+CommonConstants.STATUSTYPE_ID_REJECTED+","+CommonConstants.STATUSTYPE_ID_HOLD,null);
+
             }
         });
         String val= SharedPrefsData.getInstance(context).getStringFromSharedPrefs("mahesh");
@@ -120,7 +122,14 @@ public class AgentRequestsFragment extends  BaseFragment implements RequestClick
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_NEW+","+CommonConstants.STATUSTYPE_ID_REJECTED+","+CommonConstants.STATUSTYPE_ID_HOLD,v.getText().toString());;
+                    if(v.getText().toString().equalsIgnoreCase("")||v.getText().toString().equalsIgnoreCase(null)){
+                        getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_NEW+","+CommonConstants.STATUSTYPE_ID_REJECTED+","+CommonConstants.STATUSTYPE_ID_HOLD,null);
+                    }else {
+                        getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_NEW+","+CommonConstants.STATUSTYPE_ID_REJECTED+","+CommonConstants.STATUSTYPE_ID_HOLD,v.getText().toString());
+                    }
+
+
+
                     return true;
                 }
                 return false;

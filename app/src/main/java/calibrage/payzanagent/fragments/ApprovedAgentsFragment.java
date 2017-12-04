@@ -76,6 +76,7 @@ public class ApprovedAgentsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 search.setText(" ");
+                getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_APPROVED,null);
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -96,7 +97,11 @@ public class ApprovedAgentsFragment extends BaseFragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_APPROVED,v.getText().toString());
+                    if(v.getText().toString().equalsIgnoreCase("")||v.getText().toString().equalsIgnoreCase(null)) {
+                        getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_APPROVED,null);
+                    }else {
+                        getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_APPROVED,v.getText().toString());
+                    }
                     return true;
                 }
                 return false;

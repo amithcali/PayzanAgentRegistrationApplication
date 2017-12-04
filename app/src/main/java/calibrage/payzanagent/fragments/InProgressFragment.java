@@ -167,7 +167,7 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    Log.d(TAG, "onEditorAction: "+v.getText().toString());
+                //    Log.d(TAG, "onEditorAction: "+v.getText().toString());
                     if(v.getText().toString().equalsIgnoreCase("")||v.getText().toString().equalsIgnoreCase(null))
                         {
                         getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_IN_PROGRESS+","+CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW,null);

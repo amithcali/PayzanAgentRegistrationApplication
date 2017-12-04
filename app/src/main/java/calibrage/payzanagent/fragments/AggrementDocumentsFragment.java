@@ -142,6 +142,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
     private boolean isUpdate = false;
     private Subscription operatorSubscription;
     private static  long MAX_FILE_SIZE = 5;
+    private   String extension;
 
     public AggrementDocumentsFragment() {
         // Required empty public constructor
@@ -355,10 +356,10 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         // agentDoc.set(addAgent.getAgentPersonalInfo().getFirstName());
         if (filePathArray.get(pos).second.equalsIgnoreCase(CommonConstants.FILE_TYPE_ID_IMAGES)) {
             agentDoc.setFileTypeId(Integer.parseInt(CommonConstants.FILE_TYPE_ID_IMAGES));
-            agentDoc.setFileExtension(".JPEG");
+            agentDoc.setFileExtension(extension);
         } else {
             agentDoc.setFileTypeId(Integer.parseInt(CommonConstants.FILE_TYPE_ID_DOCUMENTS));
-            agentDoc.setFileExtension(".pdf");
+            agentDoc.setFileExtension(extension);
         }
         // agentDoc.setModified(currentDatetime);
         agentDoc.setModifiedBy(CommonConstants.USERID);
@@ -716,9 +717,8 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
             byte[] byteArray = null;
             try {
                 File f = new File(pdfPath);
-
                 if (f.exists()) {
-
+                    extension = f.getAbsolutePath().substring(f.getAbsolutePath().lastIndexOf("."));
                     long fileSizeInBytes = f.length();
                     Log.d(TAG, "convertFileToByteArray: "+"file length"+f.length());
 // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
@@ -756,6 +756,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
             }
 
         } else {
+            extension = pdfPath.substring(pdfPath.lastIndexOf("."));
             Bitmap bitmap = BitmapFactory.decodeFile(pdfPath);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);

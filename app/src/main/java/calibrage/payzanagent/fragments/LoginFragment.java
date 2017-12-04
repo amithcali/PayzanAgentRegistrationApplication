@@ -165,10 +165,15 @@ public class LoginFragment extends BaseFragment {
         mobileOrEmail = txt_Email.getText().toString().trim();
         passCode = txt_password.getText().toString();
 
-        if (mobileOrEmail.isEmpty()||txt_Email.getText().length()<10) {
+        if (mobileOrEmail.isEmpty()) {
             status = false;
             Toast.makeText(context, "Mobile is required", Toast.LENGTH_SHORT).show();
-        } else if (passCode.isEmpty()||txt_password.getText().length()<4) {
+        }
+        else if (!android.util.Patterns.PHONE.matcher(mobileOrEmail).matches()) {
+            Toast.makeText(context, "Please enter Valid Mobile Number", Toast.LENGTH_SHORT).show();
+            status = false;
+        }
+        else if (passCode.isEmpty()||txt_password.getText().length()<4) {
             status = false;
             Toast.makeText(context, "password is required", Toast.LENGTH_SHORT).show();
         }

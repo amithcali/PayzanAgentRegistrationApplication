@@ -72,7 +72,7 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.Myholder>{
         holder.dowmload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(listResultList.get(holder.getAdapterPosition()).getFileExtension().equalsIgnoreCase(".pdf")){
+                if(listResultList.get(holder.getAdapterPosition()).getFileExtension().equalsIgnoreCase(".pdf")||listResultList.get(holder.getAdapterPosition()).getFileExtension().equalsIgnoreCase(".docx")||listResultList.get(holder.getAdapterPosition()).getFileExtension().equalsIgnoreCase(".doc")||listResultList.get(holder.getAdapterPosition()).getFileExtension().equalsIgnoreCase(".txt")||listResultList.get(holder.getAdapterPosition()).getFileExtension().equalsIgnoreCase(".rtf")){
                     docListiner.onDocAdapterClickListiner(holder.getAdapterPosition(),"downloadPdf");
                 }else{
                     docListiner.onDocAdapterClickListiner(holder.getAdapterPosition(),"downloadImage");

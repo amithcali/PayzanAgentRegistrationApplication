@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,9 +91,10 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                search.setText(" ");
-                getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_IN_PROGRESS+","+CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW,null);;
-
+                if(!search.getText().toString().equalsIgnoreCase("")){
+                    search.setText(" ");
+                    getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_IN_PROGRESS+","+CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW,null);;
+                }
             }
         });
         if (isOnline(getActivity())) {
@@ -165,7 +167,8 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if(v.getText().toString().equalsIgnoreCase(" ")||v.getText().toString().equalsIgnoreCase(null))
+                    Log.d(TAG, "onEditorAction: "+v.getText().toString());
+                    if(v.getText().toString().equalsIgnoreCase("")||v.getText().toString().equalsIgnoreCase(null))
                         {
                         getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_IN_PROGRESS+","+CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW,null);
 

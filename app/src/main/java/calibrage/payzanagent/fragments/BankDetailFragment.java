@@ -284,10 +284,25 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+       // getRequestBank(CommonConstants.BANK_CATEGORY_ID);
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+       // getRequestBank(CommonConstants.BANK_CATEGORY_ID);
+    }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        getRequestBank(CommonConstants.BANK_CATEGORY_ID);
+    }
 
-   /* private void agentBankDetails() {
+    /* private void agentBankDetails() {
         agentBankInfo.setModifiedBy(CommonConstants.USERID);
         agentBankInfo.setModified(currentDatetime);
         agentBankInfo.setCreatedBy(CommonConstants.USERID);

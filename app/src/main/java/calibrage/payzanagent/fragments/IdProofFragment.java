@@ -417,8 +417,8 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 
         idProof.setIdProofs((List<IdProofModel>) idProofArrayList);
         idProof.setAgentId(CommonConstants.AGENT_ID);
-        idProof.setCreatedBy(CommonConstants.USERID);
-        idProof.setModifiedBy(CommonConstants.USERID);
+//        idProof.setCreatedBy(CommonConstants.USERID);
+//        idProof.setModifiedBy(CommonConstants.USERID);
         return new Gson().toJsonTree(idProof)
                 .getAsJsonObject();
 

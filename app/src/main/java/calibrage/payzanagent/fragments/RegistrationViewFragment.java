@@ -1102,9 +1102,9 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         agentPersonalInfo.setDOB(formatDateTime());
 //        agentPersonalInfo.setIsActive(true);
 //        agentPersonalInfo.setCreated(currentDatetime);
-        agentPersonalInfo.setCreatedBy(CommonConstants.USERID);
+      //  agentPersonalInfo.setCreatedBy(CommonConstants.USERID);
         //agentPersonalInfo.setModified(currentDatetime);
-        agentPersonalInfo.setModifiedBy(CommonConstants.USERID);
+      //  agentPersonalInfo.setModifiedBy(CommonConstants.USERID);
         agentPersonalInfo.setFirstName(strfirstname);
 
         //  addAgent.setAgentPersonalInfo(agentPersonalInfo);
@@ -1150,10 +1150,10 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
         postUpdatePersonalInfo.setLastName(strlastname);
         postUpdatePersonalInfo.setDOB(currentDatetime);
         postUpdatePersonalInfo.setIsActive(true);
-        postUpdatePersonalInfo.setCreated(createdBy);
-        postUpdatePersonalInfo.setCreatedBy(strCreatedBy);
-        postUpdatePersonalInfo.setModified(currentDatetime);
-        postUpdatePersonalInfo.setModifiedBy(CommonConstants.USERID);
+//        postUpdatePersonalInfo.setCreated(createdBy);
+//        postUpdatePersonalInfo.setCreatedBy(strCreatedBy);
+//        postUpdatePersonalInfo.setModified(currentDatetime);
+//        postUpdatePersonalInfo.setModifiedBy(CommonConstants.USERID);
         postUpdatePersonalInfo.setFirstName(strfirstname);
         postUpdatePersonalInfo.setEducationTypeId(null);
 

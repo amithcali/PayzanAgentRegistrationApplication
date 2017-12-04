@@ -109,7 +109,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            getSupportFragmentManager().popBackStackImmediate();
+            getSupportFragmentManager().popBackStack();
           //  HomeActivity.toolbar.setTitle(getResources().getString(R.string.main_sname));
             toolbar.setTitle(" ");
            toolbar.setSubtitle(" ");

@@ -293,6 +293,7 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
         return view;
     }
 
+
     private boolean checkFinancialId() {
         ArrayList<String> strings = new ArrayList<>();
         strings.addAll(existingIdproofs);

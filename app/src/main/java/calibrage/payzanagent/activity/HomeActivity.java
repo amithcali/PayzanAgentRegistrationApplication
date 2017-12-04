@@ -110,6 +110,7 @@ public class HomeActivity extends BaseActivity {
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
+         //  String stUsername = SharedPrefsData.getInstance(this).getStringFromSharedPrefs("username");
           //  HomeActivity.toolbar.setTitle(getResources().getString(R.string.main_sname));
             toolbar.setTitle(" ");
            toolbar.setSubtitle(" ");

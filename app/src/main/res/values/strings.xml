@@ -77,4 +77,8 @@
     <string name="new_agent_registration">New Agent Registration</string>
     <string name="bank_details">Bank Details</string>
     <string name="comments_box"> Comments</string>
+    <string name="no_records_found_please_try_another_keyword">No Records found. Please try another keyword</string>
+    <string name="search_by_name">Search by name</string>
+    <string name="aggrement_documents">Aggrement Documents</string>
+    <string name="upload_documents">Upload Documents</string>
 </resources>

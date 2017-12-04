@@ -91,6 +91,8 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
             @Override
             public void onClick(View v) {
                 search.setText(" ");
+                getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_IN_PROGRESS+","+CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW,null);;
+
             }
         });
         if (isOnline(getActivity())) {
@@ -163,7 +165,13 @@ public class InProgressFragment extends BaseFragment implements RequestClickList
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_IN_PROGRESS+","+CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW,v.getText().toString());;
+                    if(v.getText().toString().equalsIgnoreCase(" ")||v.getText().toString().equalsIgnoreCase(null))
+                        {
+                        getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_IN_PROGRESS+","+CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW,null);
+
+                    }else {
+                        getRequest(CommonConstants.USERID+"/"+CommonConstants.STATUSTYPE_ID_IN_PROGRESS+","+CommonConstants.STATUSTYPE_ID_SUBMIT_FOR_REVIEW,v.getText().toString());
+                    }
                     return true;
                 }
                 return false;

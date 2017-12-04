@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/roundededittext"
-            android:hint="Search by name "
+            android:hint="@string/search_by_name"
             android:inputType="textNoSuggestions|textVisiblePassword"
             android:padding="6dp"
             android:imeOptions="actionSearch"
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:gravity="center"
-        android:text="No Records found. Please try another keyword"
+        android:text="@string/no_records_found_please_try_another_keyword"
         android:visibility="gone" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recylerview_card_approved"
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:gravity="center"
-        android:text="No Records found. Please try another keyword"
+        android:text="@string/no_records_found_please_try_another_keyword"
         android:visibility="gone" />
 
 

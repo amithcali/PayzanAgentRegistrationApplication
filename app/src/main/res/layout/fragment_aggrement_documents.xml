@@ -31,7 +31,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:text="Aggrement Documents"
+            android:text="@string/aggrement_documents"
             android:textColor="@color/Black"
             android:textSize="18dp" />
 
@@ -86,10 +86,7 @@
                 android:layout_marginLeft="@dimen/btn_register_margin" />
         </LinearLayout>
 
-
-
-
-        <calibrage.payzanagent.controls.CommonButton
+       <calibrage.payzanagent.controls.CommonButton
             android:id="@+id/btn_add_documents"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/spinnertext_height"
@@ -101,24 +98,14 @@
             android:textAllCaps="false"
             android:textColor="@color/White" />
 
-
-
-
-
-
-
-
-
-
-        <View
+       <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="@color/Maroon"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"
-            android:alpha="0.5"
-            />
+            android:alpha="0.5" />
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
@@ -135,7 +122,7 @@
             android:layout_marginBottom="@dimen/btn_margin_bottom"
             android:layout_marginTop="@dimen/btn_margin_top"
             android:background="@drawable/roundbutton"
-            android:text="Upload Documents"
+            android:text="@string/upload_documents"
             android:id="@+id/uploadDoc"
             android:textAllCaps="false"
             android:textColor="@color/White"/>

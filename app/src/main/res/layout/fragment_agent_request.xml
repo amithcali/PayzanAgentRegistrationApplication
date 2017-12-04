@@ -20,7 +20,7 @@ android:orientation="vertical">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/roundededittext"
-        android:hint="Search by name "
+        android:hint="@string/search_by_name"
         android:inputType="textNoSuggestions|textVisiblePassword"
         android:padding="6dp"
         android:imeOptions="actionSearch"
@@ -75,7 +75,6 @@ android:orientation="vertical">
     android:layout_height="wrap_content"
     android:layout_marginTop="100dp"
     android:gravity="center"
-
     android:text="No Records found. Please try another keyword"
     android:visibility="gone" />
 

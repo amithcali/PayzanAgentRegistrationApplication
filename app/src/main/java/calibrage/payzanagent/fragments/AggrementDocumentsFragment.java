@@ -720,6 +720,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                 if (f.exists()) {
 
                     long fileSizeInBytes = f.length();
+                    Log.d(TAG, "convertFileToByteArray: "+"file length"+f.length());
 // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
                     long fileSizeInKB = fileSizeInBytes / 1024;
 // Convert the KB to MegaBytes (1 MB = 1024 KBytes)

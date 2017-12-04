@@ -273,7 +273,7 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
                             isUpdate =true;
                             btnContinue.setText("Update");
                             replaceFragment(getActivity(), MAIN_CONTAINER, new IdProofFragment(), TAG, IdProofFragment.TAG);
-
+                            getRequestBank(CommonConstants.BANK_CATEGORY_ID);
 
                         } else {
                             showToast(context, bankInfoResponseModel.getEndUserMessage());

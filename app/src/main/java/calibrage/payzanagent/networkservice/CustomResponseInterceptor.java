@@ -32,7 +32,7 @@ public class CustomResponseInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         Response response = chain.proceed(request);
-        if (response.code() != 200) {
+        if (response.code() == 401) {
             Response r = null;
             try
             {
@@ -56,7 +56,7 @@ public class CustomResponseInterceptor implements Interceptor {
         Request newRequest;
         newRequest = req.newBuilder().header("Authorization",   newToken).build();
         Response another =  chain.proceed(newRequest);
-        while (another.code() != 200) {
+        while (another.code() == 401) {
             makeTokenRefreshCall(newRequest, chain);
         }
         return another;

@@ -43,7 +43,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyHolder> {
         if(bitmapArrayList.get(holder.getAdapterPosition())!=null){
             holder.imageView.setImageBitmap(bitmapArrayList.get(holder.getAdapterPosition()));
         }else {
-            holder.imageView.setImageResource(R.drawable.pdf_sbi);
+            holder.imageView.setImageResource(R.drawable.exe_sbi);
         }
 
         holder.deleteIcon.setOnClickListener(new View.OnClickListener() {

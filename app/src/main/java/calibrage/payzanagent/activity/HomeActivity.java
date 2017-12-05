@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.fragments.AgentRequestsFragment;
+import calibrage.payzanagent.fragments.BankDetailFragment;
 import calibrage.payzanagent.fragments.BaseFragment;
 import calibrage.payzanagent.fragments.LoginFragment;
 import calibrage.payzanagent.utils.SharedPrefsData;
@@ -111,21 +112,19 @@ public class HomeActivity extends BaseActivity {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
           //  HomeActivity.toolbar.setTitle(getResources().getString(R.string.main_sname));
-            toolbar.setTitle(" ");
-           toolbar.setSubtitle(" ");
-           toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white_new));
+//            toolbar.setTitle(" ");
+//           toolbar.setSubtitle(" ");
+          // toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white_new));
+
+           // ReplcaFragment(new BankDetailFragment());
         } else {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             final Dialog dialog = new Dialog(HomeActivity.this);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
             dialog.setContentView(R.layout.alert_dialouge_home);
-
             Button ok_btn = (Button) dialog.findViewById(R.id.ok_btn);
             Button cancel_btn = (Button) dialog.findViewById(R.id.cancel_btn);
-
-
             ok_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

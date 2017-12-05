@@ -173,7 +173,7 @@ public class LoginFragment extends BaseFragment {
             Toast.makeText(context, "Please enter Valid Mobile Number", Toast.LENGTH_SHORT).show();
             status = false;
         }
-        else if (passCode.isEmpty()||txt_password.getText().length()<4) {
+        else if (passCode.isEmpty()||txt_password.getText().length()<8) {
             status = false;
             Toast.makeText(context, "password is required", Toast.LENGTH_SHORT).show();
         }

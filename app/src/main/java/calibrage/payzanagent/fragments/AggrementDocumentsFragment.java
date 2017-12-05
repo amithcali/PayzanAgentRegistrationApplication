@@ -1140,6 +1140,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            CommonUtil.displayDialogWindow("File Downloaded Successfully!...Please Check In PayzanExecutive Folder.", alertDialog, context);
             hideDialogAsk();
         }
 
@@ -1230,6 +1231,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            CommonUtil.displayDialogWindow("Image Downloaded Successfully!...Please Check In PayzanExecutive Folder.", alertDialog, context);
             hideDialogAsk();
         }
 

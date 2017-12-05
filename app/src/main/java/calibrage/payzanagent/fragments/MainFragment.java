@@ -109,6 +109,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
 
         stUsername = SharedPrefsData.getInstance(context).getStringFromSharedPrefs("username");
        HomeActivity.toolbar.setTitle(stUsername);
+       HomeActivity.toolbar.setNavigationIcon(null);
 //        HomeActivity.toolbar.setSubtitle(stUsername);
 //        HomeActivity.toolbar.setSubtitleTextColor(ContextCompat.getColor(context,R.color.white_new));
        HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));

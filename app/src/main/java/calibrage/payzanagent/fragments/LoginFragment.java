@@ -94,7 +94,7 @@ public class LoginFragment extends BaseFragment {
 
         context = this.getActivity();
          HomeActivity.toolbar.setTitle(getResources().getString(R.string.login_sname));
-//
+         HomeActivity.toolbar.setNavigationIcon(null);
        //  HomeActivity.toolbar.setTitleTextColor(ContextCompat.getColor(context, R.color.white_new));
        /* HomeActivity.toolbar.setNavigationIcon(R.drawable.ic_stat_arrow_back);
        HomeActivity.toolbar.setNavigationOnClickListener(new View.OnClickListener() {

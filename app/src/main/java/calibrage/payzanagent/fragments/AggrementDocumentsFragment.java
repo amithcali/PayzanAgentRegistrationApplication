@@ -1105,7 +1105,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
             String fileUrl = path.replace("\\", "/");
             String fileName = this.fileName;  // -> maven.pdf
             String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-            File folder = new File(extStorageDirectory, "payZanSalesExecutive");
+            File folder = new File(extStorageDirectory, "PayZanSalesExecutive");
             if (!folder.exists()) {
                 folder.mkdir();
             }
@@ -1115,8 +1115,6 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
             if (!pdfFile.exists()) {
                 try {
                     pdfFile.createNewFile();
-
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -1126,7 +1124,8 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                     @Override
                     public void run() {
                         try {
-                            Toast.makeText(context, "File exists in Folder", Toast.LENGTH_SHORT).show();
+                            CommonUtil.displayDialogWindow("File Exists In Folder!...Please Check In PayzanExecutive Folder.", alertDialog, context);
+                            // Toast.makeText(context, "File exists in Folder", Toast.LENGTH_SHORT).show();
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -1140,7 +1139,6 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            CommonUtil.displayDialogWindow("File Downloaded Successfully!...Please Check In PayzanExecutive Folder.", alertDialog, context);
             hideDialogAsk();
         }
 
@@ -1163,6 +1161,20 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                     fileOutputStream.write(buffer, 0, bufferLength);
                 }
                 fileOutputStream.close();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            CommonUtil.displayDialogWindow("File Downloaded Successfully!...Please Check In PayzanExecutive Folder.", alertDialog, context);
+                            // Toast.makeText(context, "File exists in Folder", Toast.LENGTH_SHORT).show();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (MalformedURLException e) {
@@ -1215,8 +1227,10 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
                         try {
-                            Toast.makeText(context, "File exists in Folder", Toast.LENGTH_SHORT).show();
+                            CommonUtil.displayDialogWindow("File Exists In Folder!...Please Check In PayzanExecutive Folder.", alertDialog, context);
+                            //Toast.makeText(context, "File exists in Folder", Toast.LENGTH_SHORT).show();
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -1231,7 +1245,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            CommonUtil.displayDialogWindow("Image Downloaded Successfully!...Please Check In PayzanExecutive Folder.", alertDialog, context);
+
             hideDialogAsk();
         }
 
@@ -1247,6 +1261,19 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                     myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
                     out.flush();
                     out.close();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                CommonUtil.displayDialogWindow("Image Downloaded Successfully!...Please Check In PayzanExecutive Folder.", alertDialog, context);
+                                // Toast.makeText(context, "File exists in Folder", Toast.LENGTH_SHORT).show();
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

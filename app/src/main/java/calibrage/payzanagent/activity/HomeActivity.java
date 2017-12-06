@@ -111,12 +111,12 @@ public class HomeActivity extends BaseActivity {
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
-          //  HomeActivity.toolbar.setTitle(getResources().getString(R.string.main_sname));
-//            toolbar.setTitle(" ");
-//           toolbar.setSubtitle(" ");
-          // toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white_new));
+         /*   HomeActivity.toolbar.setTitle(getResources().getString(R.string.main_sname));
+            toolbar.setTitle(" ");
+           toolbar.setSubtitle(" ");
+           toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white_new));
 
-           // ReplcaFragment(new BankDetailFragment());
+            ReplcaFragment(new BankDetailFragment());*/
         } else {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             final Dialog dialog = new Dialog(HomeActivity.this);

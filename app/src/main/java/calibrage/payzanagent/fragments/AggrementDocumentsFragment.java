@@ -494,6 +494,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                     //Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                      Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
+                   // intent.setType("application/pdf");
                     intent.setType("*/*");
                  //   intent.setType("application/pdf/* | text/*|text/plain | application/msword | application/vnd.openxmlformats-officedocument.wordprocessingml.document | application/rtf");
                     String[] mimetypes = {"application/pdf","text/*","text/plain","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/rtf"};

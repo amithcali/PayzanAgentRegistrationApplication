@@ -538,9 +538,6 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                                 context.getContentResolver(), imageUri);
                         //imgView.setImageBitmap(thumbnail);
                         imageurl = getRealPathFromURI(imageUri);
-
-
-
                         filePathArray.add(Pair.create(imageurl, CommonConstants.FILE_TYPE_ID_IMAGES));
                         imagesArrayList.add(thumbnail);
                         //imagesArrayList.add(imageBitmap);

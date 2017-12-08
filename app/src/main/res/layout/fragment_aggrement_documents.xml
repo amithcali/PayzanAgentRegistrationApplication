@@ -91,7 +91,7 @@
             android:layout_width="fill_parent"
             android:layout_height="@dimen/spinnertext_height"
             android:layout_marginBottom="@dimen/btn_margin_bottom"
-            android:layout_marginTop="@dimen/btn_margin_top"
+           android:layout_marginTop="@dimen/btn_margin_top"
             android:textStyle="bold"
             android:background="@drawable/roundbutton"
             android:text="Add Documents"

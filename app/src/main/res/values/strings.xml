@@ -81,4 +81,8 @@
     <string name="search_by_name">Search by name</string>
     <string name="aggrement_documents">Aggrement Documents</string>
     <string name="upload_documents">Upload Documents</string>
+    <string name="currentDir">Current Directory</string>
+    <string name="folder">Folder</string>
+    <string name="fileSize">FileSize</string>
+    <string name="parentDirectory">Parent Directory</string>
 </resources>

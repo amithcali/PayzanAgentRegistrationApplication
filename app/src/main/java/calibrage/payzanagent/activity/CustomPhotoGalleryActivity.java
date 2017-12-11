@@ -175,7 +175,7 @@ public class CustomPhotoGalleryActivity extends AppCompatActivity {
 
 
                     } else {
-                        if(selectedImagesCount<3) {
+                        if(selectedImagesCount<5) {
 
                             cb.setChecked(true);
                             thumbnailsselection[id] = true;

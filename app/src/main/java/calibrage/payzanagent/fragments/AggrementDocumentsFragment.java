@@ -18,11 +18,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -56,29 +55,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import calibrage.payzanagent.BuildConfig;
-import calibrage.payzanagent.Calib.ext.GsonObjectRequest;
-import calibrage.payzanagent.Calib.ext.RequestManager;
-import calibrage.payzanagent.Calib.ui.IScreen;
 import calibrage.payzanagent.R;
 import calibrage.payzanagent.activity.CustomPhotoGalleryActivity;
-import calibrage.payzanagent.activity.HomeActivity;
 import calibrage.payzanagent.adapter.DocsAdapter;
 import calibrage.payzanagent.adapter.ImageAdapter;
-import calibrage.payzanagent.interfaces.DeleteIdproofListiner;
 import calibrage.payzanagent.interfaces.DeleteImageListiner;
 import calibrage.payzanagent.interfaces.DocListiner;
 import calibrage.payzanagent.model.AddAgent;
-import calibrage.payzanagent.model.AddAgentResponseModel;
 import calibrage.payzanagent.model.AgentDoc;
 import calibrage.payzanagent.model.DocDeleteModel;
-import calibrage.payzanagent.model.GetBankInfoModel;
 import calibrage.payzanagent.model.GetDocumentsResponseModel;
-import calibrage.payzanagent.model.IdProofDeleteModel;
-import calibrage.payzanagent.model.LoginResponseModel;
 import calibrage.payzanagent.model.UpdateAgentRequestModel;
 import calibrage.payzanagent.model.UpdateAgentRequestResponceModel;
 import calibrage.payzanagent.model.UploadDocumentResponseModel;
@@ -87,10 +75,8 @@ import calibrage.payzanagent.networkservice.MyServices;
 import calibrage.payzanagent.networkservice.ServiceFactory;
 import calibrage.payzanagent.utils.CommonConstants;
 import calibrage.payzanagent.utils.CommonUtil;
-import calibrage.payzanagent.utils.Event;
-import calibrage.payzanagent.utils.FileDownloader;
+import calibrage.payzanagent.activity.FileChooser;
 import calibrage.payzanagent.utils.SharedPrefsData;
-import calibrage.payzanagent.utils.VolleyErrorListener;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
 import rx.Subscription;
@@ -492,15 +478,24 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
                     startActivityForResult(intent, 2);
                 } else if (options[item].equals("Select File")) {
                     //Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                  /*   Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);*/
                    // intent.setType("application/pdf");
-                    intent.setType("*/*");
+                 //   intent.setType("*/*");
                  //   intent.setType("application/pdf/* | text/*|text/plain | application/msword | application/vnd.openxmlformats-officedocument.wordprocessingml.document | application/rtf");
-                    String[] mimetypes = {"application/pdf","text/*","text/plain","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/rtf"};
-                    intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
-                    startActivityForResult(intent, 3);
+                 //   String[] mimetypes = {"application/pdf","text/*","text/plain","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/rtf"};
+                 //   intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+                  //  startActivityForResult(intent, 3);
 
+                    Intent intent = new Intent(getActivity(), FileChooser.class);
+                    ArrayList<String> extensions = new ArrayList<String>();
+                    extensions.add(".pdf");
+                    extensions.add(".doc");
+                    extensions.add(".docx");
+                    extensions.add(".txt");
+                    extensions.add(".rtf");
+                    intent.putStringArrayListExtra("filterFileExtension", extensions);
+                    startActivityForResult(intent, 3);
                     //Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     //startActivityForResult(intent, 2);
 
@@ -570,21 +565,24 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
              /*   pdfPath =  data.getData().getPath();
                 textView.setText(pdfPath);*/
 
-                Uri filePath = data.getData();
+               // Uri filePath = data.getData();
+                String filePath = data.getStringExtra("fileSelected");
 
 
                 //textView.setText(filePath.toString());
 
-                String pathis = getPath2(context, filePath);
-                File file = new File(pathis);
+              // String pathis = getPath2(context, filePath);
+                File file = new File(filePath);
+               // File file = new File(pathis);
                 long fileSizeInBytes = file.length();
-// Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
+                // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
                 long fileSizeInKB = fileSizeInBytes / 1024;
-// Convert the KB to MegaBytes (1 MB = 1024 KBytes)
+                // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
                 long fileSizeInMB = fileSizeInKB / 1024;
 
                 if(fileSizeInMB<MAX_FILE_SIZE){
-                    filePathArray.add(Pair.create(pathis, CommonConstants.FILE_TYPE_ID_DOCUMENTS));
+                    //filePathArray.add(Pair.create(pathis, CommonConstants.FILE_TYPE_ID_DOCUMENTS));
+                    filePathArray.add(Pair.create(filePath, CommonConstants.FILE_TYPE_ID_DOCUMENTS));
                     imagesArrayList.add(null);
                 }else{
                     showToast(context,"file size is must be  less than 5MB");
@@ -596,7 +594,7 @@ public class AggrementDocumentsFragment extends BaseFragment implements DeleteIm
         }
         imageAdapter = new ImageAdapter(context, imagesArrayList);
         imageAdapter.setOnAdapterListener(AggrementDocumentsFragment.this);
-        imagesRecylerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        imagesRecylerView.setLayoutManager(new GridLayoutManager(context, 3));
         imagesRecylerView.setAdapter(imageAdapter);
 
     }

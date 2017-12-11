@@ -58,7 +58,7 @@ public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.Myholder>{
         }else if(listResultList.get(holder.getAdapterPosition()).getFileExtension().equalsIgnoreCase(".doc")){
             holder.sourceImage.setImageResource(R.drawable.doc_sbi);
         }else if(listResultList.get(holder.getAdapterPosition()).getFileExtension().equalsIgnoreCase("txt")){
-            holder.sourceImage.setImageResource(R.drawable.exe_sbi);
+            holder.sourceImage.setImageResource(R.drawable.txt_sbi);
         }else if(listResultList.get(holder.getAdapterPosition()).getFileExtension().equalsIgnoreCase(".rtf")){
             holder.sourceImage.setImageResource(R.drawable.exe_sbi);
         }

@@ -60,7 +60,8 @@
             <action android:name="com.payzan.CUSTOM_INTENT" />
         </intent-filter>
         </receiver>
-
+        <activity android:name=".activity.Option"></activity>
+        <activity android:name=".activity.FileChooser"></activity>
         <activity android:name=".activity.CustomPhotoGalleryActivity"></activity>
     </application>
 

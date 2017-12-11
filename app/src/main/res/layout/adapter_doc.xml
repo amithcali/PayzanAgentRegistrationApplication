@@ -19,7 +19,7 @@
                 android:layout_height="35dp"
                 android:layout_weight="0.15"
                 android:layout_gravity="center"
-                android:src="@drawable/right_arrow"
+                android:src="@drawable/file_exe"
                 android:id="@+id/attach_img"/>
             <TextView
                 android:layout_width="0dp"

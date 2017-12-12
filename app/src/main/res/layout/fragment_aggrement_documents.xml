@@ -94,7 +94,7 @@
            android:layout_marginTop="@dimen/btn_margin_top"
             android:textStyle="bold"
             android:background="@drawable/roundbutton"
-            android:text="Add Documents"
+            android:text="@string/add_documents"
            android:layout_marginLeft="10dp"
            android:layout_marginRight="10dp"
             android:textAllCaps="false"
@@ -197,7 +197,7 @@
                 android:layout_marginBottom="@dimen/btn_margin_bottom"
                 android:layout_marginTop="@dimen/btn_margin_top"
                 android:background="@drawable/roundbutton"
-                android:text="Finish"
+                android:text="@string/finish"
                 android:textAllCaps="false"
                 android:textColor="@color/White" />
 

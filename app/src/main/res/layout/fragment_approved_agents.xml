@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:gravity="center"
-        android:text="@string/no_records_found_please_try_another_keyword"
+        android:text="@string/no_records_found"
         android:visibility="gone" />
 
 

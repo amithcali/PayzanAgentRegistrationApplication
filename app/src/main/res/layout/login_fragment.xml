@@ -107,7 +107,7 @@
                 android:layout_height="@dimen/btn_height"
                 android:layout_marginTop="@dimen/btn_margin_top"
                 android:background="@drawable/roundbutton"
-                android:text="Login"
+                android:text="@string/login"
                 android:textAllCaps="false"
                 android:textColor="@color/White" />
             <!-- Link to Registration Screen -->

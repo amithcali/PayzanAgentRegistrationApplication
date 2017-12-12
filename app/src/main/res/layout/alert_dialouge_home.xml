@@ -43,7 +43,7 @@
         android:maxLines="10"
         android:padding="10dip"
         android:scrollbars="vertical"
-        android:text="Do you want to exit from the app?"
+        android:text="@string/exit_from_the_app"
         android:textColor="@color/Black"
         android:textSize="14sp" >
     </TextView>
@@ -67,8 +67,7 @@
             android:layout_weight="1"
             android:background="@color/Maroon"
             android:textAllCaps="false"
-
-            android:text="Ok"
+            android:text="@string/ok"
             android:textColor="@color/white" >
         </Button>
 
@@ -84,7 +83,7 @@
             android:background="@color/Maroon"
 
 
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="@color/white"/>
     </LinearLayout>
 

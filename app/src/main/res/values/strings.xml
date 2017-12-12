@@ -85,4 +85,26 @@
     <string name="folder">Folder</string>
     <string name="fileSize">FileSize</string>
     <string name="parentDirectory">Parent Directory</string>
+    <string name="status">Status :</string>
+    <string name="assign_to">Assign To :</string>
+    <string name="comment_str">Comment :</string>
+    <string name="created_by">CreatedBy :</string>
+    <string name="exit_from_the_app">Do you want to exit from the app?</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="no_records_found">No Records found. Please try another keyword</string>
+    <string name="add_documents">Add Documents</string>
+    <string name="finish">Finish</string>
+    <string name="account_holder_name">Account Holder Name</string>
+    <string name="account_number">Account Number</string>
+    <string name="select_bank">Select Bank</string>
+    <string name="select_branch">Select Branch</string>
+    <string name="bank">Bank</string>
+    <string name="number">Number</string>
+    <string name="add">Add</string>
+    <string name="branch">Branch</string>
+    <string name="identity_proofs">Identity Proofs</string>
+    <string name="catagory">Category</string>
+    <string name="user_gmail_com">user@gmail.com</string>
+    <string name="sign_out">Sign Out</string>
 </resources>

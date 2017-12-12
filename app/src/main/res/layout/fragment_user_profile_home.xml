@@ -50,7 +50,7 @@ tools:context="calibrage.payzanagent.fragments.UserProfileHomeFragment">
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:gravity="center"
-                    android:text="user@gmail.com"
+                    android:text="@string/user_gmail_com"
                     android:id="@+id/userMail"/>
 
             </LinearLayout>
@@ -63,7 +63,7 @@ tools:context="calibrage.payzanagent.fragments.UserProfileHomeFragment">
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/lyt_margin_top"
         android:background="@drawable/roundbutton"
-        android:text="Sign Out"
+        android:text="@string/sign_out"
         android:textAllCaps="false"
         android:textColor="@color/White"
         android:textSize="@dimen/btn_FontSize" />

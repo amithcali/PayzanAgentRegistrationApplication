@@ -89,7 +89,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/edt_height"
                     android:layout_marginBottom="@dimen/edt_bottom_margin"
-                    android:hint="Account Holder Name"
+                    android:hint="@string/account_holder_name"
                     android:maxLength="40"
                     android:background="@drawable/roundededittext"
                     android:gravity="center_vertical"
@@ -111,7 +111,7 @@
                     android:digits="0123456789"
                     android:background="@drawable/roundededittext"
                     android:gravity="center_vertical"
-                    android:hint="Account Number"
+                    android:hint="@string/account_number"
                     android:maxLength="40"
                     android:imeOptions="actionNext"
                     android:paddingLeft="@dimen/edt_text_pading_left"
@@ -120,11 +120,11 @@
             <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Bank">
+                android:hint="@string/bank">
                 <calibrage.payzanagent.controls.CommonTextView
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/spinnertext_height"
-                    android:text="Select Bank"
+                    android:text="@string/select_bank"
                     android:textSize="@dimen/edt_FontSize"/>
                 <Spinner
 
@@ -144,11 +144,11 @@
             <calibrage.payzanagent.controls.NoChangingBackgroundTextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Branch">
+                android:hint="@string/branch">
                 <calibrage.payzanagent.controls.CommonTextView
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/spinnertext_height"
-                    android:text="Select Branch"
+                    android:text="@string/select_branch"
                     android:textSize="@dimen/edt_FontSize"/>
                 <Spinner
 

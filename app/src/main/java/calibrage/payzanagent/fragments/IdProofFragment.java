@@ -184,8 +184,8 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 //                    idproofLocalAdapter.setOnAdapterListener(IdProofFragment.this);
 //                    financialRecylerview.setAdapter(idproofLocalAdapter);
 //                    financialRecylerview.setLayoutManager(new LinearLayoutManager(context));
-//                    spinnerCustom_finacialId.setSelection(0);
-//                    numberfinancial.setText(" ");
+                    spinnerCustom_finacialId.setSelection(0);
+                    numberfinancial.setText(" ");
                 }
 
 
@@ -224,8 +224,8 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
 //                    idproofLocalAdapter.setOnAdapterListener(IdProofFragment.this);
 //                    financialRecylerview.setAdapter(idproofLocalAdapter);
 //                    financialRecylerview.setLayoutManager(new LinearLayoutManager(context));
-//                    spinnerCustom_personalId.setSelection(0);
-//                    numberpersonal.setText(" ");
+                    spinnerCustom_personalId.setSelection(0);
+                    numberpersonal.setText(" ");
                 }
 
 
@@ -256,9 +256,9 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                     if (existingIdproofs.isEmpty()){
                         showToast(context,"please add ID proof");
                     }else if(checkPersonalId()){
-                        showToast(context,"please Personal ID proof");
+                        showToast(context,"please add Personal ID proof");
                     }else if( checkFinancialId()){
-                        showToast(context,"please Financial ID proof");
+                        showToast(context,"please add Financial ID proof");
                     }else{
                         replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
                     }
@@ -511,13 +511,14 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                     @Override
                     public void onNext(GetIdproofModel idproofModel) {
                         hideDialog();
+                        IdproofAdapter idproofAdapter = new IdproofAdapter(context, idproofModel.getListResult());
+                        idproofAdapter.setOnAdapterListener(IdProofFragment.this);
+                        recylerView.setLayoutManager(new LinearLayoutManager(context));
+                        recylerView.setAdapter(idproofAdapter);
                         if (!idproofModel.getListResult().isEmpty()) {
                             isUpdate = true;
                             agentIdproofList = (ArrayList<GetIdproofModel.ListResult>) idproofModel.getListResult();
-                            IdproofAdapter idproofAdapter = new IdproofAdapter(context, idproofModel.getListResult());
-                            idproofAdapter.setOnAdapterListener(IdProofFragment.this);
-                            recylerView.setLayoutManager(new LinearLayoutManager(context));
-                            recylerView.setAdapter(idproofAdapter);
+
                             btnContinue.setText("Next");
                             for (int i = 0; i < agentIdproofList.size(); i++) {
                                 existingIdproofs.add(agentIdproofList.get(i).getIdProofType());
@@ -746,7 +747,19 @@ public class IdProofFragment extends BaseFragment implements View.OnClickListene
                 //     showToast(getActivity(),"Please Fill The Personal Details");
 
                 if (isUpdate) {
-                    replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
+
+                    if (existingIdproofs.isEmpty()){
+                        showToast(context,"please add ID proof");
+                    }else if(checkPersonalId()){
+                        showToast(context,"please add Personal ID proof");
+                    }else if( checkFinancialId()){
+                        showToast(context,"please add Financial ID proof");
+                    }else{
+                        replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
+                    }
+
+                  //  replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
+                  //  replaceFragment(getActivity(), MAIN_CONTAINER, new AggrementDocumentsFragment(), TAG, AggrementDocumentsFragment.TAG);
                 } else {
                     //  addIdProofDetails();
                     postIdInfo();

@@ -61,9 +61,10 @@ public class ServiceFactory  {
 
         //Enable log in debug mode
         if (BuildConfig.DEBUG) {
-//            HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
-//            logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-//            logInterceptor.addIntercept(logInterceptor);
+            HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
+            logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            //logInterceptor.add(logInterceptor);
+            httpClient.addInterceptor(logInterceptor);
             CustomResponseInterceptor  customResponseInterceptor = new CustomResponseInterceptor(context);
 
             httpClient.addInterceptor(customResponseInterceptor).build();

@@ -333,6 +333,12 @@ public class BankDetailFragment extends BaseFragment implements View.OnClickList
             accountNo.setError("Account Number is required");
             accountNo.requestFocusFromTouch();
             //  Toast.makeText(context, "Account Number is required", Toast.LENGTH_SHORT).show();
+        }else if (bankListResults.isEmpty()){
+            status = false;
+            Toast.makeText(context, "Bank is required", Toast.LENGTH_SHORT).show();
+        } else if (branchListResults.isEmpty()){
+            status = false;
+            Toast.makeText(context, "Branch is required", Toast.LENGTH_SHORT).show();
         } else if (strshiftcode.isEmpty()) {
             status = false;
             shiftCode.setError("Shiftcode is required");

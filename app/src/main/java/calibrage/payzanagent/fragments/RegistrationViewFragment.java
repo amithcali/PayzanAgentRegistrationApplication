@@ -1279,7 +1279,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
                             */
         if (spinnerTitleType.getSelectedItemPosition() == 0) {
             status = false;
-            Toast.makeText(context, "select Title Type", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Select Title Type", Toast.LENGTH_SHORT).show();
         } else if (strfirstname.isEmpty() || edtFirstName.getText().length() < 3) {
             status = false;
             edtFirstName.setError("FirstName is required");
@@ -1292,7 +1292,7 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
             //   Toast.makeText(context, "AgentName is required", Toast.LENGTH_SHORT).show();
         } else if (spinnerBusinessCat.getSelectedItemPosition() == 0) {
             status = false;
-            Toast.makeText(context, "select business category", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Select business category", Toast.LENGTH_SHORT).show();
         } /*else if (strusername.isEmpty() || edtUserName.getText().length() < 4) {
             status = false;
             edtUserName.setError("UserName is required");
@@ -1328,6 +1328,20 @@ public class RegistrationViewFragment extends BaseFragment implements OnMapReady
             edtLandMark.setError("Landmark is required");
             edtLandMark.requestFocusFromTouch();
             //  Toast.makeText(context, "Address is required", Toast.LENGTH_SHORT).show();
+        }else if (provinceListResults.isEmpty()){
+            status = false;
+            Toast.makeText(context, "Provinance is required", Toast.LENGTH_SHORT).show();
+        }
+        else if (districtListResults.isEmpty()){
+            status = false;
+            Toast.makeText(context, "District is required", Toast.LENGTH_SHORT).show();
+        } else if (mandalListResults.isEmpty()){
+            status = false;
+            Toast.makeText(context, "Mandal is required", Toast.LENGTH_SHORT).show();
+        }
+        else if (villageListResults.isEmpty()){
+            status = false;
+            Toast.makeText(context, "Village is required", Toast.LENGTH_SHORT).show();
         } else if (strpin.isEmpty()) {
             status = false;
             edtPincode.setError("Postalcode is required");
